@@ -1,0 +1,244 @@
+<body>
+<label class="hap" aria-hidden="true"><input type="checkbox" switch id="hapIn" tabindex="-1"><span id="hapLabel"></span></label>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <canvas id="kb"></canvas>
+  <div class="lp"><div class="bar"><i id="ldBar"></i></div><span class="lt">Loading <span id="ldN">000</span></span></div>
+</div>
+
+<canvas id="beams" aria-hidden="true"></canvas>
+<div class="pblur top" aria-hidden="true"></div>
+<div class="pblur bot" aria-hidden="true"></div>
+
+<header class="site" id="site">
+  <div class="row">
+    <a class="logo glass press" href="#home" aria-label="Rohit Kumawat, home"><b>RK</b><span class="lbl">Rohit Kumawat</span></a>
+    <nav class="nav glass" id="nav" aria-label="Main">
+      <span class="nav-ind off" id="navInd" aria-hidden="true"></span>
+      <a class="ni" href="#home" data-p="home"><i data-ic="home"></i><span class="lbl">Home</span></a>
+      <a class="ni" href="#work" data-p="work"><i data-ic="work"></i><span class="lbl">Work</span></a>
+      <a class="ni" href="#experiments" data-p="experiments"><i data-ic="lab"></i><span class="lbl">Experiments</span></a>
+      <a class="ni" href="#blogs" data-p="blogs"><i data-ic="pen"></i><span class="lbl">Blogs</span></a>
+      <a class="ni" href="#about" data-p="about"><i data-ic="user"></i><span class="lbl">About</span></a>
+    </nav>
+    <div class="right">
+      <a class="call" href="#book" id="callBtn" aria-label="Book a call"><span class="t">Book a Call</span>
+        <span class="ic"><span class="trail" aria-hidden="true"><i data-ic="coffee" style="--o:.2;--dl:.16s"></i><i data-ic="phone" style="--o:.35;--dl:.12s"></i><i data-ic="msg" style="--o:.5;--dl:.08s"></i><i data-ic="video" style="--o:.7;--dl:.04s"></i></span><span class="cur" id="callCur"><i data-ic="cal" class="on"></i><i data-ic="video"></i><i data-ic="msg"></i><i data-ic="phone"></i><i data-ic="coffee"></i></span></span>
+      </a>
+      <button type="button" class="tbtn glass" id="theme" aria-label="Switch theme"><i data-ic="sun" class="sun"></i><i data-ic="moon" class="moon"></i></button>
+    </div>
+  </div>
+</header>
+
+<nav class="rail" id="rail" aria-label="Sections on this page"></nav>
+
+<main id="app">
+<!-- HOME -->
+<div class="page" data-page="home">
+  <div class="frame">
+    <section class="hero" id="hero" data-rail="Intro" aria-label="Introduction">
+      <div class="wx" aria-hidden="true"><canvas id="wx"></canvas></div>
+      <div class="hgrid">
+        <div>
+          <h1 class="htitle" id="htitle"><span class="sr" id="roleSr">Product Designer</span></h1>
+          <div class="hbtns">
+            <button type="button" class="about-b glass" id="aboutBtn" aria-label="About me. Press and hold for a note from Rohit">
+              <span class="liq" id="liq" aria-hidden="true"><svg viewBox="0 0 240 12" preserveAspectRatio="none"><path d="M0 6 Q15 0 30 6 T60 6 T90 6 T120 6 T150 6 T180 6 T210 6 T240 6 V12 H0Z" fill="currentColor"/></svg></span>
+              <span class="lbl"><span class="a">About me</span><span class="k">Keep holding</span></span>
+            </button>
+            <a class="metal" href="#work"><span class="rim"></span><span class="core"></span><span class="sheen"></span>See my work <i data-ic="ne"></i></a>
+          </div>
+        </div>
+        <div class="pwrap" id="pwrap"><img src="portrait.png" alt="Illustrated portrait of Rohit" draggable="false" width="749" height="804"></div>
+        <div class="acc" id="acc"></div>
+      </div>
+    </section>
+  </div>
+  <div class="hr"></div>
+  <div class="frame"><section class="logos" aria-label="Where Rohit has worked and competed"><p>Led initiatives at</p><div class="mq"><div class="mq-in" id="mq"></div></div></section></div>
+  <div class="hr"></div>
+  <div class="frame">
+    <section class="sec" data-rail="Work" aria-labelledby="hw-h">
+      <div class="shead"><div><p class="kick"><b>01</b> Selected work</p><h2 class="h2" id="hw-h">Brands, apps and interfaces <em>from brief to launch</em></h2></div><a class="btn" href="#work"><span id="allN">All projects</span> <i data-ic="arrow"></i></a></div>
+      <div class="fgrid" id="fgrid"></div>
+    </section>
+  </div>
+  <div class="hr"></div>
+  <div class="frame">
+    <section class="sec" data-rail="Experiments" aria-labelledby="he-h">
+      <div class="shead"><div><p class="kick"><b>02</b> Experiments</p><h2 class="h2" id="he-h">Small things, <em>built to play with</em></h2></div><a class="btn" href="#experiments">All experiments <i data-ic="arrow"></i></a></div>
+      <div class="egrid" id="homeExp"></div>
+    </section>
+  </div>
+  <div class="hr"></div>
+  <div class="frame">
+    <section class="sec" data-rail="Stack" aria-labelledby="hs-h">
+      <div class="shead"><div><p class="kick"><b>03</b> Stack</p><h2 class="h2" id="hs-h">Tools I reach for <em>every day</em></h2></div></div>
+      <div class="stk"><div class="tools" data-tools></div><div class="skills" data-skills></div></div>
+    </section>
+  </div>
+</div>
+
+<!-- WORK -->
+<div class="page" data-page="work" hidden>
+  <div class="frame">
+    <section class="sec ptop" aria-labelledby="w-h">
+      <div class="shead"><div><p class="kick"><b>Work</b> <span id="wRange"></span></p><h2 class="h2" id="w-h">Case studies <em>from idea to launch</em></h2><p class="lead">Product, brand and interface projects for startups, clubs and self-initiated briefs. Each one opens the full case study.</p></div></div>
+      <div class="fbar-wrap">
+        <div style="position:relative"><div class="peek" id="peek" aria-hidden="true"></div><div class="fbar glass" id="fbar" role="group" aria-label="Filter projects"><span class="ind" id="fInd" aria-hidden="true"></span></div></div>
+        <div class="vt glass" id="vt" role="group" aria-label="Layout">
+          <button type="button" data-v="showcase" aria-pressed="true"><i data-ic="rows"></i>Showcase</button>
+          <button type="button" data-v="grid" aria-pressed="false"><i data-ic="grid"></i>Grid</button>
+          <button type="button" data-v="deck" aria-pressed="false"><i data-ic="deck"></i>Deck</button>
+        </div>
+      </div>
+      <p class="mono" id="showing" aria-live="polite" style="color:var(--muted-fg);margin:0 0 16px"></p>
+      <div class="works v-showcase" id="works"></div>
+    </section>
+  </div>
+</div>
+
+<!-- EXPERIMENTS -->
+<div class="page" data-page="experiments" hidden>
+  <div class="frame">
+    <section class="sec ptop" aria-labelledby="e-h">
+      <div class="shead"><div><p class="kick"><b>Experiments</b> Playground</p><h2 class="h2" id="e-h">Small things, <em>built to play with</em></h2><p class="lead">Games and interface pieces made for fun. Some are full builds, some are a single interaction done well.</p></div></div>
+      <div class="egrid" id="allExp"></div>
+    </section>
+  </div>
+</div>
+
+<!-- BLOGS -->
+<div class="page" data-page="blogs" hidden>
+  <div class="frame">
+    <section class="sec ptop" aria-labelledby="b-h">
+      <div class="shead"><div><p class="kick"><b>Blogs</b> Notes</p><h2 class="h2" id="b-h">Notes on design <em>and product</em></h2><p class="lead">Posts are placeholders (xyz) until the first ones are written.</p></div></div>
+      <div class="tabs" id="btabs" role="group" aria-label="Filter posts"></div>
+      <div class="bgrid" id="bgrid"></div>
+    </section>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" data-page="about" hidden>
+  <div class="frame">
+    <section class="sec ptop" data-rail="Ask" aria-labelledby="a-h">
+      <p class="kick"><b>About</b> Rohit Kumawat</p>
+      <h2 class="h2" id="a-h">Designer by craft, <em>product thinker by habit</em></h2>
+      <form class="ask-inline glass" id="askInline" autocomplete="off"><label class="sr" for="askQ">Ask me anything about Rohit</label><input id="askQ" placeholder="Ask me anything..."><button type="submit" aria-label="Ask"><i data-ic="up"></i></button></form>
+      <div class="ask-sugs" id="askSugs"></div>
+      <div class="ask-out" id="askOut" aria-live="polite"></div>
+    </section>
+  </div>
+  <div class="hr"></div>
+  <div class="frame">
+    <section class="sec" data-rail="About" aria-label="About me">
+      <div class="ab">
+        <div class="copy">
+          <p>I'm Rohit, a product designer and product manager based in Delhi.</p>
+          <p class="muted">I designed interfaces and user experiences at Aspora in Bengaluru, and planned product and go-to-market work at Evvolv.ai in New Delhi. Outside internships I lead projects with Design Club IITD and take on brand and web work for startups, from Genme's identity to TickAI's website.</p>
+          <p class="muted">I care about purpose-driven brands and interfaces: start from what people actually need, try a lot of things, and ship what serves both the business and the person using it.</p>
+          <div class="social" data-social></div>
+        </div>
+        <div class="photos">
+          <div class="ph"><img src="portrait.png" alt="Illustrated portrait of Rohit"><em class="glass">Rohit</em></div>
+          <div class="ph"><span>Photo xyz<br>at a design jam</span></div>
+          <div class="ph"><span>Photo xyz<br>Design Club IITD</span></div>
+          <div class="ph"><span>Photo xyz<br>on a FIFA night</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="hr"></div>
+  <div class="frame">
+    <section class="sec" data-rail="Journey" aria-labelledby="j-h">
+      <div class="shead"><div><p class="kick"><b>01</b> Journey</p><h2 class="h2" id="j-h">Where I've worked</h2></div></div>
+      <div class="rows" id="journey"></div>
+    </section>
+  </div>
+  <div class="hr"></div>
+  <div class="frame">
+    <section class="sec" data-rail="Off the clock" aria-labelledby="off-h">
+      <div class="games">
+        <div class="pad" aria-hidden="true"><svg viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6h20a10 10 0 0 1 10 10v2a8 8 0 0 1-14 5l-2-3h-8l-2 3A8 8 0 0 1 4 18v-2A10 10 0 0 1 14 6z"/><path d="M13 13v6M10 16h6"/><circle cx="33" cy="14" r="1.4" fill="currentColor"/><circle cx="37" cy="18" r="1.4" fill="currentColor"/></svg></div>
+        <div>
+          <p class="kick"><b>02</b> Off the clock</p>
+          <h3 id="off-h" style="margin-top:8px">Retro games, Mahjong and a lot of FIFA</h3>
+          <p>I like playing old retro games like Subway Surfers and Mahjong, plus FIFA. Here's my FIFA ID: send me a friend request and we'll play a head-to-head match.</p>
+          <div class="fifa"><span class="mono" style="color:var(--muted-fg)">FIFA ID</span><b>xyz</b><button type="button" class="lk" data-copy="xyz">Copy</button></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="hr"></div>
+  <div class="frame">
+    <section class="sec" data-rail="Stack" aria-labelledby="st-h">
+      <div class="shead"><div><p class="kick"><b>03</b> Stack</p><h2 class="h2" id="st-h">Tools and <em>what I do with them</em></h2></div></div>
+      <div class="stk"><div class="tools" data-tools></div><div class="skills" data-skills></div></div>
+    </section>
+  </div>
+</div>
+
+<!-- BOOK A CALL -->
+<div class="page" data-page="book" hidden>
+  <div class="frame">
+    <section class="sec ptop book" data-rail="Book a call" aria-labelledby="bk-h">
+      <div>
+        <p class="kick"><b>Book a call</b> 15 or 30 min</p>
+        <h2 class="h2" id="bk-h">Let's talk about <em>your product</em></h2>
+        <p class="lead">A short call about a product idea, a design problem or a role. Pick a day and a time, and the request lands in Rohit's inbox.</p>
+        <ul class="facts"><li><b>15 or 30 min</b><span>You choose the length</span></li><li><b>Video call</b><span>Link sent after confirming (xyz)</span></li><li><b>IST</b><span>India Standard Time</span></li></ul>
+        <div class="social" data-social></div>
+        <p class="alt">Prefer email? <a data-gmail href="#" target="_blank" rel="noopener">rohitkumawat7109@gmail.com</a></p>
+      </div>
+      <form class="bcard" id="bookForm" novalidate>
+        <div class="brow"><span class="blabel">Length</span><div class="seg" role="group" aria-label="Call length"><button type="button" class="segb" data-dur="15" aria-pressed="false">15 min</button><button type="button" class="segb" data-dur="30" aria-pressed="true">30 min</button></div></div>
+        <div>
+          <div class="calh"><button type="button" class="calnav" id="calPrev" aria-label="Previous month">‹</button><b id="calTitle"></b><button type="button" class="calnav" id="calNext" aria-label="Next month">›</button></div>
+          <div class="calw" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+          <div class="cald" id="calDays" role="group" aria-label="Pick a day"></div>
+        </div>
+        <div><span class="blabel" id="slotLabel">Pick a day to see times</span><div class="slots" id="slots" role="group" aria-labelledby="slotLabel"></div></div>
+        <div class="fields">
+          <label for="bkName">Your name<input id="bkName" type="text" autocomplete="name" placeholder="Full name"></label>
+          <label for="bkEmail">Your email<input id="bkEmail" type="email" autocomplete="email" placeholder="you@example.com"></label>
+          <label for="bkTopic" class="full">What would you like to talk about?<textarea id="bkTopic" rows="3" placeholder="A line or two is plenty"></textarea></label>
+        </div>
+        <p class="bsum" id="bkSum" aria-live="polite">Choose a day and a time.</p>
+        <a class="btn pri bsend" id="bkSend" href="#book" aria-disabled="true">Request this slot <i data-ic="arrow"></i></a>
+        <p class="bnote">Opens Gmail with your request filled in, so you can send it from your own account.</p>
+      </form>
+    </section>
+  </div>
+</div>
+</main>
+
+<div class="hr" style="position:relative;z-index:1"></div>
+<div class="frame" style="z-index:1">
+  <footer class="foot" id="contact" data-rail="Contact">
+    <blockquote class="quote" id="quote"><span class="tx">Make it useful, then make it feel good.</span><svg class="hwr" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 C 60 2, 120 11, 180 6 S 270 3, 298 7"/></svg><cite>xyz, a line Rohit designs by</cite></blockquote>
+    <div class="fgr">
+      <div><p class="fbig">Let's build<br><span>something.</span></p></div>
+      <div><h4>Menu</h4><ul id="fMenu"></ul></div>
+      <div><h4>Contact</h4><ul id="fContact"></ul><div class="emx"><a class="lk" href="mailto:rohitkumawat7109@gmail.com">Mail app</a><button type="button" class="lk" data-copy="rohitkumawat7109@gmail.com">Copy email</button></div></div>
+    </div>
+    <div class="fbot"><span>Designed and built by Rohit Kumawat · © 2026</span><button type="button" class="agent-b press" id="agentBtn" aria-label="Agent view: this page as Markdown" title="Agent view"><i data-ic="bot"></i></button></div>
+  </footer>
+</div>
+
+<div class="chat">
+  <div class="cpanel glass" id="cpanel" data-open="false" role="dialog" aria-label="Chat about Rohit">
+    <div class="cph"><span class="av">RK</span><div><b>Ask about Rohit</b><small>Quick answers about his work</small></div></div>
+    <div class="msgs" id="msgs"><div class="m bot">Hi! Ask me about Rohit's work, experience, games or how to reach him.</div></div>
+    <div class="cform"><div class="sg" id="csugs"></div><form id="cform" autocomplete="off"><label class="sr" for="cq">Your question</label><input id="cq" placeholder="Ask something..."><button type="submit" aria-label="Send"><i data-ic="up"></i></button></form></div>
+  </div>
+  <button type="button" class="chat-b glass" id="chatBtn" aria-expanded="false" aria-controls="cpanel" aria-label="Chat about Rohit"><i data-ic="chat" class="o"></i><i data-ic="x" class="x"></i></button>
+</div>
+
+<div class="agent" id="agent" hidden role="dialog" aria-label="Agent view">
+  <div class="box">
+    <div class="bar"><span class="mono">Agent view · page as Markdown</span><span style="display:flex;gap:6px"><button type="button" class="btn" id="mdCopy">Copy Markdown</button><button type="button" class="btn" id="agentClose">Close</button></span></div>
+    <pre id="md"></pre>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
