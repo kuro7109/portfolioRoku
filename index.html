@@ -301,7 +301,7 @@ body.leaving #app,body.leaving .frame:has(> #contact){opacity:0;transform:transl
 @media (max-width:640px){.logos{grid-template-columns:minmax(0,1fr);gap:12px}}
 
 /* Project covers */
-.cov{position:relative;overflow:hidden;isolation:isolate;border-radius:18px;background:#111;color:#fff}
+.cov{position:relative;overflow:hidden;isolation:isolate;border-radius:18px;background:#111;color:#fff;clip-path:inset(0 round 18px);transform:translateZ(0)}
 .cov .g{position:absolute;inset:-25%;z-index:-1;filter:blur(30px) saturate(1.15);transition:transform 1.2s var(--ease-out)}
 .cov .gr{position:absolute;inset:0;z-index:-1;opacity:.18;background-image:radial-gradient(rgba(255,255,255,.7) .6px,transparent .7px);background-size:6px 6px;mix-blend-mode:overlay}
 .cov .nm{position:absolute;left:6%;bottom:8%;font-size:clamp(28px,4.4vw,56px);font-weight:680;letter-spacing:-.05em;line-height:.9;text-shadow:0 2px 24px rgba(0,0,0,.25)}
@@ -439,7 +439,12 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .tool .lg svg{width:34px;height:34px}
 :root[data-theme="dark"] .tool[data-t="Framer"] .lg svg,:root[data-theme="dark"] .tool[data-t="Notion"] .lg svg{filter:invert(1)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tool[data-t="Framer"] .lg svg,:root:not([data-theme="light"]) .tool[data-t="Notion"] .lg svg{filter:invert(1)}}
-.cov-b{display:block;width:100%;text-align:left;border-radius:18px}
+.cov-b{display:block;width:100%;text-align:left;border-radius:18px;overflow:hidden}
+.cov-b:focus{outline:none}
+.cov-b:focus-visible{outline:2px solid var(--fg);outline-offset:3px;border-radius:21px}
+.post .cov{clip-path:none}
+.peek .cov{clip-path:inset(0 round 10px)}
+.reader .cov{clip-path:none}
 .card .go{cursor:pointer}
 .card .acts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:6px}
 .card .acts .go{margin-top:0}
