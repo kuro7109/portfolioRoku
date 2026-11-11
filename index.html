@@ -486,9 +486,10 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .photos:has(.ph:hover) .ph:not(:hover){filter:blur(3px);opacity:.6}
 .ph{position:relative;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:var(--secondary);border:1px solid var(--border);display:grid;place-items:center;transition:filter .35s,opacity .35s,transform .45s var(--spring)}
 .ph:hover{transform:scale(1.02) rotate(-1deg)}
-.ph:nth-child(2){transform:translateY(24px)}
-.ph:nth-child(2):hover{transform:translateY(24px) scale(1.02) rotate(1deg)}
-.ph img{width:86%;height:auto;align-self:end}
+.photos{padding-bottom:24px}
+.ph:nth-child(even){transform:translateY(24px)}
+.ph:nth-child(even):hover{transform:translateY(24px) scale(1.02) rotate(1deg)}
+.ph img{width:100%;height:100%;object-fit:cover;align-self:stretch}
 .ph span{font:12px var(--mono);color:var(--muted-fg);text-align:center;padding:12px}
 .ph em{position:absolute;left:10px;bottom:10px;font:11px var(--mono);font-style:normal;padding:3px 8px;border-radius:999px}
 .games{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;padding:22px;border-radius:22px;border:1px solid var(--border);background:var(--card)}
@@ -798,10 +799,10 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
           <div class="social" data-social></div>
         </div>
         <div class="photos">
-          <div class="ph"><img src="portrait.png" alt="Illustrated portrait of Rohit"><em class="glass">Rohit</em></div>
-          <div class="ph"><span>Photo xyz<br>at a design jam</span></div>
-          <div class="ph"><span>Photo xyz<br>Design Club IITD</span></div>
-          <div class="ph"><span>Photo xyz<br>on a FIFA night</span></div>
+          <div class="ph"><img src="photos/rohit-1.jpg" alt="Rohit in sunglasses and a printed kurta, smiling in front of a mandala projection" width="720" height="900" loading="lazy"></div>
+          <div class="ph"><img src="photos/rohit-2.jpg" alt="Rohit speaking on stage in a Design Club Vice President t-shirt" width="720" height="900" loading="lazy"></div>
+          <div class="ph"><img src="photos/rohit-3.jpg" alt="Selfie of Rohit on the IIT Delhi campus in a Design Club t-shirt" width="720" height="900" loading="lazy"></div>
+          <div class="ph"><img src="photos/rohit-4.jpg" alt="Black and white portrait of Rohit smiling" width="720" height="900" loading="lazy"></div>
         </div>
       </div>
     </section>
