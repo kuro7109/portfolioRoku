@@ -64,8 +64,10 @@ $$(".exp").forEach(card=>{
 
 /* ---------- Rows, tools, skills, social ---------- */
 const honourRow=h=>`<div class="rowi rv"><b>${esc(h.t)}<small>${esc(h.res)}</small></b><span class="co">${esc(h.org)}</span><span>Case competition</span><span class="y">${esc(h.y)}</span></div>`;
-$("#journey").innerHTML=JOURNEY.map(j=>`<div class="rowi rv"><b>${esc(j.role)}<small>${esc(j.focus)} · ${esc(j.dt)}</small></b><span class="co">${esc(j.co)}</span><span>${esc(j.loc)}</span><span class="y">${esc(j.y)}</span></div>`).join("");
-$$("[data-tools]").forEach(el=>el.innerHTML=TOOLS.map(n=>`<div class="tool rv" data-t="${esc(n)}"><span class="lg">${LOGOS[n]}</span><span>${esc(n)}</span></div>`).join(""));
+$("#journey").innerHTML=JOURNEY.map(j=>`<div class="rowi rv"><b>${esc(j.role)}${j.focus?`<small>${esc(j.focus)}</small>`:""}</b><span class="co">${esc(j.co)}</span><span>${esc(j.loc)}</span><span class="y">${esc(j.y)}</span></div>`).join("");
+// each copy of the stack gets its own gradient ids, otherwise a logo can point at defs inside a hidden page
+const logoFor=(n,k)=>LOGOS[n].replace(/(id="|url\(#|href="#)([^")]+)/g,(m,a,b)=>a+b+"-"+k);
+$$("[data-tools]").forEach((el,k)=>el.innerHTML=TOOLS.map(n=>`<div class="tool rv" data-t="${esc(n)}"><span class="lg">${logoFor(n,k)}</span><span>${esc(n)}</span></div>`).join(""));
 $$("[data-skills]").forEach(el=>el.innerHTML=SKILLS.map(([a,b])=>`<div class="rv"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join(""));
 const SOCIAL=[["Email","mail",GMAIL],["LinkedIn","li",LINKEDIN],["GitHub","gh",GITHUB]];
 $$("[data-social]").forEach(el=>el.innerHTML=SOCIAL.map(([n,i,u])=>`<a class="btn" href="${u}" target="_blank" rel="noopener">${svg(i)}${n}<span class="sr"> (opens in a new tab)</span></a>`).join(""));
@@ -247,7 +249,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest("[data-copy]"); 
   try{ navigator.clipboard.writeText(v).then(()=>say("Copied"),()=>say("Select the text to copy it")); }catch(err){ say("Select the text to copy it"); } });
 function toMarkdown(){
   return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.yr}`),"",
-   "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.focus}, ${j.dt})`),"",
+   "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.y})`),"",
    "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- OTP Vault","","## Off the clock","Old retro games like Subway Surfers and Mahjong, plus FIFA. FIFA ID: xyz, send a friend request for a head-to-head match.","",
    "## Tools",TOOLS.join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`].join("\n");
 }
