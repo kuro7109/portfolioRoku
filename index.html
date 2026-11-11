@@ -352,14 +352,13 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .card .go{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:500;margin-top:4px;width:max-content;border-bottom:1px solid var(--border-strong);padding-bottom:2px}
 .card .go svg,.dd .all svg{width:14px;height:14px}
 .card.flash .cov{box-shadow:0 0 0 3px var(--brand)}
-.works.v-showcase .card{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:center;gap:clamp(18px,3vw,40px);padding:18px 0;border-top:1px solid var(--border)}
-.works.v-showcase .card:nth-child(even) .cov{order:2}
+
 .works.v-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .works.v-grid .card dl,.works.v-grid .card p{display:none}
 .works.v-grid .card h3{font-size:18px}
 .works.v-deck .card{position:sticky;top:110px;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;gap:28px;padding:20px;border-radius:26px;background:var(--card);border:1px solid var(--border);box-shadow:0 -10px 40px -24px rgba(0,0,0,.35);transform-origin:top center}
 @media (max-width:900px){.works.v-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:700px){.works.v-showcase .card,.works.v-deck .card{grid-template-columns:minmax(0,1fr)}.works.v-showcase .card:nth-child(even) .cov{order:0}.works.v-grid{grid-template-columns:minmax(0,1fr)}.card dl{grid-template-columns:repeat(2,minmax(0,1fr))}.works.v-deck .card{top:90px}}
+@media (max-width:700px){.works.v-deck .card{grid-template-columns:minmax(0,1fr)}.works.v-grid{grid-template-columns:minmax(0,1fr)}.card dl{grid-template-columns:repeat(2,minmax(0,1fr))}.works.v-deck .card{top:90px}}
 
 /* Experiments */
 .egrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
@@ -449,7 +448,6 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .card .acts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:6px}
 .card .acts .go{margin-top:0}
 .btn.live{height:40px;font-size:14px}
-.works.v-grid .card .acts .go{display:none}
 .reader .btn.live{margin-top:4px}
 .reader .rh{font-size:20px;letter-spacing:-.025em;margin:24px 0 10px;font-weight:580}
 .reader .rl{margin:0 0 16px;padding-left:20px;display:grid;gap:10px}
@@ -460,6 +458,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .pdl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:4px 0 20px}
 .pdl dt{font:11px var(--mono);color:var(--muted-fg);text-transform:uppercase}
 .pdl dd{margin:2px 0 0;font-size:15px}
+.pdl .wide{grid-column:1/-1}
 .skills{display:grid;gap:0}
 .skills div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--border)}
 .skills div:last-child{border-bottom:1px solid var(--border)}
@@ -522,8 +521,8 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .tab[aria-pressed="true"]{background:var(--primary);color:var(--primary-fg);border-color:transparent}
 @media (max-width:900px){.bgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.bgrid{grid-template-columns:minmax(0,1fr)}.post.feat{grid-template-columns:minmax(0,1fr)}.post.feat .cov{min-height:180px}}
-.reader{position:fixed;inset:0;z-index:90;background:color-mix(in srgb,var(--bg) 70%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);overflow-y:auto;padding:calc(24px + env(safe-area-inset-top,0px)) 16px 40px}
-.reader article{max-width:680px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:var(--glass-shadow);animation:page-in .5s var(--ease-out) both}
+.reader{position:fixed;inset:0;z-index:90;background:color-mix(in srgb,var(--bg) 70%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);overflow-y:auto;display:flex;padding:calc(24px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.reader article{width:100%;max-width:680px;margin:auto;background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:var(--glass-shadow);animation:page-in .5s var(--ease-out) both}
 .reader .cov{height:220px;border-radius:0}
 .reader .bd{padding:28px clamp(18px,4vw,40px) 36px}
 .reader h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.04em;line-height:1.05;margin:8px 0 16px}
@@ -740,17 +739,16 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 <div class="page" data-page="work" hidden>
   <div class="frame">
     <section class="sec ptop" aria-labelledby="w-h">
-      <div class="shead"><div><p class="kick"><b>Work</b> <span id="wRange"></span></p><h2 class="h2" id="w-h">Case studies <em>from idea to launch</em></h2><p class="lead">Product, brand and interface projects for startups, clubs and self-initiated briefs. Each one opens the full case study.</p></div></div>
+      <div class="shead"><div><h2 class="h2" id="w-h">Case studies <em>from idea to launch</em></h2><p class="lead">Product, brand and interface projects for startups, clubs and self-initiated briefs.</p></div></div>
       <div class="fbar-wrap">
         <div style="position:relative"><div class="peek" id="peek" aria-hidden="true"></div><div class="fbar glass" id="fbar" role="group" aria-label="Filter projects"><span class="ind" id="fInd" aria-hidden="true"></span></div></div>
         <div class="vt glass" id="vt" role="group" aria-label="Layout">
-          <button type="button" data-v="showcase" aria-pressed="true"><i data-ic="rows"></i>Showcase</button>
-          <button type="button" data-v="grid" aria-pressed="false"><i data-ic="grid"></i>Grid</button>
+          <button type="button" data-v="grid" aria-pressed="true"><i data-ic="grid"></i>Grid</button>
           <button type="button" data-v="deck" aria-pressed="false"><i data-ic="deck"></i>Deck</button>
         </div>
       </div>
       <p class="mono" id="showing" aria-live="polite" style="color:var(--muted-fg);margin:0 0 16px"></p>
-      <div class="works v-showcase" id="works"></div>
+      <div class="works v-grid" id="works"></div>
     </section>
   </div>
 </div>
@@ -951,7 +949,7 @@ function hydrateIcons(rootEl=document){ $$("i[data-ic]",rootEl).forEach(i=>{ con
 
 /* ---------- Content ---------- */
 const PROJECTS=[
- {id:"socius",live:"https://socius-ecru.vercel.app/#land",n:"Socius",type:"Product Design / xyz",f:["product","uiux"],yr:"xyz",client:"xyz",tl:"xyz",c:["#f43f5e","#c084fc","#1c0f1f"],d:"xyz: a one-line summary of Socius, the problem it solves and who it is for."},
+ {id:"socius",live:"https://socius-ecru.vercel.app/#land",n:"Socius",type:"Product Design / Product Management",role:"Product design, product thinking, product management, product development",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"",c:["#f43f5e","#c084fc","#1c0f1f"],d:"A social app built around play. People join clans, chat, take on games, follow their progress and learn with a built-in coach, all in one mobile-first web app. I took it from the first idea to a working product: product thinking, design, product management and development."},
  {id:"gutly",live:"https://gutlybyrohitkumawat.vercel.app",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"23–25 Jan 2026",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
  {id:"inlens",live:"https://inlensbyrohitkumawat-tan.vercel.app/#welcome",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"Jan – Feb 2026",c:["#3b82f6","#93c5fd","#0b1630"],d:"An agentic AI platform for user research that takes on the busywork, from reaching participants to transcribing and summarising interviews. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
  {id:"alba",n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"23–24 Dec 2025",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
@@ -1420,7 +1418,7 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
 
 /* ---------- Work: filter bar with peek, layouts ---------- */
 (function(){
-  const bar=$("#fbar"), ind=$("#fInd"), peek=$("#peek"), works=$("#works"), vt=$("#vt"); let f="all", view="showcase";
+  const bar=$("#fbar"), ind=$("#fInd"), peek=$("#peek"), works=$("#works"), vt=$("#vt"); let f="all", view="grid";
   const list=k=>k==="all"?PROJECTS:PROJECTS.filter(p=>p.f.includes(k));
   bar.insertAdjacentHTML("beforeend",FILTERS.map(([k,l,ic])=>`<button type="button" class="fb" data-f="${k}" aria-pressed="${k===f}">${svg(ic)}${esc(l)}<span class="n">${list(k).length}</span></button>`).join(""));
   const btns=$$(".fb",bar);
@@ -1431,7 +1429,7 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
     works.innerHTML=L.map((p,i)=>`<article class="card" data-id="${p.id}" data-rail="${esc(p.n)}" style="animation:page-in .6s var(--ease-out) ${i*50}ms both">
       ${p.live?`<a class="cov-b" href="${p.live}" target="_blank" rel="noopener" aria-label="Explore ${esc(p.n)} in production (opens in a new tab)">${cover(p)}</a>`:`<button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>`}
       <div class="info"><div class="top"><h3>${esc(p.n)}</h3><span class="yr">${esc(p.yr)}</span></div><span class="mono" style="color:var(--muted-fg)">${esc(p.type)}</span><p>${esc(p.d)}</p>
-      <dl><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div></dl>
+      <dl><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div>${p.tl?`<div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div>`:""}</dl>
       <div class="acts">${p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:""}<button type="button" class="go" data-open="${p.id}">Read case study ${svg("arrow")}</button></div></div></article>`).join("");
     $$("[data-open]",works).forEach(b=>b.addEventListener("click",()=>openProject(b.dataset.open,b)));
     deckFx(); if(current==="work") buildRail();
@@ -1614,9 +1612,9 @@ function renderBlogs(){
   $$("#bgrid .post").forEach(b=>b.addEventListener("click",()=>openPost(+b.dataset.i,b)));
 }
 let readerEl=null, readerFrom=null;
-function openReader({cov,meta,title,paras,back,from}){
-  readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",title);
-  readerEl.innerHTML=`<article style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd"><span class="mono" style="color:var(--muted-fg)">${meta}</span><h2>${esc(title)}</h2>${paras}</div></article>`;
+function openReader({cov,meta,title,paras,back,from,label}){
+  readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",label||title);
+  readerEl.innerHTML=`<article style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd">${meta?`<span class="mono" style="color:var(--muted-fg)">${meta}</span>`:""}${title?`<h2>${esc(title)}</h2>`:""}${paras}</div></article>`;
   readerEl.addEventListener("click",e=>{ if(e.target===readerEl) closePost(); });
   document.body.appendChild(readerEl); root.style.overflow="hidden"; $("#readerClose").addEventListener("click",closePost); $("#readerClose").focus(); haptic("light");
 }
@@ -1628,8 +1626,10 @@ function openPost(i,from){
 }
 function openProject(id,from){
   const p=PROJECTS.find(x=>x.id===id); if(!p) return;
-  const paras=`<p>${esc(p.d)}</p><dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div><dt>Role</dt><dd>${esc(p.type)}</dd></div></dl><p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon (xyz).</p>`;
-  openReader({cov:cover(p),meta:esc(p.type),title:p.n,paras:paras+(p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:""),back:"Back to work",from});
+  // Client | Year on top, timeline if there is one, role across the bottom
+  const facts=`<dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div>${p.tl?`<div class="wide"><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div>`:""}<div class="wide"><dt>Role</dt><dd>${esc(p.role||p.type.replace(/ \/ /g,", "))}</dd></div></dl>`;
+  const paras=`<p>${esc(p.d)}</p>${facts}`+(p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:`<p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon.</p>`);
+  openReader({cov:cover(p),meta:"",title:"",paras,back:"Back to work",from,label:p.n});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
@@ -1707,7 +1707,7 @@ $("#agentClose").addEventListener("click",()=>{ $("#agent").hidden=true; $("#age
 $("#mdCopy").addEventListener("click",()=>{ try{ navigator.clipboard.writeText($("#md").textContent).then(()=>say("Markdown copied"),()=>say("Select the text to copy it")); }catch(e){ say("Select the text to copy it"); } });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#agent").hidden) $("#agentClose").click(); });
 
-$("#wRange").textContent=`${PROJECTS.length} projects`; $("#allN").textContent=`All ${PROJECTS.length} projects`;
+$("#allN").textContent=`All ${PROJECTS.length} projects`;
 route(); setCondensed();
 </script>
 </body>
