@@ -21,7 +21,7 @@ The page is assembled from the parts in `src/`:
 Edit a part, then run `./build.sh` to regenerate `index.html`.
 
 ## Placeholders still marked `xyz`
-FIFA ID, Design Club IITD dates, how Rohit got into design (About), footer quote, video-call link.
+Design Club IITD dates, how Rohit got into design (About), footer quote, video-call link.
 
 ## Fonts
 TikTok Sans, IBM Plex Mono and Reenie Beanie, all under the SIL Open Font License, in `fonts/`.
