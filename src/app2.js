@@ -176,9 +176,9 @@ function openPost(i,from){
 function openProject(id,from){
   const p=PROJECTS.find(x=>x.id===id); if(!p) return;
   // Client | Year on top, timeline if there is one, role across the bottom
-  const facts=`<dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div>${p.tl?`<div class="wide"><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div>`:""}<div class="wide"><dt>Role</dt><dd>${esc(p.role||p.type.replace(/ \/ /g,", "))}</dd></div></dl>`;
+  const facts=`<dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div class="wide"><dt>Role</dt><dd>${esc(p.role||p.type.replace(/ \/ /g,", "))}</dd></div></dl>`;
   const paras=`<p>${esc(p.d)}</p>${facts}`+(p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:`<p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon.</p>`);
-  openReader({cov:cover(p),meta:"",title:"",paras,back:"Back to work",from,label:p.n});
+  openReader({cov:cover(p,false),meta:"",title:"",paras,back:"Back to work",from,label:p.n});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
@@ -246,7 +246,7 @@ $$(".shead").forEach(el=>{ el.classList.add("rv"); rvIO.observe(el); });
 document.addEventListener("click",e=>{ const b=e.target.closest("[data-copy]"); if(!b) return; const v=b.dataset.copy;
   try{ navigator.clipboard.writeText(v).then(()=>say("Copied"),()=>say("Select the text to copy it")); }catch(err){ say("Select the text to copy it"); } });
 function toMarkdown(){
-  return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.tl}`),"",
+  return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.yr}`),"",
    "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.focus}, ${j.dt})`),"",
    "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- OTP Vault","","## Off the clock","Old retro games like Subway Surfers and Mahjong, plus FIFA. FIFA ID: xyz, send a friend request for a head-to-head match.","",
    "## Tools",TOOLS.join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`].join("\n");

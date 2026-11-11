@@ -444,6 +444,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .post .cov{clip-path:none}
 .peek .cov{clip-path:inset(0 round 10px)}
 .reader .cov{clip-path:none}
+.reader .cov .tg{display:none}
 .card .go{cursor:pointer}
 .card .acts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:6px}
 .card .acts .go{margin-top:0}
@@ -743,12 +744,12 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
       <div class="fbar-wrap">
         <div style="position:relative"><div class="peek" id="peek" aria-hidden="true"></div><div class="fbar glass" id="fbar" role="group" aria-label="Filter projects"><span class="ind" id="fInd" aria-hidden="true"></span></div></div>
         <div class="vt glass" id="vt" role="group" aria-label="Layout">
-          <button type="button" data-v="grid" aria-pressed="true"><i data-ic="grid"></i>Grid</button>
-          <button type="button" data-v="deck" aria-pressed="false"><i data-ic="deck"></i>Deck</button>
+          <button type="button" data-v="grid" aria-pressed="false"><i data-ic="grid"></i>Grid</button>
+          <button type="button" data-v="deck" aria-pressed="true"><i data-ic="deck"></i>Deck</button>
         </div>
       </div>
       <p class="mono" id="showing" aria-live="polite" style="color:var(--muted-fg);margin:0 0 16px"></p>
-      <div class="works v-grid" id="works"></div>
+      <div class="works v-deck" id="works"></div>
     </section>
   </div>
 </div>
@@ -949,17 +950,17 @@ function hydrateIcons(rootEl=document){ $$("i[data-ic]",rootEl).forEach(i=>{ con
 
 /* ---------- Content ---------- */
 const PROJECTS=[
- {id:"socius",live:"https://socius-ecru.vercel.app/#land",n:"Socius",type:"Product Design / Product Management",role:"Product design, product thinking, product management, product development",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"",c:["#f43f5e","#c084fc","#1c0f1f"],d:"A social app built around play. People join clans, chat, take on games, follow their progress and learn with a built-in coach, all in one mobile-first web app. I took it from the first idea to a working product: product thinking, design, product management and development."},
- {id:"gutly",live:"https://gutlybyrohitkumawat.vercel.app",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"23–25 Jan 2026",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
- {id:"inlens",live:"https://inlensbyrohitkumawat-tan.vercel.app/#welcome",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"Jan – Feb 2026",c:["#3b82f6","#93c5fd","#0b1630"],d:"An agentic AI platform for user research that takes on the busywork, from reaching participants to transcribing and summarising interviews. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
- {id:"alba",n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"23–24 Dec 2025",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
- {id:"workbench",live:"https://roku7109.vercel.app/#login",n:"HiLabs Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",tl:"xyz",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
- {id:"spotify",n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",tl:"3–7 Sep 2024",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
- {id:"specter",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"15–19 Mar 2025",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
- {id:"genme",n:"Genme",type:"Corporate Branding / Web Design",f:["brand","web"],yr:"2025",client:"Genme",tl:"12 Aug – 22 Sep 2025",c:["#6366f1","#a5b4fc","#141a3d"],d:"A modern, scalable logo for Genme's digital presence, refining typography, symbol forms and a minimal structure into a mark that adapts everywhere it appears."},
- {id:"tickai",n:"TickAI",type:"Logo Design / Brand Strategy",f:["brand","web","uiux"],yr:"2025",client:"Krishna Goel",tl:"28 Oct – 10 Nov 2025",c:["#adfa1d","#22d3ee","#0d1f12"],d:"Branding and website for TickAI, an AI education platform: a scalable logo and clear layouts that keep the brand consistent and trustworthy across every touchpoint."},
- {id:"caricatures",n:"Caricatures",type:"Illustration / Caricature",f:["illus"],yr:"Series",client:"Multiple",tl:"Multiple",c:["#fb7185","#fde68a","#2a1216"],d:"A caricature series that turns real facial traits into bold, playful and still recognisable portraits, drawn by hand and refined digitally."},
- {id:"digital",n:"Digital Arts",type:"Digital Arts / Illustrations",f:["illus"],yr:"Series",client:"Self-initiated",tl:"Multiple",c:["#38bdf8","#f97316","#0c1a26"],d:"Stylised digital illustrations, from Shakespeare to animal studies, that reinterpret familiar subjects through exaggeration and graphic simplicity."}
+ {id:"socius",live:"https://socius-ecru.vercel.app/#land",n:"Socius",type:"Product Design / Product Management",role:"Product design, product thinking, product management, product development",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#f43f5e","#c084fc","#1c0f1f"],d:"A social app built around play. People join clans, chat, take on games, follow their progress and learn with a built-in coach, all in one mobile-first web app. I took it from the first idea to a working product: product thinking, design, product management and development."},
+ {id:"gutly",live:"https://gutlybyrohitkumawat.vercel.app",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
+ {id:"inlens",live:"https://inlensbyrohitkumawat-tan.vercel.app/#welcome",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#3b82f6","#93c5fd","#0b1630"],d:"An agentic AI platform for user research that takes on the busywork, from reaching participants to transcribing and summarising interviews. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
+ {id:"alba",n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
+ {id:"workbench",live:"https://roku7109.vercel.app/#login",n:"HiLabs Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
+ {id:"spotify",n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
+ {id:"specter",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
+ {id:"genme",n:"Genme",type:"Corporate Branding / Web Design",f:["brand","web"],yr:"2025",client:"Genme",c:["#6366f1","#a5b4fc","#141a3d"],d:"A modern, scalable logo for Genme's digital presence, refining typography, symbol forms and a minimal structure into a mark that adapts everywhere it appears."},
+ {id:"tickai",n:"TickAI",type:"Logo Design / Brand Strategy",f:["brand","web","uiux"],yr:"2025",client:"Krishna Goel",c:["#adfa1d","#22d3ee","#0d1f12"],d:"Branding and website for TickAI, an AI education platform: a scalable logo and clear layouts that keep the brand consistent and trustworthy across every touchpoint."},
+ {id:"caricatures",n:"Caricatures",type:"Illustration / Caricature",f:["illus"],yr:"Series",client:"Multiple",c:["#fb7185","#fde68a","#2a1216"],d:"A caricature series that turns real facial traits into bold, playful and still recognisable portraits, drawn by hand and refined digitally."},
+ {id:"digital",n:"Digital Arts",type:"Digital Arts / Illustrations",f:["illus"],yr:"Series",client:"Self-initiated",c:["#38bdf8","#f97316","#0c1a26"],d:"Stylised digital illustrations, from Shakespeare to animal studies, that reinterpret familiar subjects through exaggeration and graphic simplicity."}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"],["illus","Illustration","brush"]];
 const JOURNEY=[
@@ -1418,7 +1419,7 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
 
 /* ---------- Work: filter bar with peek, layouts ---------- */
 (function(){
-  const bar=$("#fbar"), ind=$("#fInd"), peek=$("#peek"), works=$("#works"), vt=$("#vt"); let f="all", view="grid";
+  const bar=$("#fbar"), ind=$("#fInd"), peek=$("#peek"), works=$("#works"), vt=$("#vt"); let f="all", view="deck";
   const list=k=>k==="all"?PROJECTS:PROJECTS.filter(p=>p.f.includes(k));
   bar.insertAdjacentHTML("beforeend",FILTERS.map(([k,l,ic])=>`<button type="button" class="fb" data-f="${k}" aria-pressed="${k===f}">${svg(ic)}${esc(l)}<span class="n">${list(k).length}</span></button>`).join(""));
   const btns=$$(".fb",bar);
@@ -1427,9 +1428,9 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
     const L=list(f); $("#showing").textContent=`Showing ${L.length} of ${PROJECTS.length} projects`;
     works.className="works v-"+view;
     works.innerHTML=L.map((p,i)=>`<article class="card" data-id="${p.id}" data-rail="${esc(p.n)}" style="animation:page-in .6s var(--ease-out) ${i*50}ms both">
-      ${p.live?`<a class="cov-b" href="${p.live}" target="_blank" rel="noopener" aria-label="Explore ${esc(p.n)} in production (opens in a new tab)">${cover(p)}</a>`:`<button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>`}
+      <button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>
       <div class="info"><div class="top"><h3>${esc(p.n)}</h3><span class="yr">${esc(p.yr)}</span></div><span class="mono" style="color:var(--muted-fg)">${esc(p.type)}</span><p>${esc(p.d)}</p>
-      <dl><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div>${p.tl?`<div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div>`:""}</dl>
+      <dl><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div></dl>
       <div class="acts">${p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:""}<button type="button" class="go" data-open="${p.id}">Read case study ${svg("arrow")}</button></div></div></article>`).join("");
     $$("[data-open]",works).forEach(b=>b.addEventListener("click",()=>openProject(b.dataset.open,b)));
     deckFx(); if(current==="work") buildRail();
@@ -1627,9 +1628,9 @@ function openPost(i,from){
 function openProject(id,from){
   const p=PROJECTS.find(x=>x.id===id); if(!p) return;
   // Client | Year on top, timeline if there is one, role across the bottom
-  const facts=`<dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div>${p.tl?`<div class="wide"><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div>`:""}<div class="wide"><dt>Role</dt><dd>${esc(p.role||p.type.replace(/ \/ /g,", "))}</dd></div></dl>`;
+  const facts=`<dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div class="wide"><dt>Role</dt><dd>${esc(p.role||p.type.replace(/ \/ /g,", "))}</dd></div></dl>`;
   const paras=`<p>${esc(p.d)}</p>${facts}`+(p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:`<p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon.</p>`);
-  openReader({cov:cover(p),meta:"",title:"",paras,back:"Back to work",from,label:p.n});
+  openReader({cov:cover(p,false),meta:"",title:"",paras,back:"Back to work",from,label:p.n});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
@@ -1697,7 +1698,7 @@ $$(".shead").forEach(el=>{ el.classList.add("rv"); rvIO.observe(el); });
 document.addEventListener("click",e=>{ const b=e.target.closest("[data-copy]"); if(!b) return; const v=b.dataset.copy;
   try{ navigator.clipboard.writeText(v).then(()=>say("Copied"),()=>say("Select the text to copy it")); }catch(err){ say("Select the text to copy it"); } });
 function toMarkdown(){
-  return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.tl}`),"",
+  return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.yr}`),"",
    "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.focus}, ${j.dt})`),"",
    "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- OTP Vault","","## Off the clock","Old retro games like Subway Surfers and Mahjong, plus FIFA. FIFA ID: xyz, send a friend request for a head-to-head match.","",
    "## Tools",TOOLS.join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`].join("\n");
