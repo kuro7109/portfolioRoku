@@ -125,7 +125,30 @@ const POSTS=[
    "Most of the work is choosing. There are always more good ideas than time, so the real skill is ranking them by impact and effort, and being clear about what you're not doing and why.",
    "Then comes measuring. A launch isn't the finish line; it's the start of finding out whether you were right. Decide what success looks like before you ship, so the numbers can tell you something instead of confirming whatever you hoped.",
    "Design and product management aren't separate jobs so much as two angles on the same question: what should exist, and how should it feel to use it?"]},
- {t:"Sycophancy: how AI traps you in a sandbox",tag:"Case study",date:"Coming soon",min:0,soon:true,c:PROJECTS[6].c,ex:"A case study on AI sycophancy: when an assistant keeps agreeing with you, and how that quietly boxes in your thinking."}
+ {t:"AI psychosis: how AI traps you in a sandbox",tag:"AI & society",date:"Nov 2026",min:4,c:PROJECTS[6].c,ex:"How interactions with advanced chatbots can trigger or worsen mental health vulnerabilities, and why constant validation from AI can distort a person's sense of reality.",
+  body:["This blog investigates the phenomenon of “AI psychosis”: how interactions with advanced chatbots can trigger or exacerbate mental health vulnerabilities in users. It looks at the intersection of loneliness, confirmation bias and the tendency of AI to provide constant validation, which can distort a user's perception of reality.",
+   {h:"Key takeaways"},
+   {ul:[["The problem of sycophancy","Modern chatbots like ChatGPT are often designed to be agreeable and engaging. This people-pleasing behaviour can reinforce harmful thoughts, paranoia or delusions if a user is already in a vulnerable state, effectively creating a feedback loop."],
+    ["Historical context","This traces back to the ELIZA effect (1966), where humans projected empathy onto simple software. While AI tools can be comforting, they lack the capacity for genuine, corrective clinical care."],
+    ["Documented cases","There have been real-world tragedies where people with pre-existing mental health conditions, such as schizophrenia or severe depression, developed intense, sometimes fatal, parasocial relationships with AI companions."],
+    ["The “Black Mirror” effect","Instead of a malicious AI conspiracy, experts suggest these cases reflect a black mirror of our own psychology. The AI mirrors the user's input: if a user prompts it with a delusion, it may validate it rather than challenge it."],
+    ["Future risks","Looking ahead, there is the potential for extreme individualism and a deeper loneliness epidemic as we increasingly outsource cognitive tasks and social interaction to AI agents."]]},
+   {h:"Conclusion"},
+   "AI is not intentionally causing harm, but its lack of safeguards and its tendency to validate user bias make it a dangerous tool for people experiencing a mental health crisis. Prioritise your mental well-being, and stay sceptical of validation that comes from AI."]},
+ {t:"CARS24 didn't just change a logo",tag:"Branding",date:"Nov 2026",min:2,c:["#4736fe","#0072bd","#0d0b2e"],ex:"They changed the philosophy behind their brand: from an urgent all-caps startup to an open circle built around movement.",
+  body:["CARS24 didn't just change a logo. They changed the philosophy behind their brand.",
+   "When the company launched in 2015, it was boldly and urgently presented as CARS24. It reflected the mindset of a young startup trying to break into a market that wasn't easy to enter.",
+   "Today, it's Cars24. (What did they change? Same imo 🤔)",
+   "A subtle shift from uppercase to sentence case, but the tone feels very different. Less aggressive. More human. More confident.",
+   {sw:["#0072BD","#4736FE"],cap:"The colour changed too."},
+   "A fresher, more vibrant blue takes the place of the previous shade, evoking warmth, trust and approachability. It feels more present and more connected to the people the platform serves.",
+   {h:"The open circle"},
+   "But the most interesting change is the symbol: a circle that is intentionally left open.",
+   "Traditionally, circles represent continuity and cycles. But a closed circle suggests completion, the idea that a journey has come to an end.",
+   "Cars24 leaves the circle open to represent something else: movement, transition and liquidity.",
+   "🚘 Cars don't stop with one owner. They move on, change hands and continue their journey.",
+   "The open circle reflects a system designed not to lock people in, but to move with them as their needs evolve.",
+   "Sometimes the smallest design changes carry the biggest ideas. Great products evolve their identity when the company evolves."]}
 ];
 const postCov=p=>`<div class="cov"><div class="g" style="background:${coverBg(p.c)}"></div><div class="gr"></div><span class="tg">${esc(p.tag)}</span></div>`;
 let bfilter="All";
@@ -144,15 +167,16 @@ function openReader({cov,meta,title,paras,back,from}){
   readerEl.addEventListener("click",e=>{ if(e.target===readerEl) closePost(); });
   document.body.appendChild(readerEl); root.style.overflow="hidden"; $("#readerClose").addEventListener("click",closePost); $("#readerClose").focus(); haptic("light");
 }
+const blk=x=>typeof x==="string"?`<p>${esc(x)}</p>`:x.h?`<h3 class="rh">${esc(x.h)}</h3>`:x.ul?`<ul class="rl">${x.ul.map(([b,t])=>`<li><b>${esc(b)}.</b> ${esc(t)}</li>`).join("")}</ul>`:x.sw?`<p>${esc(x.cap)}</p><div class="sw">${x.sw.map((c,i)=>`${i?'<span aria-hidden="true">→</span>':""}<span class="swc"><i style="background:${c}"></i>${esc(c)}</span>`).join("")}</div>`:"";
 function openPost(i,from){
   const p=POSTS[i];
-  const paras=p.soon?`<p>${esc(p.ex)}</p><p style="color:var(--muted-fg)">This case study is being written. Check back soon.</p>`:(p.body||[p.ex]).map(x=>`<p>${esc(x)}</p>`).join("");
+  const paras=p.soon?`<p>${esc(p.ex)}</p><p style="color:var(--muted-fg)">This case study is being written. Check back soon.</p>`:(p.body||[p.ex]).map(blk).join("");
   openReader({cov:postCov(p),meta:`${esc(p.tag)} · ${p.soon?"Coming soon":`${esc(p.date)} · ${p.min} min read`}`,title:p.t,paras,back:"Back to blogs",from});
 }
 function openProject(id,from){
   const p=PROJECTS.find(x=>x.id===id); if(!p) return;
   const paras=`<p>${esc(p.d)}</p><dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div><dt>Role</dt><dd>${esc(p.type)}</dd></div></dl><p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon (xyz).</p>`;
-  openReader({cov:cover(p),meta:esc(p.type),title:p.n,paras,back:"Back to work",from});
+  openReader({cov:cover(p),meta:esc(p.type),title:p.n,paras:paras+(p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:""),back:"Back to work",from});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });

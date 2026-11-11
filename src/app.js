@@ -368,10 +368,10 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
     const L=list(f); $("#showing").textContent=`Showing ${L.length} of ${PROJECTS.length} projects`;
     works.className="works v-"+view;
     works.innerHTML=L.map((p,i)=>`<article class="card" data-id="${p.id}" data-rail="${esc(p.n)}" style="animation:page-in .6s var(--ease-out) ${i*50}ms both">
-      <button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>
+      ${p.live?`<a class="cov-b" href="${p.live}" target="_blank" rel="noopener" aria-label="Explore ${esc(p.n)} in production (opens in a new tab)">${cover(p)}</a>`:`<button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>`}
       <div class="info"><div class="top"><h3>${esc(p.n)}</h3><span class="yr">${esc(p.yr)}</span></div><span class="mono" style="color:var(--muted-fg)">${esc(p.type)}</span><p>${esc(p.d)}</p>
       <dl><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div></dl>
-      <button type="button" class="go" data-open="${p.id}">Read case study ${svg("arrow")}</button></div></article>`).join("");
+      <div class="acts">${p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:""}<button type="button" class="go" data-open="${p.id}">Read case study ${svg("arrow")}</button></div></div></article>`).join("");
     $$("[data-open]",works).forEach(b=>b.addEventListener("click",()=>openProject(b.dataset.open,b)));
     deckFx(); if(current==="work") buildRail();
   }

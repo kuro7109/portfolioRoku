@@ -441,6 +441,17 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tool[data-t="Framer"] .lg svg,:root:not([data-theme="light"]) .tool[data-t="Notion"] .lg svg{filter:invert(1)}}
 .cov-b{display:block;width:100%;text-align:left;border-radius:18px}
 .card .go{cursor:pointer}
+.card .acts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:6px}
+.card .acts .go{margin-top:0}
+.btn.live{height:40px;font-size:14px}
+.works.v-grid .card .acts .go{display:none}
+.reader .btn.live{margin-top:4px}
+.reader .rh{font-size:20px;letter-spacing:-.025em;margin:24px 0 10px;font-weight:580}
+.reader .rl{margin:0 0 16px;padding-left:20px;display:grid;gap:10px}
+.reader .rl li{font-size:17px;line-height:1.6}
+.reader .sw{display:flex;align-items:center;gap:12px;margin:-4px 0 18px;font:13px var(--mono);color:var(--muted-fg)}
+.reader .swc{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;border:1px solid var(--border);color:var(--fg)}
+.reader .swc i{width:22px;height:22px;border-radius:50%}
 .pdl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:4px 0 20px}
 .pdl dt{font:11px var(--mono);color:var(--muted-fg);text-transform:uppercase}
 .pdl dd{margin:2px 0 0;font-size:15px}
@@ -935,11 +946,11 @@ function hydrateIcons(rootEl=document){ $$("i[data-ic]",rootEl).forEach(i=>{ con
 
 /* ---------- Content ---------- */
 const PROJECTS=[
- {id:"socius",n:"Socius",type:"Product Design / xyz",f:["product","uiux"],yr:"xyz",client:"xyz",tl:"xyz",c:["#f43f5e","#c084fc","#1c0f1f"],d:"xyz: a one-line summary of Socius, the problem it solves and who it is for."},
- {id:"gutly",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"23–25 Jan 2026",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
- {id:"inlens",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"Jan – Feb 2026",c:["#3b82f6","#93c5fd","#0b1630"],d:"An agentic AI platform for user research that takes on the busywork, from reaching participants to transcribing and summarising interviews. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
+ {id:"socius",live:"https://socius-ecru.vercel.app/#land",n:"Socius",type:"Product Design / xyz",f:["product","uiux"],yr:"xyz",client:"xyz",tl:"xyz",c:["#f43f5e","#c084fc","#1c0f1f"],d:"xyz: a one-line summary of Socius, the problem it solves and who it is for."},
+ {id:"gutly",live:"https://gutlybyrohitkumawat.vercel.app",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"23–25 Jan 2026",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
+ {id:"inlens",live:"https://inlensbyrohitkumawat-tan.vercel.app/#welcome",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"Jan – Feb 2026",c:["#3b82f6","#93c5fd","#0b1630"],d:"An agentic AI platform for user research that takes on the busywork, from reaching participants to transcribing and summarising interviews. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
  {id:"alba",n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"23–24 Dec 2025",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
- {id:"workbench",n:"HiLabs Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",tl:"xyz",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
+ {id:"workbench",live:"https://roku7109.vercel.app/#login",n:"HiLabs Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",tl:"xyz",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
  {id:"spotify",n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",tl:"3–7 Sep 2024",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
  {id:"specter",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"15–19 Mar 2025",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
  {id:"genme",n:"Genme",type:"Corporate Branding / Web Design",f:["brand","web"],yr:"2025",client:"Genme",tl:"12 Aug – 22 Sep 2025",c:["#6366f1","#a5b4fc","#141a3d"],d:"A modern, scalable logo for Genme's digital presence, refining typography, symbol forms and a minimal structure into a mark that adapts everywhere it appears."},
@@ -1413,10 +1424,10 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
     const L=list(f); $("#showing").textContent=`Showing ${L.length} of ${PROJECTS.length} projects`;
     works.className="works v-"+view;
     works.innerHTML=L.map((p,i)=>`<article class="card" data-id="${p.id}" data-rail="${esc(p.n)}" style="animation:page-in .6s var(--ease-out) ${i*50}ms both">
-      <button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>
+      ${p.live?`<a class="cov-b" href="${p.live}" target="_blank" rel="noopener" aria-label="Explore ${esc(p.n)} in production (opens in a new tab)">${cover(p)}</a>`:`<button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>`}
       <div class="info"><div class="top"><h3>${esc(p.n)}</h3><span class="yr">${esc(p.yr)}</span></div><span class="mono" style="color:var(--muted-fg)">${esc(p.type)}</span><p>${esc(p.d)}</p>
       <dl><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div></dl>
-      <button type="button" class="go" data-open="${p.id}">Read case study ${svg("arrow")}</button></div></article>`).join("");
+      <div class="acts">${p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:""}<button type="button" class="go" data-open="${p.id}">Read case study ${svg("arrow")}</button></div></div></article>`).join("");
     $$("[data-open]",works).forEach(b=>b.addEventListener("click",()=>openProject(b.dataset.open,b)));
     deckFx(); if(current==="work") buildRail();
   }
@@ -1562,7 +1573,30 @@ const POSTS=[
    "Most of the work is choosing. There are always more good ideas than time, so the real skill is ranking them by impact and effort, and being clear about what you're not doing and why.",
    "Then comes measuring. A launch isn't the finish line; it's the start of finding out whether you were right. Decide what success looks like before you ship, so the numbers can tell you something instead of confirming whatever you hoped.",
    "Design and product management aren't separate jobs so much as two angles on the same question: what should exist, and how should it feel to use it?"]},
- {t:"Sycophancy: how AI traps you in a sandbox",tag:"Case study",date:"Coming soon",min:0,soon:true,c:PROJECTS[6].c,ex:"A case study on AI sycophancy: when an assistant keeps agreeing with you, and how that quietly boxes in your thinking."}
+ {t:"AI psychosis: how AI traps you in a sandbox",tag:"AI & society",date:"Nov 2026",min:4,c:PROJECTS[6].c,ex:"How interactions with advanced chatbots can trigger or worsen mental health vulnerabilities, and why constant validation from AI can distort a person's sense of reality.",
+  body:["This blog investigates the phenomenon of “AI psychosis”: how interactions with advanced chatbots can trigger or exacerbate mental health vulnerabilities in users. It looks at the intersection of loneliness, confirmation bias and the tendency of AI to provide constant validation, which can distort a user's perception of reality.",
+   {h:"Key takeaways"},
+   {ul:[["The problem of sycophancy","Modern chatbots like ChatGPT are often designed to be agreeable and engaging. This people-pleasing behaviour can reinforce harmful thoughts, paranoia or delusions if a user is already in a vulnerable state, effectively creating a feedback loop."],
+    ["Historical context","This traces back to the ELIZA effect (1966), where humans projected empathy onto simple software. While AI tools can be comforting, they lack the capacity for genuine, corrective clinical care."],
+    ["Documented cases","There have been real-world tragedies where people with pre-existing mental health conditions, such as schizophrenia or severe depression, developed intense, sometimes fatal, parasocial relationships with AI companions."],
+    ["The “Black Mirror” effect","Instead of a malicious AI conspiracy, experts suggest these cases reflect a black mirror of our own psychology. The AI mirrors the user's input: if a user prompts it with a delusion, it may validate it rather than challenge it."],
+    ["Future risks","Looking ahead, there is the potential for extreme individualism and a deeper loneliness epidemic as we increasingly outsource cognitive tasks and social interaction to AI agents."]]},
+   {h:"Conclusion"},
+   "AI is not intentionally causing harm, but its lack of safeguards and its tendency to validate user bias make it a dangerous tool for people experiencing a mental health crisis. Prioritise your mental well-being, and stay sceptical of validation that comes from AI."]},
+ {t:"CARS24 didn't just change a logo",tag:"Branding",date:"Nov 2026",min:2,c:["#4736fe","#0072bd","#0d0b2e"],ex:"They changed the philosophy behind their brand: from an urgent all-caps startup to an open circle built around movement.",
+  body:["CARS24 didn't just change a logo. They changed the philosophy behind their brand.",
+   "When the company launched in 2015, it was boldly and urgently presented as CARS24. It reflected the mindset of a young startup trying to break into a market that wasn't easy to enter.",
+   "Today, it's Cars24. (What did they change? Same imo 🤔)",
+   "A subtle shift from uppercase to sentence case, but the tone feels very different. Less aggressive. More human. More confident.",
+   {sw:["#0072BD","#4736FE"],cap:"The colour changed too."},
+   "A fresher, more vibrant blue takes the place of the previous shade, evoking warmth, trust and approachability. It feels more present and more connected to the people the platform serves.",
+   {h:"The open circle"},
+   "But the most interesting change is the symbol: a circle that is intentionally left open.",
+   "Traditionally, circles represent continuity and cycles. But a closed circle suggests completion, the idea that a journey has come to an end.",
+   "Cars24 leaves the circle open to represent something else: movement, transition and liquidity.",
+   "🚘 Cars don't stop with one owner. They move on, change hands and continue their journey.",
+   "The open circle reflects a system designed not to lock people in, but to move with them as their needs evolve.",
+   "Sometimes the smallest design changes carry the biggest ideas. Great products evolve their identity when the company evolves."]}
 ];
 const postCov=p=>`<div class="cov"><div class="g" style="background:${coverBg(p.c)}"></div><div class="gr"></div><span class="tg">${esc(p.tag)}</span></div>`;
 let bfilter="All";
@@ -1581,15 +1615,16 @@ function openReader({cov,meta,title,paras,back,from}){
   readerEl.addEventListener("click",e=>{ if(e.target===readerEl) closePost(); });
   document.body.appendChild(readerEl); root.style.overflow="hidden"; $("#readerClose").addEventListener("click",closePost); $("#readerClose").focus(); haptic("light");
 }
+const blk=x=>typeof x==="string"?`<p>${esc(x)}</p>`:x.h?`<h3 class="rh">${esc(x.h)}</h3>`:x.ul?`<ul class="rl">${x.ul.map(([b,t])=>`<li><b>${esc(b)}.</b> ${esc(t)}</li>`).join("")}</ul>`:x.sw?`<p>${esc(x.cap)}</p><div class="sw">${x.sw.map((c,i)=>`${i?'<span aria-hidden="true">→</span>':""}<span class="swc"><i style="background:${c}"></i>${esc(c)}</span>`).join("")}</div>`:"";
 function openPost(i,from){
   const p=POSTS[i];
-  const paras=p.soon?`<p>${esc(p.ex)}</p><p style="color:var(--muted-fg)">This case study is being written. Check back soon.</p>`:(p.body||[p.ex]).map(x=>`<p>${esc(x)}</p>`).join("");
+  const paras=p.soon?`<p>${esc(p.ex)}</p><p style="color:var(--muted-fg)">This case study is being written. Check back soon.</p>`:(p.body||[p.ex]).map(blk).join("");
   openReader({cov:postCov(p),meta:`${esc(p.tag)} · ${p.soon?"Coming soon":`${esc(p.date)} · ${p.min} min read`}`,title:p.t,paras,back:"Back to blogs",from});
 }
 function openProject(id,from){
   const p=PROJECTS.find(x=>x.id===id); if(!p) return;
   const paras=`<p>${esc(p.d)}</p><dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div><dt>Role</dt><dd>${esc(p.type)}</dd></div></dl><p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon (xyz).</p>`;
-  openReader({cov:cover(p),meta:esc(p.type),title:p.n,paras,back:"Back to work",from});
+  openReader({cov:cover(p),meta:esc(p.type),title:p.n,paras:paras+(p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:""),back:"Back to work",from});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
