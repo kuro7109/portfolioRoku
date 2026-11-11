@@ -18,7 +18,7 @@ const EXPS={
 function expCard(id){ const e=EXPS[id]; return `<article class="exp rv ${e.big?"big":""} ${e.full?"full":""}" data-id="${id}" data-x="${id}" data-rail="${esc(e.t)}">${e.stage}<div class="bd"><h3>${esc(e.t)}<span class="chip">${esc(e.tag)}</span></h3><p>${esc(e.d)}</p>${e.cta||""}</div></article>`; }
 $("#homeExp").innerHTML=["snake","otp"].map(expCard).join("");
 $("#homeExp").querySelectorAll("[data-rail]").forEach(el=>el.removeAttribute("data-rail"));
-$("#allExp").innerHTML=["snake","otp","receipt","gauge","turntable","glow"].map(expCard).join("");
+$("#allExp").innerHTML=["snake","otp"].map(expCard).join("");
 $$(".exp").forEach(card=>{
   const x=card.dataset.x;
   if(x==="snake"){ const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,cs=14,cols=0,rows=0,snake=[],dir=[1,0],food=[0,0],timer=0;
@@ -65,9 +65,9 @@ $$(".exp").forEach(card=>{
 /* ---------- Rows, tools, skills, social ---------- */
 const honourRow=h=>`<div class="rowi rv"><b>${esc(h.t)}<small>${esc(h.res)}</small></b><span class="co">${esc(h.org)}</span><span>Case competition</span><span class="y">${esc(h.y)}</span></div>`;
 $("#journey").innerHTML=JOURNEY.map(j=>`<div class="rowi rv"><b>${esc(j.role)}<small>${esc(j.focus)} · ${esc(j.dt)}</small></b><span class="co">${esc(j.co)}</span><span>${esc(j.loc)}</span><span class="y">${esc(j.y)}</span></div>`).join("");
-$$("[data-tools]").forEach(el=>el.innerHTML=TOOLS.map(([n,a,c])=>`<div class="tool rv" style="--c:${c}"><i>${esc(a)}</i><span>${esc(n)}</span></div>`).join(""));
+$$("[data-tools]").forEach(el=>el.innerHTML=TOOLS.map(n=>`<div class="tool rv" data-t="${esc(n)}"><span class="lg">${LOGOS[n]}</span><span>${esc(n)}</span></div>`).join(""));
 $$("[data-skills]").forEach(el=>el.innerHTML=SKILLS.map(([a,b])=>`<div class="rv"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join(""));
-const SOCIAL=[["Email","mail",GMAIL],["LinkedIn","li",LINKEDIN],["GitHub","gh",GITHUB],["X","xl",XURL]];
+const SOCIAL=[["Email","mail",GMAIL],["LinkedIn","li",LINKEDIN],["GitHub","gh",GITHUB]];
 $$("[data-social]").forEach(el=>el.innerHTML=SOCIAL.map(([n,i,u])=>`<a class="btn" href="${u}" target="_blank" rel="noopener">${svg(i)}${n}<span class="sr"> (opens in a new tab)</span></a>`).join(""));
 $$("[data-gmail]").forEach(a=>a.href=GMAIL);
 
@@ -75,13 +75,13 @@ $$("[data-gmail]").forEach(a=>a.href=GMAIL);
 const QA=[
  [/\b(hi|hello|hey|yo)\b/i,()=>"Hey! I can tell you about Rohit's projects, experience, tools, competitions or games."],
  [/(intern|experience|aspora|evvolv|job|worked|career)/i,()=>"Rohit was a <b>Product Management Intern</b> at Evvolv.ai, New Delhi (May – Jul 2026), working on product and GTM planning, and a <b>Product Design Intern</b> at Aspora, Bengaluru (May – Jun 2025), on UI and UX."],
- [/(project|work|portfolio|case|best|gutly|tickai|genme|specter|alba|spotify)/i,()=>`${PROJECTS.length} projects so far, from the HiLabs Case Workbench and the Gutly gut-health app to brands for Genme and TickAI. <a href="#work">See all the work</a>.`],
+ [/(project|work|portfolio|case|best|gutly|tickai|genme|specter|alba|spotify)/i,()=>`${PROJECTS.length} projects so far, from Socius, Gutly and InLens to brands for Genme and TickAI. <a href="#work">See all the work</a>.`],
  [/(fifa|game|subway|mahjong|play|h2h)/i,()=>"He loves old retro games like Subway Surfers and Mahjong, plus FIFA. His FIFA ID is <b>xyz</b>: send a friend request for a head-to-head match."],
- [/(tool|figma|framer|stack|software|illustrator|photoshop)/i,()=>`${TOOLS.slice(0,-1).map(t=>t[0]).join(", ")} and ${TOOLS[TOOLS.length-1][0]}.`],
+ [/(tool|figma|framer|stack|software|illustrator|photoshop)/i,()=>`${TOOLS.slice(0,-1).join(", ")} and ${TOOLS[TOOLS.length-1]}.`],
  [/(honou?r|award|competition|iim|iit|ifqm|bml)/i,()=>"Case competitions: IFQM Quality Redesign and BML Munjal ProdPro (Sep '26), IIM Kashipur Udaan 9.0 and IIT Madras ConsultSchool 4.0 (Jan '26)."],
  [/(call|book|meet|schedule|chat with)/i,()=>`Pick a slot on the <a href="#book">Book a call</a> page and it opens a Gmail draft to him.`],
  [/(snake|experiment|playground)/i,()=>`Try <a href="https://dotsgame-owcu.vercel.app" target="_blank" rel="noopener">Snake</a>, or browse the <a href="#experiments">experiments</a>.`],
- [/(contact|email|mail|reach|hire|linkedin|github|twitter|\bx\b)/i,()=>`Email <a href="${GMAIL}" target="_blank" rel="noopener">${EMAIL}</a>, or find him on <a href="${LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a>, <a href="${GITHUB}" target="_blank" rel="noopener">GitHub</a> and <a href="${XURL}" target="_blank" rel="noopener">X</a>.`],
+ [/(contact|email|mail|reach|hire|linkedin|github)/i,()=>`Email <a href="${GMAIL}" target="_blank" rel="noopener">${EMAIL}</a>, or find him on <a href="${LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a> and <a href="${GITHUB}" target="_blank" rel="noopener">GitHub</a>.`],
  [/(where|based|live|location|delhi|from)/i,()=>"Delhi, India."],
  [/(who|about|what does|do you do|rohit)/i,()=>"Rohit is a product designer and product manager in Delhi. He designs apps, brands and interfaces, and plans how products launch."]
 ];
@@ -111,12 +111,21 @@ function converse(box,q,scroll){
 
 /* ---------- Blogs ---------- */
 const POSTS=[
- {t:"Blog title xyz 1",tag:"Product design",date:"xx Nov 2026",min:6,c:PROJECTS[0].c,ex:"xyz summary: the question this post answers and why it matters to people building products."},
- {t:"Blog title xyz 2",tag:"Product management",date:"xx Oct 2026",min:5,c:PROJECTS[1].c,ex:"xyz summary of a lesson from planning a launch and working with go-to-market."},
- {t:"Blog title xyz 3",tag:"Case study",date:"xx Sep 2026",min:8,c:PROJECTS[3].c,ex:"xyz summary: a project from brief to shipped screens, and what changed along the way."},
- {t:"Blog title xyz 4",tag:"Process",date:"xx Aug 2026",min:4,c:PROJECTS[4].c,ex:"xyz summary of a working habit that makes design reviews faster."},
- {t:"Blog title xyz 5",tag:"Product design",date:"xx Jul 2026",min:7,c:PROJECTS[2].c,ex:"xyz summary on designing interfaces that feel responsive and alive."},
- {t:"Blog title xyz 6",tag:"Tools",date:"xx Jun 2026",min:3,c:PROJECTS[7].c,ex:"xyz summary of the tools in the current workflow and why each stays."}
+ {t:"Jakob's Law: why your product should feel familiar",tag:"UX laws",date:"Nov 2026",min:5,c:PROJECTS[2].c,ex:"People spend most of their time in other products, so they arrive at yours expecting it to work the same way. Here's how to use that instead of fighting it.",
+  body:["Jakob Nielsen put a simple observation into words: people spend most of their time on other sites and apps, not yours. Every product they use teaches them how products are supposed to work, and they carry those lessons into whatever they open next.",
+   "That's Jakob's Law. Users build mental models from everything they've used before, and they expect your product to match them. The logo takes you home. The cart lives in the top-right corner. Swiping right goes back. Pull down to refresh. None of these are rules of nature; they're habits learned across thousands of screens.",
+   "When a product matches those habits, people stop thinking about the interface and start thinking about their task. When it breaks them, every unfamiliar pattern costs attention. A clever new navigation might win a design award and still lose users who can't find the settings.",
+   "This doesn't mean every product should look the same. It means novelty should be spent deliberately. Keep the plumbing familiar (navigation, forms, checkout, error states) and put your originality where it changes the experience: the core interaction, the content, the moments of delight.",
+   "Before designing a screen, I find it useful to list the conventions in that category. What do the five products your users open most every day do for this same task? Borrow those patterns unless you have a strong reason not to. If you do have a better idea, introduce it gently, keep the old way available for a while, and test whether people actually prefer it.",
+   "Familiar isn't boring. It's the part of the design that lets everything else stand out."]},
+ {t:"What product management actually is",tag:"Product management",date:"Nov 2026",min:4,c:PROJECTS[4].c,ex:"Product management isn't about owning a roadmap. It's about deciding which problems are worth solving, and saying no to everything else.",
+  body:["Ask ten people what a product manager does and you'll get ten answers: writes specs, runs stand-ups, owns the roadmap, talks to customers. All of those happen, but none of them is the job.",
+   "The job is making sure the team builds the right thing. That sounds obvious until you notice how many teams ship features nobody asked for, on time and well executed.",
+   "Good product work starts with the problem, not the solution. Who has this problem, how often, and what do they do about it today? If you can't answer that in two sentences, the feature isn't ready to be designed.",
+   "Most of the work is choosing. There are always more good ideas than time, so the real skill is ranking them by impact and effort, and being clear about what you're not doing and why.",
+   "Then comes measuring. A launch isn't the finish line; it's the start of finding out whether you were right. Decide what success looks like before you ship, so the numbers can tell you something instead of confirming whatever you hoped.",
+   "Design and product management aren't separate jobs so much as two angles on the same question: what should exist, and how should it feel to use it?"]},
+ {t:"Sycophancy: how AI traps you in a sandbox",tag:"Case study",date:"Coming soon",min:0,soon:true,c:PROJECTS[6].c,ex:"A case study on AI sycophancy: when an assistant keeps agreeing with you, and how that quietly boxes in your thinking."}
 ];
 const postCov=p=>`<div class="cov"><div class="g" style="background:${coverBg(p.c)}"></div><div class="gr"></div><span class="tg">${esc(p.tag)}</span></div>`;
 let bfilter="All";
@@ -125,15 +134,25 @@ function renderBlogs(){
   $("#btabs").innerHTML=tags.map(t=>`<button type="button" class="tab" data-t="${esc(t)}" aria-pressed="${t===bfilter}">${esc(t)}<span class="n">${t==="All"?POSTS.length:POSTS.filter(p=>p.tag===t).length}</span></button>`).join("");
   $$("#btabs .tab").forEach(b=>b.addEventListener("click",()=>{ bfilter=b.dataset.t; renderBlogs(); if(current==="blogs") buildRail(); }));
   const list=bfilter==="All"?POSTS:POSTS.filter(p=>p.tag===bfilter);
-  $("#bgrid").innerHTML=list.map((p,i)=>`<button type="button" class="post ${i===0&&bfilter==="All"?"feat":""}" data-i="${POSTS.indexOf(p)}" data-rail="${esc(p.t)}">${postCov(p)}<div class="bd"><span class="meta">${esc(p.date)} · ${p.min} min read</span><h3>${esc(p.t)}</h3><p>${esc(p.ex)}</p></div></button>`).join("");
+  $("#bgrid").innerHTML=list.map((p,i)=>`<button type="button" class="post ${i===0&&bfilter==="All"?"feat":""}" data-i="${POSTS.indexOf(p)}" data-rail="${esc(p.t)}">${postCov(p)}<div class="bd"><span class="meta">${p.soon?"Coming soon":`${esc(p.date)} · ${p.min} min read`}</span><h3>${esc(p.t)}</h3><p>${esc(p.ex)}</p></div></button>`).join("");
   $$("#bgrid .post").forEach(b=>b.addEventListener("click",()=>openPost(+b.dataset.i,b)));
 }
 let readerEl=null, readerFrom=null;
-function openPost(i,from){
-  const p=POSTS[i]; readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",p.t);
-  readerEl.innerHTML=`<article style="position:relative">${postCov(p)}<button type="button" class="btn close" id="readerClose">Back to blogs</button><div class="bd"><span class="mono" style="color:var(--muted-fg)">${esc(p.tag)} · ${esc(p.date)} · ${p.min} min read</span><h2>${esc(p.t)}</h2><p>${esc(p.ex)}</p><p>xyz opening paragraph. Set up the problem and who it affects, in plain words.</p><p>xyz middle paragraph. Walk through what was tried, what worked and what didn't.</p><p>xyz closing paragraph. Leave the reader with one idea they can use this week.</p></div></article>`;
+function openReader({cov,meta,title,paras,back,from}){
+  readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",title);
+  readerEl.innerHTML=`<article style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd"><span class="mono" style="color:var(--muted-fg)">${meta}</span><h2>${esc(title)}</h2>${paras}</div></article>`;
   readerEl.addEventListener("click",e=>{ if(e.target===readerEl) closePost(); });
   document.body.appendChild(readerEl); root.style.overflow="hidden"; $("#readerClose").addEventListener("click",closePost); $("#readerClose").focus(); haptic("light");
+}
+function openPost(i,from){
+  const p=POSTS[i];
+  const paras=p.soon?`<p>${esc(p.ex)}</p><p style="color:var(--muted-fg)">This case study is being written. Check back soon.</p>`:(p.body||[p.ex]).map(x=>`<p>${esc(x)}</p>`).join("");
+  openReader({cov:postCov(p),meta:`${esc(p.tag)} · ${p.soon?"Coming soon":`${esc(p.date)} · ${p.min} min read`}`,title:p.t,paras,back:"Back to blogs",from});
+}
+function openProject(id,from){
+  const p=PROJECTS.find(x=>x.id===id); if(!p) return;
+  const paras=`<p>${esc(p.d)}</p><dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div><dt>Role</dt><dd>${esc(p.type)}</dd></div></dl><p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon (xyz).</p>`;
+  openReader({cov:cover(p),meta:esc(p.type),title:p.n,paras,back:"Back to work",from});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
@@ -188,7 +207,7 @@ renderBlogs();
 /* ---------- Footer: scramble links, handwritten quote ---------- */
 const slink=(t,h,ext)=>`<li><a class="slink" href="${h}"${ext?' target="_blank" rel="noopener"':""}><span class="txt">${esc(t)}</span>${svg(ext?"ne":"arrow")}${ext?'<span class="sr"> (opens in a new tab)</span>':""}</a></li>`;
 $("#fMenu").innerHTML=[["Home","#home"],["Work","#work"],["Experiments","#experiments"],["Blogs","#blogs"],["About","#about"],["Book a call","#book"]].map(([t,h])=>slink(t,h,false)).join("");
-$("#fContact").innerHTML=[["Email",GMAIL],["LinkedIn",LINKEDIN],["GitHub",GITHUB],["X",XURL]].map(([t,h])=>slink(t,h,true)).join("");
+$("#fContact").innerHTML=[["Email",GMAIL],["LinkedIn",LINKEDIN],["GitHub",GITHUB]].map(([t,h])=>slink(t,h,true)).join("");
 $$(".slink").forEach(a=>{ const t=a.querySelector(".txt"), txt=t.textContent; const go=()=>scramble(t,txt); a.addEventListener("pointerenter",go); a.addEventListener("focus",go); });
 new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ $("#quote").classList.add("in"); o.disconnect(); } },{threshold:.6}).observe($("#quote"));
 
@@ -201,17 +220,17 @@ $$(".shead").forEach(el=>{ el.classList.add("rv"); rvIO.observe(el); });
 document.addEventListener("click",e=>{ const b=e.target.closest("[data-copy]"); if(!b) return; const v=b.dataset.copy;
   try{ navigator.clipboard.writeText(v).then(()=>say("Copied"),()=>say("Select the text to copy it")); }catch(err){ say("Select the text to copy it"); } });
 function toMarkdown(){
-  return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** (${p.code}) · ${p.type} · ${p.client} · ${p.tl}${p.slug?" · "+ROKU+p.slug:""}`),"",
+  return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.tl}`),"",
    "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.focus}, ${j.dt})`),"",
-   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- OTP Vault, Receipt Printer, Liquid Gauge, 3D Turntable, Glowing Chat Input","","## Off the clock","Old retro games like Subway Surfers and Mahjong, plus FIFA. FIFA ID: xyz, send a friend request for a head-to-head match.","",
-   "## Tools",TOOLS.map(t=>t[0]).join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`,`- X: ${XURL}`].join("\n");
+   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- OTP Vault","","## Off the clock","Old retro games like Subway Surfers and Mahjong, plus FIFA. FIFA ID: xyz, send a friend request for a head-to-head match.","",
+   "## Tools",TOOLS.join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`].join("\n");
 }
 $("#agentBtn").addEventListener("click",()=>{ $("#md").textContent=toMarkdown(); $("#agent").hidden=false; $("#agentClose").focus(); });
 $("#agentClose").addEventListener("click",()=>{ $("#agent").hidden=true; $("#agentBtn").focus(); });
 $("#mdCopy").addEventListener("click",()=>{ try{ navigator.clipboard.writeText($("#md").textContent).then(()=>say("Markdown copied"),()=>say("Select the text to copy it")); }catch(e){ say("Select the text to copy it"); } });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#agent").hidden) $("#agentClose").click(); });
 
-$("#wRange").textContent=`R'001 to R'${String(PROJECTS.length).padStart(3,"0")}`; $("#allN").textContent=`All ${PROJECTS.length} projects`;
+$("#wRange").textContent=`${PROJECTS.length} projects`; $("#allN").textContent=`All ${PROJECTS.length} projects`;
 route(); setCondensed();
 </script>
 </body>

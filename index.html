@@ -431,10 +431,19 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .stk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
 .tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-content:start}
 @media (max-width:1100px){.tools{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.tool{display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;border:1px solid var(--border);background:var(--card);transition:transform .4s var(--spring),border-color .25s}
+.tool{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:18px 10px 14px;border-radius:16px;border:1px solid var(--border);background:var(--card);transition:transform .4s var(--spring),border-color .25s}
 .tool:hover{transform:translateY(-3px);border-color:var(--border-strong)}
 .tool i{width:32px;height:32px;flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);border-radius:9px;display:grid;place-items:center;font:600 12px var(--mono);font-style:normal;color:#fff;background:var(--c)}
 .tool span{font-size:14px;font-weight:500}
+.tool .lg{width:40px;height:40px;display:grid;place-items:center}
+.tool .lg svg{width:34px;height:34px}
+:root[data-theme="dark"] .tool[data-t="Framer"] .lg svg,:root[data-theme="dark"] .tool[data-t="Notion"] .lg svg{filter:invert(1)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tool[data-t="Framer"] .lg svg,:root:not([data-theme="light"]) .tool[data-t="Notion"] .lg svg{filter:invert(1)}}
+.cov-b{display:block;width:100%;text-align:left;border-radius:18px}
+.card .go{cursor:pointer}
+.pdl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:4px 0 20px}
+.pdl dt{font:11px var(--mono);color:var(--muted-fg);text-transform:uppercase}
+.pdl dd{margin:2px 0 0;font-size:15px}
 .skills{display:grid;gap:0}
 .skills div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--border)}
 .skills div:last-child{border-bottom:1px solid var(--border)}
@@ -767,8 +776,9 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
     <section class="sec" data-rail="About" aria-label="About me">
       <div class="ab">
         <div class="copy">
-          <p>I'm Rohit, a product designer and product manager based in Delhi.</p>
-          <p class="muted">I designed interfaces and user experiences at Aspora in Bengaluru, and planned product and go-to-market work at Evvolv.ai in New Delhi. Outside internships I lead projects with Design Club IITD and take on brand and web work for startups, from Genme's identity to TickAI's website.</p>
+          <p>I'm Rohit, a product designer and a product manager based in Delhi.</p>
+          <p class="muted">My interest in design started with xyz (the moment it clicked for me). At IIT Delhi it found a home in Design Club, where I grew into Vice President and later joined its advisory panel.</p>
+          <p class="muted">Those roles opened doors beyond campus: brand and web work with Genme and TickAI, which eventually led me to Aspora and Evvolv.ai.</p>
           <p class="muted">I care about purpose-driven brands and interfaces: start from what people actually need, try a lot of things, and ship what serves both the business and the person using it.</p>
           <div class="social" data-social></div>
         </div>
@@ -877,8 +887,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 <script>
 "use strict";
 const EMAIL="rohitkumawat7109@gmail.com";
-const GMAIL="https://mail.google.com/mail/?view=cm&fs=1&to="+EMAIL, LINKEDIN="https://www.linkedin.com/in/rohitkumawat7109/", GITHUB="https://github.com/kuro7109", XURL="https://x.com/ImROHITKUMAWAT";
-const ROKU="https://rokudesignstudio.framer.website/project-single/";
+const GMAIL="https://mail.google.com/mail/?view=cm&fs=1&to="+EMAIL, LINKEDIN="https://www.linkedin.com/in/rohitkumawat7109/", GITHUB="https://github.com/kuro7109";
 const $=s=>document.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fine=matchMedia("(pointer:fine)").matches;
@@ -926,22 +935,23 @@ function hydrateIcons(rootEl=document){ $$("i[data-ic]",rootEl).forEach(i=>{ con
 
 /* ---------- Content ---------- */
 const PROJECTS=[
- {id:"workbench",code:"R'010",n:"Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",tl:"xyz",slug:"",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
- {id:"socius",code:"R'009",n:"Socius",type:"Product Design / xyz",f:["product","uiux"],yr:"xyz",client:"xyz",tl:"xyz",slug:"",c:["#f43f5e","#c084fc","#1c0f1f"],d:"xyz: a one-line summary of Socius, the problem it solves and who it is for."},
- {id:"gutly",code:"R'001",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"23–25 Jan 2026",slug:"gutly-ai-health-gut",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
- {id:"alba",code:"R'002",n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"23–24 Dec 2025",slug:"alba---notte-drinks---bar",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
- {id:"genme",code:"R'003",n:"Genme",type:"Corporate Branding / Web Design",f:["brand","web"],yr:"2025",client:"Genme",tl:"12 Aug – 22 Sep 2025",slug:"genme-by-rohitkumawat",c:["#6366f1","#a5b4fc","#141a3d"],d:"A modern, scalable logo for Genme's digital presence, refining typography, symbol forms and a minimal structure into a mark that adapts everywhere it appears."},
- {id:"tickai",code:"R'004",n:"TickAI",type:"Logo Design / Brand Strategy",f:["brand","web","uiux"],yr:"2025",client:"Krishna Goel",tl:"28 Oct – 10 Nov 2025",slug:"tickai-by-rohit-kumawat",c:["#adfa1d","#22d3ee","#0d1f12"],d:"Branding and website for TickAI, an AI education platform: a scalable logo and clear layouts that keep the brand consistent and trustworthy across every touchpoint."},
- {id:"specter",code:"R'005",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"15–19 Mar 2025",slug:"specter--brand-strategy---ui---ux-design",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
- {id:"spotify",code:"R'006",n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",tl:"3–7 Sep 2024",slug:"spotify-redesign-roku",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
- {id:"caricatures",code:"R'007",n:"Caricatures",type:"Illustration / Caricature",f:["illus"],yr:"Series",client:"Multiple",tl:"Multiple",slug:"caricatures-by-rohit-kumawat",c:["#fb7185","#fde68a","#2a1216"],d:"A caricature series that turns real facial traits into bold, playful and still recognisable portraits, drawn by hand and refined digitally."},
- {id:"digital",code:"R'008",n:"Digital Arts",type:"Digital Arts / Illustrations",f:["illus"],yr:"Series",client:"Self-initiated",tl:"Multiple",slug:"digital-arts-by-rohit-kumawat",c:["#38bdf8","#f97316","#0c1a26"],d:"Stylised digital illustrations, from Shakespeare to animal studies, that reinterpret familiar subjects through exaggeration and graphic simplicity."}
+ {id:"socius",n:"Socius",type:"Product Design / xyz",f:["product","uiux"],yr:"xyz",client:"xyz",tl:"xyz",c:["#f43f5e","#c084fc","#1c0f1f"],d:"xyz: a one-line summary of Socius, the problem it solves and who it is for."},
+ {id:"gutly",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"23–25 Jan 2026",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
+ {id:"inlens",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",tl:"Jan – Feb 2026",c:["#3b82f6","#93c5fd","#0b1630"],d:"An agentic AI platform for user research that takes on the busywork, from reaching participants to transcribing and summarising interviews. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
+ {id:"alba",n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"23–24 Dec 2025",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
+ {id:"workbench",n:"HiLabs Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",tl:"xyz",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
+ {id:"spotify",n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",tl:"3–7 Sep 2024",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
+ {id:"specter",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",tl:"15–19 Mar 2025",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
+ {id:"genme",n:"Genme",type:"Corporate Branding / Web Design",f:["brand","web"],yr:"2025",client:"Genme",tl:"12 Aug – 22 Sep 2025",c:["#6366f1","#a5b4fc","#141a3d"],d:"A modern, scalable logo for Genme's digital presence, refining typography, symbol forms and a minimal structure into a mark that adapts everywhere it appears."},
+ {id:"tickai",n:"TickAI",type:"Logo Design / Brand Strategy",f:["brand","web","uiux"],yr:"2025",client:"Krishna Goel",tl:"28 Oct – 10 Nov 2025",c:["#adfa1d","#22d3ee","#0d1f12"],d:"Branding and website for TickAI, an AI education platform: a scalable logo and clear layouts that keep the brand consistent and trustworthy across every touchpoint."},
+ {id:"caricatures",n:"Caricatures",type:"Illustration / Caricature",f:["illus"],yr:"Series",client:"Multiple",tl:"Multiple",c:["#fb7185","#fde68a","#2a1216"],d:"A caricature series that turns real facial traits into bold, playful and still recognisable portraits, drawn by hand and refined digitally."},
+ {id:"digital",n:"Digital Arts",type:"Digital Arts / Illustrations",f:["illus"],yr:"Series",client:"Self-initiated",tl:"Multiple",c:["#38bdf8","#f97316","#0c1a26"],d:"Stylised digital illustrations, from Shakespeare to animal studies, that reinterpret familiar subjects through exaggeration and graphic simplicity."}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"],["illus","Illustration","brush"]];
 const JOURNEY=[
  {role:"Product Management Intern",focus:"Product & GTM Planning",co:"Evvolv.ai",loc:"New Delhi",dt:"May – Jul 2026",y:"2026"},
  {role:"Product Design Intern",focus:"User Interface & User Experience",co:"Aspora",loc:"Bengaluru",dt:"May – Jun 2025",y:"2025"},
- {role:"Role xyz",focus:"Leads brand and product projects",co:"Design Club IITD",loc:"New Delhi",dt:"xyz – present",y:"xyz"}
+ {role:"Vice President, Advisory Panel Member",focus:"Design community and club projects",co:"Design Club IITD",loc:"New Delhi",dt:"xyz – present",y:"xyz"}
 ];
 const HONOURS=[
  {t:"Quality Redesign",org:"IFQM",res:"Result xyz",y:"Sep '26"},
@@ -949,14 +959,15 @@ const HONOURS=[
  {t:"Udaan 9.0",org:"IIM Kashipur",res:"Result xyz",y:"Jan '26"},
  {t:"ConsultSchool 4.0",org:"IIT Madras",res:"Result xyz",y:"Jan '26"}
 ];
-const TOOLS=[["Figma","Fg","#a259ff"],["Framer","Fr","#0055ff"],["Illustrator","Ai","#ff7c00"],["Photoshop","Ps","#31a8ff"],["Affinity","Af","#7e4dd2"],["Canva","Ca","#00c4cc"],["Claude","Cl","#d97757"],["Notion","N","#191919"]];
+const TOOLS=["Figma","Framer","Illustrator","Photoshop","Affinity","Canva","Claude","Notion"];
+const LOGOS={"Figma":"<svg viewBox=\"0 0 256 384\" aria-hidden=\"true\"><path fill=\"#0acf83\" d=\"M64 384c35.328 0 64-28.672 64-64v-64H64c-35.328 0-64 28.672-64 64s28.672 64 64 64\"/><path fill=\"#a259ff\" d=\"M0 192c0-35.328 28.672-64 64-64h64v128H64c-35.328 0-64-28.672-64-64\"/><path fill=\"#f24e1e\" d=\"M0 64C0 28.672 28.672 0 64 0h64v128H64C28.672 128 0 99.328 0 64\"/><path fill=\"#ff7262\" d=\"M128 0h64c35.328 0 64 28.672 64 64s-28.672 64-64 64h-64z\"/><path fill=\"#1abcfe\" d=\"M256 192c0 35.328-28.672 64-64 64s-64-28.672-64-64s28.672-64 64-64s64 28.672 64 64\"/></svg>","Framer":"<svg viewBox=\"0 0 256 384\" aria-hidden=\"true\"><path d=\"M0 0h256v128H128zm0 128h128l128 128H128v128L0 256z\"/></svg>","Illustrator":"<svg viewBox=\"0 0 256 250\" aria-hidden=\"true\"><rect width=\"256\" height=\"249.6\" fill=\"#300\" rx=\"42.5\"/><path fill=\"#ff9a00\" d=\"M124.054 149.79h-39.67l-8.072 25.073a2.02 2.02 0 0 1-2.061 1.546H54.158q-1.718 0-1.202-1.89l34.347-98.918q.515-1.545 1.03-3.52c.45-2.292.68-4.62.687-6.955a1.063 1.063 0 0 1 1.202-1.203h27.306q1.2 0 1.374.86l38.983 109.908q.515 1.72-1.03 1.718h-22.326a1.59 1.59 0 0 1-1.717-1.202zm-33.488-21.638H117.7l-.387-1.277l-.621-2.022l-.443-1.42l-.707-2.236l-1.503-4.707l-1.322-4.173l-3.433-10.87a334 334 0 0 1-2.46-8.138l-.628-2.21l-.734-2.613l-1.12-4.05l-.21-.763h-.171a139 139 0 0 1-3.136 12.23l-2.548 8.196l-1.402 4.528l-1.415 4.584q-.383 1.242-.765 2.456l-.76 2.398l-.756 2.342l-.752 2.284l-.748 2.227q-.372 1.1-.743 2.17zm90.501-46.025a12.46 12.46 0 0 1-9.445-3.778a13.6 13.6 0 0 1-3.607-9.789a12.6 12.6 0 0 1 3.864-9.53a13.27 13.27 0 0 1 9.165-3.697l.366.004q6.183 0 9.704 3.692a13.26 13.26 0 0 1 3.52 9.531a13.4 13.4 0 0 1-3.692 9.79a13.18 13.18 0 0 1-9.508 3.79zm-11.85 92.564V92.603q-.001-1.546 1.374-1.546h21.124q1.373 0 1.374 1.546v82.088q0 1.72-1.374 1.718h-20.952q-1.464 0-1.541-1.542z\"/></svg>","Photoshop":"<svg viewBox=\"0 0 256 250\" aria-hidden=\"true\"><rect width=\"256\" height=\"249.6\" fill=\"#001e36\" rx=\"42.5\"/><path fill=\"#31a8ff\" d=\"M57.644 175.035V65.297q0-1.201 1.031-1.202l1.087-.003l1.858-.02l2.582-.051l8.65-.183l9.275-.172q4.893-.085 9.702-.086q13.05 0 21.982 3.263a38.1 38.1 0 0 1 14.34 8.758a33.6 33.6 0 0 1 7.814 12.108a40.2 40.2 0 0 1 2.405 13.824q0 13.741-6.355 22.669a35.9 35.9 0 0 1-16.6 12.756l-.573.21c-6.973 2.601-14.695 3.541-23.164 3.6l-1.316.004l-1.953-.01l-.985-.014l-1.098-.026l-.662-.026l-.402-.021l-.989-.036l-1.209-.025l-1.82-.013l-.405-.001v34.263a1.366 1.366 0 0 1-1.546 1.546H58.847q-1.204.001-1.203-1.374M80.84 84.703v35.792q2.23.173 4.12.172h5.668a40.3 40.3 0 0 0 11.533-1.727l.746-.233a18.5 18.5 0 0 0 8.759-5.668q3.228-3.807 3.344-10.492l.005-.499c.09-3.322-.774-6.6-2.491-9.445a16 16 0 0 0-7.47-6.097a31.8 31.8 0 0 0-12.537-2.146l-2.178.006l-1.374.012l-1.311.017l-1.85.036l-1.35.038l-.701.026l-.937.044l-.798.049l-.455.036l-.393.038l-.173.02zm123.93 29.284a40.2 40.2 0 0 0-9.458-3.442l-.76-.164a54.3 54.3 0 0 0-11.009-1.363l-.926-.011a22.2 22.2 0 0 0-6.44.773a5.8 5.8 0 0 0-3.35 2.146a5.4 5.4 0 0 0-.858 2.92a4.56 4.56 0 0 0 1.03 2.747a11.7 11.7 0 0 0 3.235 2.637l.372.197a72 72 0 0 0 7.556 3.52a75 75 0 0 1 16.4 7.814a24.94 24.94 0 0 1 8.416 8.845a23.6 23.6 0 0 1 2.49 10.99a24.7 24.7 0 0 1-4.122 14.169a27.1 27.1 0 0 1-11.936 9.53q-7.556 3.32-18.557 3.432l-.762.004a70 70 0 0 1-13.556-1.188l-.956-.186a46.3 46.3 0 0 1-10.905-3.435a2.22 2.22 0 0 1-1.202-1.89v-18.718a1.01 1.01 0 0 1 .43-.945a.83.83 0 0 1 .944.086a45.9 45.9 0 0 0 13.223 5.238a54.5 54.5 0 0 0 12.537 1.632q6.009 0 8.844-1.546a4.86 4.86 0 0 0 2.834-4.465q0-2.23-2.576-4.293q-1.08-.864-3.097-1.88l-.643-.316l-.686-.323l-.36-.164l-.754-.334l-.393-.17l-.82-.344l-.427-.175l-.886-.355l-.46-.18l-.953-.367l-.997-.373a63 63 0 0 1-15.199-7.728a26.2 26.2 0 0 1-8.071-9.016a23.7 23.7 0 0 1-2.49-10.905a24.6 24.6 0 0 1 3.606-12.88c2.7-4.27 6.576-7.67 11.163-9.788q7.555-3.776 18.89-3.779a83.6 83.6 0 0 1 13.224.945a34.7 34.7 0 0 1 9.206 2.49c.473.136.854.485 1.03.945c.117.419.174.852.172 1.288v17.345c.025.41-.172.803-.515 1.03a1.66 1.66 0 0 1-1.478 0\"/></svg>","Affinity":"<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"#1B72BE\" d=\"M24 2.344v19.312A2.345 2.345 0 0 1 21.656 24H2.344A2.345 2.345 0 0 1 0 21.656V2.344A2.345 2.345 0 0 1 2.344 0h19.312A2.345 2.345 0 0 1 24 2.344M1.758 21.305c0 .517.42.937.938.937h8.226l-4.299-7.445l7.528-13.039h-3.482L1.758 17.192zm11.418-6.866l-2.712-4.698l-1.761 3.051a1.098 1.098 0 0 0 .952 1.647zm9.066 6.873v-6.075H7.799l4.044 7.005h9.462a.937.937 0 0 0 .937-.93m-.937-19.554h-6.232l-4.148 7.185l3.173 5.496h8.144V2.688a.937.937 0 0 0-.937-.93\"/></svg>","Canva":"<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"#00C4CC\" d=\"M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12s12-5.373 12-12S18.627 0 12 0M6.962 7.68c.754 0 1.337.549 1.405 1.2c.069.583-.171 1.097-.822 1.406c-.343.171-.48.172-.549.069c-.034-.069 0-.137.069-.206c.617-.514.617-.926.548-1.508c-.034-.378-.308-.618-.583-.618c-1.2 0-2.914 2.674-2.674 4.629c.103.754.549 1.646 1.509 1.646c.308 0 .65-.103.96-.24c.5-.264.799-.47 1.097-.8c-.073-.885.704-2.046 1.851-2.046c.515 0 .926.205.96.583c.068.514-.377.582-.514.582s-.378-.034-.378-.17c-.034-.138.309-.07.275-.378c-.035-.206-.24-.274-.446-.274c-.72 0-1.131.994-1.029 1.611c.035.275.172.549.447.549c.205 0 .514-.31.617-.755c.068-.308.343-.514.583-.514c.102 0 .17.034.205.171v.138c-.034.137-.137.548-.102.651c0 .069.034.171.17.171c.092 0 .436-.18.777-.459c.117-.59.253-1.298.253-1.357c.034-.24.137-.48.617-.48c.103 0 .171.034.205.171v.138l-.136.617c.445-.583 1.097-.994 1.508-.994c.172 0 .309.102.309.274c0 .103 0 .274-.069.446c-.137.377-.309.96-.412 1.474c0 .137.035.274.207.274s.685-.206 1.096-.754l.007-.004c-.002-.068-.007-.134-.007-.202c0-.411.035-.754.104-.994c.068-.274.411-.514.617-.514c.103 0 .205.069.205.171c0 .035 0 .103-.034.137c-.137.446-.24.857-.24 1.269c0 .24.034.582.102.788c0 .034.035.069.07.069c.068 0 .548-.445.89-1.028c-.308-.206-.48-.549-.48-.96c0-.72.446-1.097.858-1.097c.343 0 .617.24.617.72c0 .308-.103.65-.274.96h.102a.77.77 0 0 0 .584-.24a.3.3 0 0 1 .134-.117c.335-.425.83-.74 1.41-.74c.48 0 .924.205.959.582c.068.515-.378.618-.515.618l-.002-.002c-.138 0-.377-.035-.377-.172s.309-.068.274-.376c-.034-.206-.24-.275-.446-.275c-.686 0-1.13.891-1.028 1.611c.034.275.171.583.445.583c.206 0 .515-.308.652-.754c.068-.274.343-.514.583-.514c.103 0 .17.034.205.171c0 .069 0 .206-.137.652c-.17.308-.171.48-.137.617c.034.274.171.48.309.583c.034.034.068.102.068.102c0 .069-.034.138-.137.138c-.034 0-.068 0-.103-.035c-.514-.205-.72-.548-.789-.891c-.205.24-.445.377-.72.377c-.445 0-.89-.411-.96-.926a1.6 1.6 0 0 1 .075-.649c-.203.13-.422.203-.623.203h-.17c-.447.652-.927 1.098-1.27 1.303a.9.9 0 0 1-.377.104c-.068 0-.171-.035-.205-.104c-.095-.152-.156-.392-.193-.667c-.481.527-1.145.805-1.453.805c-.343 0-.548-.206-.582-.55v-.376c.102-.754.377-1.2.377-1.337a.074.074 0 0 0-.069-.07c-.24 0-1.028.824-1.166 1.373l-.103.445c-.068.309-.377.515-.582.515c-.103 0-.172-.035-.206-.172v-.137l.046-.233c-.435.31-.87.508-1.075.508c-.308 0-.48-.172-.514-.412c-.206.274-.445.412-.754.412c-.352 0-.696-.24-.862-.593c-.244.275-.523.553-.852.764c-.48.309-1.028.549-1.68.549c-.582 0-1.097-.309-1.371-.583c-.412-.377-.651-.96-.686-1.509c-.205-1.68.823-3.84 2.4-4.8c.378-.205.755-.343 1.132-.343m9.77 3.291c-.104 0-.172.172-.172.343c0 .274.137.583.309.755a1.7 1.7 0 0 0 .102-.583c0-.343-.137-.515-.24-.515z\"/></svg>","Claude":"<svg viewBox=\"0 0 256 257\" aria-hidden=\"true\"><path fill=\"#d97757\" d=\"m50.228 170.321l50.357-28.257l.843-2.463l-.843-1.361h-2.462l-8.426-.518l-28.775-.778l-24.952-1.037l-24.175-1.296l-6.092-1.297L0 125.796l.583-3.759l5.12-3.434l7.324.648l16.202 1.101l24.304 1.685l17.629 1.037l26.118 2.722h4.148l.583-1.685l-1.426-1.037l-1.101-1.037l-25.147-17.045l-27.22-18.017l-14.258-10.37l-7.713-5.25l-3.888-4.925l-1.685-10.758l7-7.713l9.397.649l2.398.648l9.527 7.323l20.35 15.75L94.817 91.9l3.889 3.24l1.555-1.102l.195-.777l-1.75-2.917l-14.453-26.118l-15.425-26.572l-6.87-11.018l-1.814-6.61c-.648-2.723-1.102-4.991-1.102-7.778l7.972-10.823L71.42 0l10.63 1.426l4.472 3.888l6.61 15.101l10.694 23.786l16.591 32.34l4.861 9.592l2.592 8.879l.973 2.722h1.685v-1.556l1.36-18.211l2.528-22.36l2.463-28.776l.843-8.1l4.018-9.722l7.971-5.25l6.222 2.981l5.12 7.324l-.713 4.73l-3.046 19.768l-5.962 30.98l-3.889 20.739h2.268l2.593-2.593l10.499-13.934l17.628-22.036l7.778-8.749l9.073-9.657l5.833-4.601h11.018l8.1 12.055l-3.628 12.443l-11.342 14.388l-9.398 12.184l-13.48 18.147l-8.426 14.518l.778 1.166l2.01-.194l30.46-6.481l16.462-2.982l19.637-3.37l8.88 4.148l.971 4.213l-3.5 8.62l-20.998 5.184l-24.628 4.926l-36.682 8.685l-.454.324l.519.648l16.526 1.555l7.065.389h17.304l32.21 2.398l8.426 5.574l5.055 6.805l-.843 5.184l-12.962 6.611l-17.498-4.148l-40.83-9.721l-14-3.5h-1.944v1.167l11.666 11.406l21.387 19.314l26.767 24.887l1.36 6.157l-3.434 4.86l-3.63-.518l-23.526-17.693l-9.073-7.972l-20.545-17.304h-1.36v1.814l4.73 6.935l25.017 37.59l1.296 11.536l-1.814 3.76l-6.481 2.268l-7.13-1.297l-14.647-20.544l-15.1-23.138l-12.185-20.739l-1.49.843l-7.194 77.448l-3.37 3.953l-7.778 2.981l-6.48-4.925l-3.436-7.972l3.435-15.749l4.148-20.544l3.37-16.333l3.046-20.285l1.815-6.74l-.13-.454l-1.49.194l-15.295 20.999l-23.267 31.433l-18.406 19.702l-4.407 1.75l-7.648-3.954l.713-7.064l4.277-6.286l25.47-32.405l15.36-20.092l9.917-11.6l-.065-1.686h-.583L44.07 198.125l-12.055 1.555l-5.185-4.86l.648-7.972l2.463-2.593l20.35-13.999z\"/></svg>","Notion":"<svg viewBox=\"0 0 256 268\" aria-hidden=\"true\"><path fill=\"#fff\" d=\"M16.092 11.538L164.09.608c18.179-1.56 22.85-.508 34.28 7.801l47.243 33.282C253.406 47.414 256 48.975 256 55.207v182.527c0 11.439-4.155 18.205-18.696 19.24L65.44 267.378c-10.913.517-16.11-1.043-21.825-8.327L8.826 213.814C2.586 205.487 0 199.254 0 191.97V29.726c0-9.352 4.155-17.153 16.092-18.188\"/><path d=\"M164.09.608L16.092 11.538C4.155 12.573 0 20.374 0 29.726v162.245c0 7.284 2.585 13.516 8.826 21.843l34.789 45.237c5.715 7.284 10.912 8.844 21.825 8.327l171.864-10.404c14.532-1.035 18.696-7.801 18.696-19.24V55.207c0-5.911-2.336-7.614-9.21-12.66l-1.185-.856L198.37 8.409C186.94.1 182.27-.952 164.09.608M69.327 52.22c-14.033.945-17.216 1.159-25.186-5.323L23.876 30.778c-2.06-2.086-1.026-4.69 4.163-5.207l142.274-10.395c11.947-1.043 18.17 3.12 22.842 6.758l24.401 17.68c1.043.525 3.638 3.637.517 3.637L71.146 52.095zm-16.36 183.954V81.222c0-6.767 2.077-9.887 8.3-10.413L230.02 60.93c5.724-.517 8.31 3.12 8.31 9.879v153.917c0 6.767-1.044 12.49-10.387 13.008l-161.487 9.361c-9.343.517-13.489-2.594-13.489-10.921M212.377 89.53c1.034 4.681 0 9.362-4.681 9.897l-7.783 1.542v114.404c-6.758 3.637-12.981 5.715-18.18 5.715c-8.308 0-10.386-2.604-16.609-10.396l-50.898-80.079v77.476l16.1 3.646s0 9.362-12.989 9.362l-35.814 2.077c-1.043-2.086 0-7.284 3.63-8.318l9.351-2.595V109.823l-12.98-1.052c-1.044-4.68 1.55-11.439 8.826-11.965l38.426-2.585l52.958 81.113v-71.76l-13.498-1.552c-1.043-5.733 3.111-9.896 8.3-10.404z\"/></svg>"};
 const SKILLS=[["Product design","Apps, flows, interaction"],["Product management","Roadmaps, GTM planning"],["Branding","Identity, logos, strategy"],["UI & UX","Interfaces, research, prototypes"],["Web design","Framer sites, landing pages"],["Illustration","Caricature, digital art"]];
 const MARQ=[["Evvolv.ai","Ev"],["Aspora","As"],["IIT Delhi","IITD"],["Design Club","DC"],["GenMe","GM"],["TickAI","Ti"],["Rendezvous","Rv"]];
 const ROLES=[["Product","Designer"],["Product","Manager"],["UI & UX","Designer"],["Brand","Designer"]];
 const HIGHLIGHTS=[
  {h:"Hi, I'm Rohit",p:"A product designer and product manager based in Delhi.",c:[]},
  {h:"I design products and plan how they launch",p:"Interfaces and user experience at Aspora in Bengaluru, then product and go-to-market planning at Evvolv.ai in New Delhi.",c:["Aspora '25","Evvolv.ai '26"]},
- {h:"Product design and product management",p:"Apps like Gutly, identities for Genme and TickAI, and case competitions at IIM Kashipur, IIT Madras, IFQM and BML Munjal.",c:["10 projects","4 competitions"]}
+ {h:"Product design and product management",p:"Apps like Gutly, identities for Genme and TickAI, and case competitions at IIM Kashipur, IIT Madras, IFQM and BML Munjal.",c:[`${PROJECTS.length} projects`,"4 competitions"]}
 ];
 
 /* ---------- Haptics: Android vibrate, iOS switch tap ---------- */
@@ -990,7 +1001,7 @@ function scramble(el,text){
 
 /* ---------- Covers ---------- */
 const coverBg=c=>`radial-gradient(45% 55% at 25% 30%,${c[0]},transparent),radial-gradient(50% 60% at 80% 72%,${c[1]},transparent),${c[2]}`;
-const cover=(p,label=true)=>`<div class="cov"><div class="g" style="background:${coverBg(p.c)}"></div><div class="gr"></div>${label?`<span class="cd">${esc(p.code)}</span><span class="tg">${esc(p.yr)}</span>`:""}<span class="nm">${esc(p.n)}</span></div>`;
+const cover=(p,label=true)=>`<div class="cov"><div class="g" style="background:${coverBg(p.c)}"></div><div class="gr"></div>${label?`<span class="tg">${esc(p.yr)}</span>`:""}<span class="nm">${esc(p.n)}</span></div>`;
 
 /* ---------- Loader: hairline isometric keyboard ---------- */
 (function(){
@@ -1389,7 +1400,7 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
 
 /* ---------- Home: marquee, featured work ---------- */
 (function(){ const one=MARQ.map(([n,a])=>`<span><i>${esc(a)}</i>${esc(n)}</span>`).join(""); $("#mq").innerHTML=one+one; })();
-$("#fgrid").innerHTML=["gutly","alba","tickai","specter"].map(id=>{ const p=PROJECTS.find(x=>x.id===id); return `<a class="fcard rv" href="#work/${p.id}">${cover(p)}<span class="mt"><b>${esc(p.n)}</b><span>${esc(p.type)}</span></span></a>`; }).join("");
+$("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" href="#work/${p.id}">${cover(p)}<span class="mt"><b>${esc(p.n)}</b><span>${esc(p.type)}</span></span></a>`; }).join("");
 
 /* ---------- Work: filter bar with peek, layouts ---------- */
 (function(){
@@ -1402,10 +1413,11 @@ $("#fgrid").innerHTML=["gutly","alba","tickai","specter"].map(id=>{ const p=PROJ
     const L=list(f); $("#showing").textContent=`Showing ${L.length} of ${PROJECTS.length} projects`;
     works.className="works v-"+view;
     works.innerHTML=L.map((p,i)=>`<article class="card" data-id="${p.id}" data-rail="${esc(p.n)}" style="animation:page-in .6s var(--ease-out) ${i*50}ms both">
-      ${p.slug?`<a href="${ROKU+p.slug}" target="_blank" rel="noopener" aria-label="${esc(p.n)} case study (opens in a new tab)">${cover(p)}</a>`:cover(p)}
-      <div class="info"><div class="top"><h3>${esc(p.n)}</h3><span class="yr">${esc(p.code)} · ${esc(p.yr)}</span></div><span class="mono" style="color:var(--muted-fg)">${esc(p.type)}</span><p>${esc(p.d)}</p>
+      <button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>
+      <div class="info"><div class="top"><h3>${esc(p.n)}</h3><span class="yr">${esc(p.yr)}</span></div><span class="mono" style="color:var(--muted-fg)">${esc(p.type)}</span><p>${esc(p.d)}</p>
       <dl><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div></dl>
-      ${p.slug?`<a class="go" href="${ROKU+p.slug}" target="_blank" rel="noopener">View case study ${svg("ne")}</a>`:`<span class="go" style="color:var(--muted-fg)">Case study link xyz</span>`}</div></article>`).join("");
+      <button type="button" class="go" data-open="${p.id}">Read case study ${svg("arrow")}</button></div></article>`).join("");
+    $$("[data-open]",works).forEach(b=>b.addEventListener("click",()=>openProject(b.dataset.open,b)));
     deckFx(); if(current==="work") buildRail();
   }
   btns.forEach(b=>{
@@ -1443,7 +1455,7 @@ const EXPS={
 function expCard(id){ const e=EXPS[id]; return `<article class="exp rv ${e.big?"big":""} ${e.full?"full":""}" data-id="${id}" data-x="${id}" data-rail="${esc(e.t)}">${e.stage}<div class="bd"><h3>${esc(e.t)}<span class="chip">${esc(e.tag)}</span></h3><p>${esc(e.d)}</p>${e.cta||""}</div></article>`; }
 $("#homeExp").innerHTML=["snake","otp"].map(expCard).join("");
 $("#homeExp").querySelectorAll("[data-rail]").forEach(el=>el.removeAttribute("data-rail"));
-$("#allExp").innerHTML=["snake","otp","receipt","gauge","turntable","glow"].map(expCard).join("");
+$("#allExp").innerHTML=["snake","otp"].map(expCard).join("");
 $$(".exp").forEach(card=>{
   const x=card.dataset.x;
   if(x==="snake"){ const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,cs=14,cols=0,rows=0,snake=[],dir=[1,0],food=[0,0],timer=0;
@@ -1490,9 +1502,9 @@ $$(".exp").forEach(card=>{
 /* ---------- Rows, tools, skills, social ---------- */
 const honourRow=h=>`<div class="rowi rv"><b>${esc(h.t)}<small>${esc(h.res)}</small></b><span class="co">${esc(h.org)}</span><span>Case competition</span><span class="y">${esc(h.y)}</span></div>`;
 $("#journey").innerHTML=JOURNEY.map(j=>`<div class="rowi rv"><b>${esc(j.role)}<small>${esc(j.focus)} · ${esc(j.dt)}</small></b><span class="co">${esc(j.co)}</span><span>${esc(j.loc)}</span><span class="y">${esc(j.y)}</span></div>`).join("");
-$$("[data-tools]").forEach(el=>el.innerHTML=TOOLS.map(([n,a,c])=>`<div class="tool rv" style="--c:${c}"><i>${esc(a)}</i><span>${esc(n)}</span></div>`).join(""));
+$$("[data-tools]").forEach(el=>el.innerHTML=TOOLS.map(n=>`<div class="tool rv" data-t="${esc(n)}"><span class="lg">${LOGOS[n]}</span><span>${esc(n)}</span></div>`).join(""));
 $$("[data-skills]").forEach(el=>el.innerHTML=SKILLS.map(([a,b])=>`<div class="rv"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join(""));
-const SOCIAL=[["Email","mail",GMAIL],["LinkedIn","li",LINKEDIN],["GitHub","gh",GITHUB],["X","xl",XURL]];
+const SOCIAL=[["Email","mail",GMAIL],["LinkedIn","li",LINKEDIN],["GitHub","gh",GITHUB]];
 $$("[data-social]").forEach(el=>el.innerHTML=SOCIAL.map(([n,i,u])=>`<a class="btn" href="${u}" target="_blank" rel="noopener">${svg(i)}${n}<span class="sr"> (opens in a new tab)</span></a>`).join(""));
 $$("[data-gmail]").forEach(a=>a.href=GMAIL);
 
@@ -1500,13 +1512,13 @@ $$("[data-gmail]").forEach(a=>a.href=GMAIL);
 const QA=[
  [/\b(hi|hello|hey|yo)\b/i,()=>"Hey! I can tell you about Rohit's projects, experience, tools, competitions or games."],
  [/(intern|experience|aspora|evvolv|job|worked|career)/i,()=>"Rohit was a <b>Product Management Intern</b> at Evvolv.ai, New Delhi (May – Jul 2026), working on product and GTM planning, and a <b>Product Design Intern</b> at Aspora, Bengaluru (May – Jun 2025), on UI and UX."],
- [/(project|work|portfolio|case|best|gutly|tickai|genme|specter|alba|spotify)/i,()=>`${PROJECTS.length} projects so far, from the HiLabs Case Workbench and the Gutly gut-health app to brands for Genme and TickAI. <a href="#work">See all the work</a>.`],
+ [/(project|work|portfolio|case|best|gutly|tickai|genme|specter|alba|spotify)/i,()=>`${PROJECTS.length} projects so far, from Socius, Gutly and InLens to brands for Genme and TickAI. <a href="#work">See all the work</a>.`],
  [/(fifa|game|subway|mahjong|play|h2h)/i,()=>"He loves old retro games like Subway Surfers and Mahjong, plus FIFA. His FIFA ID is <b>xyz</b>: send a friend request for a head-to-head match."],
- [/(tool|figma|framer|stack|software|illustrator|photoshop)/i,()=>`${TOOLS.slice(0,-1).map(t=>t[0]).join(", ")} and ${TOOLS[TOOLS.length-1][0]}.`],
+ [/(tool|figma|framer|stack|software|illustrator|photoshop)/i,()=>`${TOOLS.slice(0,-1).join(", ")} and ${TOOLS[TOOLS.length-1]}.`],
  [/(honou?r|award|competition|iim|iit|ifqm|bml)/i,()=>"Case competitions: IFQM Quality Redesign and BML Munjal ProdPro (Sep '26), IIM Kashipur Udaan 9.0 and IIT Madras ConsultSchool 4.0 (Jan '26)."],
  [/(call|book|meet|schedule|chat with)/i,()=>`Pick a slot on the <a href="#book">Book a call</a> page and it opens a Gmail draft to him.`],
  [/(snake|experiment|playground)/i,()=>`Try <a href="https://dotsgame-owcu.vercel.app" target="_blank" rel="noopener">Snake</a>, or browse the <a href="#experiments">experiments</a>.`],
- [/(contact|email|mail|reach|hire|linkedin|github|twitter|\bx\b)/i,()=>`Email <a href="${GMAIL}" target="_blank" rel="noopener">${EMAIL}</a>, or find him on <a href="${LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a>, <a href="${GITHUB}" target="_blank" rel="noopener">GitHub</a> and <a href="${XURL}" target="_blank" rel="noopener">X</a>.`],
+ [/(contact|email|mail|reach|hire|linkedin|github)/i,()=>`Email <a href="${GMAIL}" target="_blank" rel="noopener">${EMAIL}</a>, or find him on <a href="${LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a> and <a href="${GITHUB}" target="_blank" rel="noopener">GitHub</a>.`],
  [/(where|based|live|location|delhi|from)/i,()=>"Delhi, India."],
  [/(who|about|what does|do you do|rohit)/i,()=>"Rohit is a product designer and product manager in Delhi. He designs apps, brands and interfaces, and plans how products launch."]
 ];
@@ -1536,12 +1548,21 @@ function converse(box,q,scroll){
 
 /* ---------- Blogs ---------- */
 const POSTS=[
- {t:"Blog title xyz 1",tag:"Product design",date:"xx Nov 2026",min:6,c:PROJECTS[0].c,ex:"xyz summary: the question this post answers and why it matters to people building products."},
- {t:"Blog title xyz 2",tag:"Product management",date:"xx Oct 2026",min:5,c:PROJECTS[1].c,ex:"xyz summary of a lesson from planning a launch and working with go-to-market."},
- {t:"Blog title xyz 3",tag:"Case study",date:"xx Sep 2026",min:8,c:PROJECTS[3].c,ex:"xyz summary: a project from brief to shipped screens, and what changed along the way."},
- {t:"Blog title xyz 4",tag:"Process",date:"xx Aug 2026",min:4,c:PROJECTS[4].c,ex:"xyz summary of a working habit that makes design reviews faster."},
- {t:"Blog title xyz 5",tag:"Product design",date:"xx Jul 2026",min:7,c:PROJECTS[2].c,ex:"xyz summary on designing interfaces that feel responsive and alive."},
- {t:"Blog title xyz 6",tag:"Tools",date:"xx Jun 2026",min:3,c:PROJECTS[7].c,ex:"xyz summary of the tools in the current workflow and why each stays."}
+ {t:"Jakob's Law: why your product should feel familiar",tag:"UX laws",date:"Nov 2026",min:5,c:PROJECTS[2].c,ex:"People spend most of their time in other products, so they arrive at yours expecting it to work the same way. Here's how to use that instead of fighting it.",
+  body:["Jakob Nielsen put a simple observation into words: people spend most of their time on other sites and apps, not yours. Every product they use teaches them how products are supposed to work, and they carry those lessons into whatever they open next.",
+   "That's Jakob's Law. Users build mental models from everything they've used before, and they expect your product to match them. The logo takes you home. The cart lives in the top-right corner. Swiping right goes back. Pull down to refresh. None of these are rules of nature; they're habits learned across thousands of screens.",
+   "When a product matches those habits, people stop thinking about the interface and start thinking about their task. When it breaks them, every unfamiliar pattern costs attention. A clever new navigation might win a design award and still lose users who can't find the settings.",
+   "This doesn't mean every product should look the same. It means novelty should be spent deliberately. Keep the plumbing familiar (navigation, forms, checkout, error states) and put your originality where it changes the experience: the core interaction, the content, the moments of delight.",
+   "Before designing a screen, I find it useful to list the conventions in that category. What do the five products your users open most every day do for this same task? Borrow those patterns unless you have a strong reason not to. If you do have a better idea, introduce it gently, keep the old way available for a while, and test whether people actually prefer it.",
+   "Familiar isn't boring. It's the part of the design that lets everything else stand out."]},
+ {t:"What product management actually is",tag:"Product management",date:"Nov 2026",min:4,c:PROJECTS[4].c,ex:"Product management isn't about owning a roadmap. It's about deciding which problems are worth solving, and saying no to everything else.",
+  body:["Ask ten people what a product manager does and you'll get ten answers: writes specs, runs stand-ups, owns the roadmap, talks to customers. All of those happen, but none of them is the job.",
+   "The job is making sure the team builds the right thing. That sounds obvious until you notice how many teams ship features nobody asked for, on time and well executed.",
+   "Good product work starts with the problem, not the solution. Who has this problem, how often, and what do they do about it today? If you can't answer that in two sentences, the feature isn't ready to be designed.",
+   "Most of the work is choosing. There are always more good ideas than time, so the real skill is ranking them by impact and effort, and being clear about what you're not doing and why.",
+   "Then comes measuring. A launch isn't the finish line; it's the start of finding out whether you were right. Decide what success looks like before you ship, so the numbers can tell you something instead of confirming whatever you hoped.",
+   "Design and product management aren't separate jobs so much as two angles on the same question: what should exist, and how should it feel to use it?"]},
+ {t:"Sycophancy: how AI traps you in a sandbox",tag:"Case study",date:"Coming soon",min:0,soon:true,c:PROJECTS[6].c,ex:"A case study on AI sycophancy: when an assistant keeps agreeing with you, and how that quietly boxes in your thinking."}
 ];
 const postCov=p=>`<div class="cov"><div class="g" style="background:${coverBg(p.c)}"></div><div class="gr"></div><span class="tg">${esc(p.tag)}</span></div>`;
 let bfilter="All";
@@ -1550,15 +1571,25 @@ function renderBlogs(){
   $("#btabs").innerHTML=tags.map(t=>`<button type="button" class="tab" data-t="${esc(t)}" aria-pressed="${t===bfilter}">${esc(t)}<span class="n">${t==="All"?POSTS.length:POSTS.filter(p=>p.tag===t).length}</span></button>`).join("");
   $$("#btabs .tab").forEach(b=>b.addEventListener("click",()=>{ bfilter=b.dataset.t; renderBlogs(); if(current==="blogs") buildRail(); }));
   const list=bfilter==="All"?POSTS:POSTS.filter(p=>p.tag===bfilter);
-  $("#bgrid").innerHTML=list.map((p,i)=>`<button type="button" class="post ${i===0&&bfilter==="All"?"feat":""}" data-i="${POSTS.indexOf(p)}" data-rail="${esc(p.t)}">${postCov(p)}<div class="bd"><span class="meta">${esc(p.date)} · ${p.min} min read</span><h3>${esc(p.t)}</h3><p>${esc(p.ex)}</p></div></button>`).join("");
+  $("#bgrid").innerHTML=list.map((p,i)=>`<button type="button" class="post ${i===0&&bfilter==="All"?"feat":""}" data-i="${POSTS.indexOf(p)}" data-rail="${esc(p.t)}">${postCov(p)}<div class="bd"><span class="meta">${p.soon?"Coming soon":`${esc(p.date)} · ${p.min} min read`}</span><h3>${esc(p.t)}</h3><p>${esc(p.ex)}</p></div></button>`).join("");
   $$("#bgrid .post").forEach(b=>b.addEventListener("click",()=>openPost(+b.dataset.i,b)));
 }
 let readerEl=null, readerFrom=null;
-function openPost(i,from){
-  const p=POSTS[i]; readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",p.t);
-  readerEl.innerHTML=`<article style="position:relative">${postCov(p)}<button type="button" class="btn close" id="readerClose">Back to blogs</button><div class="bd"><span class="mono" style="color:var(--muted-fg)">${esc(p.tag)} · ${esc(p.date)} · ${p.min} min read</span><h2>${esc(p.t)}</h2><p>${esc(p.ex)}</p><p>xyz opening paragraph. Set up the problem and who it affects, in plain words.</p><p>xyz middle paragraph. Walk through what was tried, what worked and what didn't.</p><p>xyz closing paragraph. Leave the reader with one idea they can use this week.</p></div></article>`;
+function openReader({cov,meta,title,paras,back,from}){
+  readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",title);
+  readerEl.innerHTML=`<article style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd"><span class="mono" style="color:var(--muted-fg)">${meta}</span><h2>${esc(title)}</h2>${paras}</div></article>`;
   readerEl.addEventListener("click",e=>{ if(e.target===readerEl) closePost(); });
   document.body.appendChild(readerEl); root.style.overflow="hidden"; $("#readerClose").addEventListener("click",closePost); $("#readerClose").focus(); haptic("light");
+}
+function openPost(i,from){
+  const p=POSTS[i];
+  const paras=p.soon?`<p>${esc(p.ex)}</p><p style="color:var(--muted-fg)">This case study is being written. Check back soon.</p>`:(p.body||[p.ex]).map(x=>`<p>${esc(x)}</p>`).join("");
+  openReader({cov:postCov(p),meta:`${esc(p.tag)} · ${p.soon?"Coming soon":`${esc(p.date)} · ${p.min} min read`}`,title:p.t,paras,back:"Back to blogs",from});
+}
+function openProject(id,from){
+  const p=PROJECTS.find(x=>x.id===id); if(!p) return;
+  const paras=`<p>${esc(p.d)}</p><dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div><dt>Role</dt><dd>${esc(p.type)}</dd></div></dl><p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon (xyz).</p>`;
+  openReader({cov:cover(p),meta:esc(p.type),title:p.n,paras,back:"Back to work",from});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
@@ -1613,7 +1644,7 @@ renderBlogs();
 /* ---------- Footer: scramble links, handwritten quote ---------- */
 const slink=(t,h,ext)=>`<li><a class="slink" href="${h}"${ext?' target="_blank" rel="noopener"':""}><span class="txt">${esc(t)}</span>${svg(ext?"ne":"arrow")}${ext?'<span class="sr"> (opens in a new tab)</span>':""}</a></li>`;
 $("#fMenu").innerHTML=[["Home","#home"],["Work","#work"],["Experiments","#experiments"],["Blogs","#blogs"],["About","#about"],["Book a call","#book"]].map(([t,h])=>slink(t,h,false)).join("");
-$("#fContact").innerHTML=[["Email",GMAIL],["LinkedIn",LINKEDIN],["GitHub",GITHUB],["X",XURL]].map(([t,h])=>slink(t,h,true)).join("");
+$("#fContact").innerHTML=[["Email",GMAIL],["LinkedIn",LINKEDIN],["GitHub",GITHUB]].map(([t,h])=>slink(t,h,true)).join("");
 $$(".slink").forEach(a=>{ const t=a.querySelector(".txt"), txt=t.textContent; const go=()=>scramble(t,txt); a.addEventListener("pointerenter",go); a.addEventListener("focus",go); });
 new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ $("#quote").classList.add("in"); o.disconnect(); } },{threshold:.6}).observe($("#quote"));
 
@@ -1626,17 +1657,17 @@ $$(".shead").forEach(el=>{ el.classList.add("rv"); rvIO.observe(el); });
 document.addEventListener("click",e=>{ const b=e.target.closest("[data-copy]"); if(!b) return; const v=b.dataset.copy;
   try{ navigator.clipboard.writeText(v).then(()=>say("Copied"),()=>say("Select the text to copy it")); }catch(err){ say("Select the text to copy it"); } });
 function toMarkdown(){
-  return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** (${p.code}) · ${p.type} · ${p.client} · ${p.tl}${p.slug?" · "+ROKU+p.slug:""}`),"",
+  return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.tl}`),"",
    "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.focus}, ${j.dt})`),"",
-   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- OTP Vault, Receipt Printer, Liquid Gauge, 3D Turntable, Glowing Chat Input","","## Off the clock","Old retro games like Subway Surfers and Mahjong, plus FIFA. FIFA ID: xyz, send a friend request for a head-to-head match.","",
-   "## Tools",TOOLS.map(t=>t[0]).join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`,`- X: ${XURL}`].join("\n");
+   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- OTP Vault","","## Off the clock","Old retro games like Subway Surfers and Mahjong, plus FIFA. FIFA ID: xyz, send a friend request for a head-to-head match.","",
+   "## Tools",TOOLS.join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`].join("\n");
 }
 $("#agentBtn").addEventListener("click",()=>{ $("#md").textContent=toMarkdown(); $("#agent").hidden=false; $("#agentClose").focus(); });
 $("#agentClose").addEventListener("click",()=>{ $("#agent").hidden=true; $("#agentBtn").focus(); });
 $("#mdCopy").addEventListener("click",()=>{ try{ navigator.clipboard.writeText($("#md").textContent).then(()=>say("Markdown copied"),()=>say("Select the text to copy it")); }catch(e){ say("Select the text to copy it"); } });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#agent").hidden) $("#agentClose").click(); });
 
-$("#wRange").textContent=`R'001 to R'${String(PROJECTS.length).padStart(3,"0")}`; $("#allN").textContent=`All ${PROJECTS.length} projects`;
+$("#wRange").textContent=`${PROJECTS.length} projects`; $("#allN").textContent=`All ${PROJECTS.length} projects`;
 route(); setCondensed();
 </script>
 </body>

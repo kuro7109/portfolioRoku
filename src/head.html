@@ -431,10 +431,19 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .stk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
 .tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-content:start}
 @media (max-width:1100px){.tools{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.tool{display:flex;align-items:center;gap:10px;padding:12px;border-radius:16px;border:1px solid var(--border);background:var(--card);transition:transform .4s var(--spring),border-color .25s}
+.tool{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:18px 10px 14px;border-radius:16px;border:1px solid var(--border);background:var(--card);transition:transform .4s var(--spring),border-color .25s}
 .tool:hover{transform:translateY(-3px);border-color:var(--border-strong)}
 .tool i{width:32px;height:32px;flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);border-radius:9px;display:grid;place-items:center;font:600 12px var(--mono);font-style:normal;color:#fff;background:var(--c)}
 .tool span{font-size:14px;font-weight:500}
+.tool .lg{width:40px;height:40px;display:grid;place-items:center}
+.tool .lg svg{width:34px;height:34px}
+:root[data-theme="dark"] .tool[data-t="Framer"] .lg svg,:root[data-theme="dark"] .tool[data-t="Notion"] .lg svg{filter:invert(1)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tool[data-t="Framer"] .lg svg,:root:not([data-theme="light"]) .tool[data-t="Notion"] .lg svg{filter:invert(1)}}
+.cov-b{display:block;width:100%;text-align:left;border-radius:18px}
+.card .go{cursor:pointer}
+.pdl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:4px 0 20px}
+.pdl dt{font:11px var(--mono);color:var(--muted-fg);text-transform:uppercase}
+.pdl dd{margin:2px 0 0;font-size:15px}
 .skills{display:grid;gap:0}
 .skills div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--border)}
 .skills div:last-child{border-bottom:1px solid var(--border)}

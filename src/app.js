@@ -355,7 +355,7 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
 
 /* ---------- Home: marquee, featured work ---------- */
 (function(){ const one=MARQ.map(([n,a])=>`<span><i>${esc(a)}</i>${esc(n)}</span>`).join(""); $("#mq").innerHTML=one+one; })();
-$("#fgrid").innerHTML=["gutly","alba","tickai","specter"].map(id=>{ const p=PROJECTS.find(x=>x.id===id); return `<a class="fcard rv" href="#work/${p.id}">${cover(p)}<span class="mt"><b>${esc(p.n)}</b><span>${esc(p.type)}</span></span></a>`; }).join("");
+$("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" href="#work/${p.id}">${cover(p)}<span class="mt"><b>${esc(p.n)}</b><span>${esc(p.type)}</span></span></a>`; }).join("");
 
 /* ---------- Work: filter bar with peek, layouts ---------- */
 (function(){
@@ -368,10 +368,11 @@ $("#fgrid").innerHTML=["gutly","alba","tickai","specter"].map(id=>{ const p=PROJ
     const L=list(f); $("#showing").textContent=`Showing ${L.length} of ${PROJECTS.length} projects`;
     works.className="works v-"+view;
     works.innerHTML=L.map((p,i)=>`<article class="card" data-id="${p.id}" data-rail="${esc(p.n)}" style="animation:page-in .6s var(--ease-out) ${i*50}ms both">
-      ${p.slug?`<a href="${ROKU+p.slug}" target="_blank" rel="noopener" aria-label="${esc(p.n)} case study (opens in a new tab)">${cover(p)}</a>`:cover(p)}
-      <div class="info"><div class="top"><h3>${esc(p.n)}</h3><span class="yr">${esc(p.code)} · ${esc(p.yr)}</span></div><span class="mono" style="color:var(--muted-fg)">${esc(p.type)}</span><p>${esc(p.d)}</p>
+      <button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>
+      <div class="info"><div class="top"><h3>${esc(p.n)}</h3><span class="yr">${esc(p.yr)}</span></div><span class="mono" style="color:var(--muted-fg)">${esc(p.type)}</span><p>${esc(p.d)}</p>
       <dl><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Timeline</dt><dd>${esc(p.tl)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div></dl>
-      ${p.slug?`<a class="go" href="${ROKU+p.slug}" target="_blank" rel="noopener">View case study ${svg("ne")}</a>`:`<span class="go" style="color:var(--muted-fg)">Case study link xyz</span>`}</div></article>`).join("");
+      <button type="button" class="go" data-open="${p.id}">Read case study ${svg("arrow")}</button></div></article>`).join("");
+    $$("[data-open]",works).forEach(b=>b.addEventListener("click",()=>openProject(b.dataset.open,b)));
     deckFx(); if(current==="work") buildRail();
   }
   btns.forEach(b=>{
