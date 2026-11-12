@@ -163,9 +163,9 @@ function renderBlogs(){
   $$("#bgrid .post").forEach(b=>b.addEventListener("click",()=>openPost(+b.dataset.i,b)));
 }
 let readerEl=null, readerFrom=null;
-function openReader({cov,meta,title,paras,back,from,label}){
+function openReader({cov,meta,title,paras,back,from,label,wide}){
   readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",label||title);
-  readerEl.innerHTML=`<article style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd">${meta?`<span class="mono" style="color:var(--muted-fg)">${meta}</span>`:""}${title?`<h2>${esc(title)}</h2>`:""}${paras}</div></article>`;
+  readerEl.innerHTML=`<article class="${wide?"wide":""}" style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd">${meta?`<span class="mono" style="color:var(--muted-fg)">${meta}</span>`:""}${title?`<h2>${esc(title)}</h2>`:""}${paras}</div></article>`;
   readerEl.addEventListener("click",e=>{ if(e.target===readerEl) closePost(); });
   document.body.appendChild(readerEl); root.style.overflow="hidden"; $("#readerClose").addEventListener("click",closePost); $("#readerClose").focus(); haptic("light");
 }
@@ -179,8 +179,11 @@ function openProject(id,from){
   const p=PROJECTS.find(x=>x.id===id); if(!p) return;
   // Client | Year on top, timeline if there is one, role across the bottom
   const facts=`<dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div class="wide"><dt>Role</dt><dd>${esc(p.role||p.type.replace(/ \/ /g,", "))}</dd></div></dl>`;
-  const paras=`<p>${esc(p.d)}</p>${facts}`+(p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:`<p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon.</p>`);
-  openReader({cov:cover(p,false),meta:"",title:"",paras,back:"Back to work",from,label:p.n});
+  const live=p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:"";
+  // a full case study (exported board, sliced into images so it loads progressively) sits under the facts
+  const cs=p.cs?`<h3 class="rh">Case study</h3><div class="csimg">${p.cs.h.map((h,k)=>`<img src="${p.cs.dir}/part-${k+1}.jpg" width="${p.cs.w}" height="${h}" alt="${k?"":esc(p.n)+" case study: logo, colours, typography, menu, website and brand applications"}" loading="${k?"lazy":"eager"}" decoding="async">`).join("")}</div>`:"";
+  const paras=`<p>${esc(p.d)}</p>${facts}${live}`+(cs||(p.live?"":`<p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon.</p>`));
+  openReader({cov:cover(p,false),meta:"",title:"",paras,back:"Back to work",from,label:p.n,wide:!!p.cs});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });

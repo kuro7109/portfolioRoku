@@ -444,6 +444,9 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .peek .cov{clip-path:inset(0 round 10px)}
 .reader .cov{clip-path:none}
 .reader .cov .tg{display:none}
+.reader article.wide{max-width:980px}
+.reader .csimg{margin:8px calc(-1 * clamp(18px,4vw,40px)) -36px;border-top:1px solid var(--border)}
+.reader .csimg img{display:block;width:100%;height:auto;background:#3a2e1e}
 .card .go{cursor:pointer}
 .card .acts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:6px}
 .card .acts .go{margin-top:0}
@@ -953,7 +956,7 @@ const PROJECTS=[
  {id:"socius",live:"https://socius-ecru.vercel.app/#land",n:"Socius",type:"Product Design / Product Management",role:"Product design, product thinking, product management, product development",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#f43f5e","#c084fc","#1c0f1f"],d:"A social app built around play. People join clans, chat, take on games, follow their progress and learn with a built-in coach, all in one mobile-first web app. I took it from the first idea to a working product: product thinking, design, product management and development."},
  {id:"gutly",live:"https://gutlybyrohitkumawat.vercel.app",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
  {id:"inlens",live:"https://inlensbyrohitkumawat-tan.vercel.app/#welcome",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#3b82f6","#93c5fd","#0b1630"],d:"An agentic AI platform for user research that takes on the busywork, from reaching participants to transcribing and summarising interviews. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
- {id:"alba",n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
+ {id:"alba",live:"https://albaandnotte.vercel.app",cs:{dir:"case-studies/alba-notte",w:1400,h:[1512,1512,1512,1512,1512,1508]},n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
  {id:"workbench",live:"https://roku7109.vercel.app/#login",n:"HiLabs Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
  {id:"spotify",n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
  {id:"specter",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
@@ -1617,9 +1620,9 @@ function renderBlogs(){
   $$("#bgrid .post").forEach(b=>b.addEventListener("click",()=>openPost(+b.dataset.i,b)));
 }
 let readerEl=null, readerFrom=null;
-function openReader({cov,meta,title,paras,back,from,label}){
+function openReader({cov,meta,title,paras,back,from,label,wide}){
   readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",label||title);
-  readerEl.innerHTML=`<article style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd">${meta?`<span class="mono" style="color:var(--muted-fg)">${meta}</span>`:""}${title?`<h2>${esc(title)}</h2>`:""}${paras}</div></article>`;
+  readerEl.innerHTML=`<article class="${wide?"wide":""}" style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd">${meta?`<span class="mono" style="color:var(--muted-fg)">${meta}</span>`:""}${title?`<h2>${esc(title)}</h2>`:""}${paras}</div></article>`;
   readerEl.addEventListener("click",e=>{ if(e.target===readerEl) closePost(); });
   document.body.appendChild(readerEl); root.style.overflow="hidden"; $("#readerClose").addEventListener("click",closePost); $("#readerClose").focus(); haptic("light");
 }
@@ -1633,8 +1636,11 @@ function openProject(id,from){
   const p=PROJECTS.find(x=>x.id===id); if(!p) return;
   // Client | Year on top, timeline if there is one, role across the bottom
   const facts=`<dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div class="wide"><dt>Role</dt><dd>${esc(p.role||p.type.replace(/ \/ /g,", "))}</dd></div></dl>`;
-  const paras=`<p>${esc(p.d)}</p>${facts}`+(p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:`<p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon.</p>`);
-  openReader({cov:cover(p,false),meta:"",title:"",paras,back:"Back to work",from,label:p.n});
+  const live=p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:"";
+  // a full case study (exported board, sliced into images so it loads progressively) sits under the facts
+  const cs=p.cs?`<h3 class="rh">Case study</h3><div class="csimg">${p.cs.h.map((h,k)=>`<img src="${p.cs.dir}/part-${k+1}.jpg" width="${p.cs.w}" height="${h}" alt="${k?"":esc(p.n)+" case study: logo, colours, typography, menu, website and brand applications"}" loading="${k?"lazy":"eager"}" decoding="async">`).join("")}</div>`:"";
+  const paras=`<p>${esc(p.d)}</p>${facts}${live}`+(cs||(p.live?"":`<p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon.</p>`));
+  openReader({cov:cover(p,false),meta:"",title:"",paras,back:"Back to work",from,label:p.n,wide:!!p.cs});
 }
 function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; root.style.overflow=""; readerFrom&&readerFrom.focus(); }
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
