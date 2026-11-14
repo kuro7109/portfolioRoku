@@ -417,7 +417,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 
 /* Skills network */
 .net-hint{margin:0;color:var(--muted-fg)}
-.net{position:relative;height:clamp(460px,62vw,700px);margin:0 calc(-1 * clamp(16px,4vw,48px));cursor:grab;touch-action:pan-y;-webkit-mask-image:radial-gradient(120% 90% at 50% 50%,#000 70%,transparent);mask-image:radial-gradient(120% 90% at 50% 50%,#000 70%,transparent)}
+.net{position:relative;user-select:none;-webkit-user-select:none;height:clamp(460px,62vw,700px);margin:0 calc(-1 * clamp(16px,4vw,48px));cursor:grab;touch-action:pan-y;-webkit-mask-image:radial-gradient(120% 90% at 50% 50%,#000 70%,transparent);mask-image:radial-gradient(120% 90% at 50% 50%,#000 70%,transparent)}
 .net.drag{cursor:grabbing}
 .net canvas{display:block;width:100%;height:100%}
 
@@ -1510,8 +1510,9 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
   const stars=Array.from({length:110},()=>({x:rnd(),y:rnd(),r:rnd()*1.1+.3,z:rnd()}));
 
   let W=0,H=0,dpr=1,R=200,raf=0,last=0,vis=false,fs=1,small=false;
-  const W0=.055;                // steady angular velocity (rad/s), a quarter of the original .22
-  let ay=0, ax=-.32, vy=W0, vx=0, drag=null, hover=-1, mx=-1e4, my=-1e4;
+  const W0=.04;                 // steady angular velocity (rad/s): one turn every ~2.6 min
+  const SENS=.0045, TILT0=-.32;  // drag sensitivity (rad per px) and resting tilt
+  let ay=0, ax=TILT0, tay=0, tax=TILT0, vy=W0, vx=0, drag=null, hover=-1, mx=-1e4, my=-1e4;
   function size(){ const r=wrap.getBoundingClientRect(); if(!r.width) return; dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height;
     cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); small=W<600; fs=small?.78:1; R=Math.min(W*(small?.43:.36),H*.42); }
   const P=[]; // projected points
@@ -1548,17 +1549,29 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
     raf=0; if(!vis||current!=="home"||document.hidden) return;
     raf=requestAnimationFrame(frame);
     const dt=Math.min(.05,last?(t-last)/1000:.016); last=t;
-    if(!drag){ vy+=(W0-vy)*Math.min(1,dt*1.6); vx*=Math.pow(.02,dt); ay+=vy*dt; ax=clamp(ax+vx*dt,-1.1,.9); ax+=(-.32-ax)*dt*.6; }
+    if(drag){
+      // while held, the globe follows the pointer through a short ease so it never jumps
+      const k=1-Math.pow(.0005,dt); ay+=(tay-ay)*k; ax+=(tax-ax)*k;
+    } else {
+      // after letting go: a gentle glide that blends back into the steady turn
+      vy+=(W0-vy)*Math.min(1,dt*1.1); vx*=Math.pow(.05,dt);
+      ay+=vy*dt; ax=clamp(ax+vx*dt,-1,.6); ax+=(TILT0-ax)*Math.min(1,dt*.8);
+      tay=ay; tax=ax;
+    }
     const h=pick(); if(h!==hover){ hover=h; cv.style.cursor=h>-1?"pointer":""; }
     draw(t);
   }
   const start=()=>{ if(!raf&&!reduce){ last=0; raf=requestAnimationFrame(frame); } };
-  wrap.addEventListener("pointerdown",e=>{ drag={x:e.clientX,y:e.clientY,t:performance.now()}; wrap.classList.add("drag"); wrap.setPointerCapture(e.pointerId); vy=0; vx=0; });
+  wrap.addEventListener("pointerdown",e=>{ if(e.button>0) return; e.preventDefault(); drag={x:e.clientX,y:e.clientY,t:performance.now(),vx:0,vy:0}; tay=ay; tax=ax; wrap.classList.add("drag"); try{ wrap.setPointerCapture(e.pointerId); }catch(_){} start(); });
   wrap.addEventListener("pointermove",e=>{ const r=cv.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;
-    if(!drag) return; const now=performance.now(), dt=Math.max(8,now-drag.t)/1000, dx=e.clientX-drag.x, dy=e.clientY-drag.y;
-    ay+=dx*.006; ax=clamp(ax+dy*.004,-1.1,.9); vy=dx*.006/dt; vx=dy*.004/dt; drag={x:e.clientX,y:e.clientY,t:now};
-    if(reduce){ draw(0); } });
-  const end=()=>{ if(!drag) return; drag=null; wrap.classList.remove("drag"); vy=clamp(vy,-4,4); vx=clamp(vx,-2,2); };
+    if(!drag) return; const now=performance.now(), dt=Math.max(16,now-drag.t)/1000, dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    // drag right → the front of the globe moves right; drag down → the front tips down
+    tay+=dx*SENS; tax=clamp(tax-dy*SENS*.8,-1,.6);
+    // smoothed release speed, so a quick flick doesn't send it spinning
+    drag.vy=drag.vy*.7+(dx*SENS/dt)*.3; drag.vx=drag.vx*.7+(-dy*SENS*.8/dt)*.3;
+    drag.x=e.clientX; drag.y=e.clientY; drag.t=now;
+    if(reduce){ ay=tay; ax=tax; draw(0); } });
+  const end=()=>{ if(!drag) return; const idle=performance.now()-drag.t>90; vy=idle?0:clamp(drag.vy,-.9,.9); vx=idle?0:clamp(drag.vx,-.5,.5); drag=null; wrap.classList.remove("drag"); };
   wrap.addEventListener("pointerup",end); wrap.addEventListener("pointercancel",end);
   wrap.addEventListener("pointerleave",()=>{ mx=my=-1e4; });
   new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis){ if(!W) size(); start(); } }).observe(wrap);
