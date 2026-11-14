@@ -371,6 +371,23 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .exp p{margin:0;color:var(--muted-fg);font-size:14px;line-height:1.5}
 .exp .ea{margin-top:auto;padding-top:10px}
 .exp .ea .btn{height:40px;font-size:14px}
+/* Bento: Snake is the big tile; Cricket and OTP Vault stack beside it as wide tiles */
+.egrid.bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(250px,auto)}
+.bento .exp{grid-column:span 2}
+.bento .exp[data-x="snake"]{grid-row:span 2}
+.bento .exp[data-x="snake"] .stage{aspect-ratio:auto;flex:1;min-height:320px}
+.bento .exp:not([data-x="snake"]){flex-direction:row}
+.bento .exp:not([data-x="snake"]) .stage{aspect-ratio:auto;width:46%;flex:none;border-bottom:0;border-right:1px solid var(--border)}
+.bento .exp:not([data-x="snake"]) .bd{justify-content:flex-start}
+@media (max-width:900px){
+  .egrid.bento{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto}
+  .bento .exp{grid-column:span 1}
+  .bento .exp[data-x="snake"]{grid-column:1/-1;grid-row:auto}
+  .bento .exp[data-x="snake"] .stage{flex:none;aspect-ratio:16/9;min-height:0}
+  .bento .exp:not([data-x="snake"]){flex-direction:column}
+  .bento .exp:not([data-x="snake"]) .stage{width:auto;aspect-ratio:4/3;border-right:0;border-bottom:1px solid var(--border)}
+}
+@media (max-width:600px){.egrid.bento{grid-template-columns:minmax(0,1fr)}.bento .exp[data-x="snake"] .stage{aspect-ratio:4/3}}
 .hint{display:grid;gap:8px;justify-items:start}
 .hint .hint-n{color:var(--fg)}
 .hint .hint-t{padding:10px 12px;border-radius:12px;background:var(--secondary);border:1px dashed var(--border-strong);color:var(--fg);font-size:14px;animation:feed .35s var(--ease-out) both}
@@ -415,8 +432,8 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .glow input:focus{outline:none}
 @property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
 @keyframes spin-ang{to{--ang:360deg}}
-@media (max-width:900px){.egrid{grid-template-columns:repeat(2,minmax(0,1fr))}.egrid .exp:last-child:nth-child(odd){grid-column:1/-1}}
-@media (max-width:600px){.egrid{grid-template-columns:minmax(0,1fr)}.egrid .exp:last-child:nth-child(odd){grid-column:auto}}
+@media (max-width:900px){.egrid{grid-template-columns:repeat(2,minmax(0,1fr))}.egrid:not(.bento) .exp:last-child:nth-child(odd){grid-column:1/-1}}
+@media (max-width:600px){.egrid{grid-template-columns:minmax(0,1fr)}.egrid:not(.bento) .exp:last-child:nth-child(odd){grid-column:auto}}
 
 /* Skills network */
 .net-hint{margin:0;color:var(--muted-fg)}
@@ -736,8 +753,8 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
   <div class="hr"></div>
   <div class="frame">
     <section class="sec" data-rail="Experiments" aria-labelledby="he-h">
-      <div class="shead"><div><p class="kick"><b>02</b> Experiments</p><h2 class="h2" id="he-h">Small things, <em>built to play with</em></h2></div><a class="btn" href="#experiments">All experiments <i data-ic="arrow"></i></a></div>
-      <div class="egrid" id="homeExp"></div>
+      <div class="shead"><div><p class="kick"><b>02</b> Experiments</p><h2 class="h2" id="he-h">Small things, <em>I like to play with</em></h2></div><a class="btn" href="#experiments">All experiments <i data-ic="arrow"></i></a></div>
+      <div class="egrid bento" id="homeExp"></div>
     </section>
   </div>
   <div class="hr"></div>
@@ -777,8 +794,8 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 <div class="page" data-page="experiments" hidden>
   <div class="frame">
     <section class="sec ptop" aria-labelledby="e-h">
-      <div class="shead"><div><p class="kick"><b>Experiments</b> Playground</p><h2 class="h2" id="e-h">Small things, <em>built to play with</em></h2><p class="lead">Games and interface pieces made for fun. Some are full builds, some are a single interaction done well.</p></div></div>
-      <div class="egrid" id="allExp"></div>
+      <div class="shead"><div><p class="kick"><b>Experiments</b> Playground</p><h2 class="h2" id="e-h">Small things, <em>I like to play with</em></h2><p class="lead">Games and interface pieces made for fun. Some are full builds, some are a single interaction done well.</p></div></div>
+      <div class="egrid bento" id="allExp"></div>
     </section>
   </div>
 </div>
