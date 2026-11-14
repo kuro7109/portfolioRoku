@@ -1,10 +1,10 @@
 
 /* ---------- Experiments (built per card, so the same demo can live on two pages) ---------- */
 const EXPS={
- snake:{t:"Snake",tag:"Game",big:true,d:"The classic, rebuilt for the browser. Steer with the arrow keys or the on-screen pads and pick a speed from Slow to Extreme.",
-   stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span><span class="keys" aria-hidden="true"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd><kbd>Space</kbd></span></div>`,
+ snake:{t:"Snake",tag:"Game",big:true,d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
+   stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
    cta:`<a class="btn pri" href="https://dotsgame-owcu.vercel.app" target="_blank" rel="noopener">Play Snake ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
- otp:{t:"OTP Vault",tag:"Interaction",d:"Type the four-digit code to open the vault. Hint: 1234.",
+ otp:{t:"OTP Vault",tag:"Interaction",d:"A four-digit code field guarding a vault that unlocks on the right code.",
    stage:`<div class="stage"><div>${'<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path class="sh" d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'}<div class="otp">${[1,2,3,4].map(n=>`<input inputmode="numeric" maxlength="1" aria-label="Digit ${n}">`).join("")}</div></div></div>`},
  receipt:{t:"Receipt Printer",tag:"Motion",d:"Prints a small receipt line by line, with a buzz for every line on phones.",
    stage:`<div class="stage rcpt-wrap"><div class="slot-l"></div><div class="rcpt"><div class="row"><span>ORDER xyz</span><span>#0001</span></div></div></div>`,cta:`<button type="button" class="btn" data-print>Print</button>`},

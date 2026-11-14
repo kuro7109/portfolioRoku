@@ -745,7 +745,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
   </div>
   <div class="frame">
     <section class="sec net-sec" data-rail="Skills" aria-labelledby="hn-h">
-      <div class="shead"><div><p class="kick"><b>04</b> Skills</p><h2 class="h2" id="hn-h">How everything I do <em>connects</em></h2></div><p class="mono net-hint">Drag to spin · hover a node</p></div>
+      <div class="shead"><div><p class="kick"><b>04</b> Skills</p><h2 class="h2" id="hn-h">How everything I do <em>connects</em></h2></div></div>
       <div class="net" id="net"><canvas id="netCv" role="img" aria-label="A rotating network of Rohit's skills: product design, product management, branding, research, AI tools and machine learning, each linked to the tools and methods behind it"></canvas></div>
     </section>
   </div>
@@ -878,7 +878,6 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
         </div>
         <p class="bsum" id="bkSum" aria-live="polite">Choose a day and a time.</p>
         <a class="btn pri bsend" id="bkSend" href="#book" aria-disabled="true">Request this slot <i data-ic="arrow"></i></a>
-        <p class="bnote">Opens Gmail with your request filled in, so you can send it from your own account.</p>
       </form>
     </section>
   </div>
@@ -1226,7 +1225,7 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
   function showNote(){
     if(note) return hideNote();
     let k=0; const html=NOTE.map(l=>`<p>${l.map(w=>{ const d=(.25+.085*k++).toFixed(2); return w.includes("@")?`<a class="ink" href="${GMAIL}" target="_blank" rel="noopener" style="--d:${d}s">${esc(w)}</a>`:`<span class="ink" style="--d:${d}s">${esc(w)}</span>`; }).join(" ")}</p>`).join("");
-    note=document.createElement("div"); note.className="note"; note.setAttribute("role","note"); note.tabIndex=0; note.title="Tap to put the note away";
+    note=document.createElement("div"); note.className="note"; note.setAttribute("role","note"); note.tabIndex=0;
     note.innerHTML=html+`<div class="sig"><span class="rl" style="--d:${(.3+.085*k).toFixed(2)}s"></span><span class="ink" style="--d:${(.4+.085*k).toFixed(2)}s">Rohit</span></div>`;
     note.addEventListener("click",e=>{ if(!e.target.closest("a")) hideNote(); });
     note.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); hideNote(); } });
@@ -1582,10 +1581,10 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
 
 /* ---------- Experiments (built per card, so the same demo can live on two pages) ---------- */
 const EXPS={
- snake:{t:"Snake",tag:"Game",big:true,d:"The classic, rebuilt for the browser. Steer with the arrow keys or the on-screen pads and pick a speed from Slow to Extreme.",
-   stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span><span class="keys" aria-hidden="true"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd><kbd>Space</kbd></span></div>`,
+ snake:{t:"Snake",tag:"Game",big:true,d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
+   stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
    cta:`<a class="btn pri" href="https://dotsgame-owcu.vercel.app" target="_blank" rel="noopener">Play Snake ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
- otp:{t:"OTP Vault",tag:"Interaction",d:"Type the four-digit code to open the vault. Hint: 1234.",
+ otp:{t:"OTP Vault",tag:"Interaction",d:"A four-digit code field guarding a vault that unlocks on the right code.",
    stage:`<div class="stage"><div>${'<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path class="sh" d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'}<div class="otp">${[1,2,3,4].map(n=>`<input inputmode="numeric" maxlength="1" aria-label="Digit ${n}">`).join("")}</div></div></div>`},
  receipt:{t:"Receipt Printer",tag:"Motion",d:"Prints a small receipt line by line, with a buzz for every line on phones.",
    stage:`<div class="stage rcpt-wrap"><div class="slot-l"></div><div class="rcpt"><div class="row"><span>ORDER xyz</span><span>#0001</span></div></div></div>`,cta:`<button type="button" class="btn" data-print>Print</button>`},

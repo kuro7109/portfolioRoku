@@ -149,7 +149,7 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
   function showNote(){
     if(note) return hideNote();
     let k=0; const html=NOTE.map(l=>`<p>${l.map(w=>{ const d=(.25+.085*k++).toFixed(2); return w.includes("@")?`<a class="ink" href="${GMAIL}" target="_blank" rel="noopener" style="--d:${d}s">${esc(w)}</a>`:`<span class="ink" style="--d:${d}s">${esc(w)}</span>`; }).join(" ")}</p>`).join("");
-    note=document.createElement("div"); note.className="note"; note.setAttribute("role","note"); note.tabIndex=0; note.title="Tap to put the note away";
+    note=document.createElement("div"); note.className="note"; note.setAttribute("role","note"); note.tabIndex=0;
     note.innerHTML=html+`<div class="sig"><span class="rl" style="--d:${(.3+.085*k).toFixed(2)}s"></span><span class="ink" style="--d:${(.4+.085*k).toFixed(2)}s">Rohit</span></div>`;
     note.addEventListener("click",e=>{ if(!e.target.closest("a")) hideNote(); });
     note.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); hideNote(); } });
