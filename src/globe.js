@@ -29,7 +29,7 @@
     const u=norm(cross(d,[0,1,0])), v=norm(cross(d,u));
     // leaves fan out on a ring around their hub so labels don't pile up
     leaves.forEach((l,k)=>{
-      const phi=k*2*Math.PI/leaves.length+(rnd()-.5)*.5, th=.5+rnd()*.32;
+      const phi=k*2*Math.PI/leaves.length+(rnd()-.5)*.5, th=.6+rnd()*.34;
       const q=norm(d.map((x,i)=>x*Math.cos(th)+(u[i]*Math.cos(phi)+v[i]*Math.sin(phi))*Math.sin(th)));
       const li=nodes.push({n:l,hub:false,p:q.map(x=>x*(.96+rnd()*.08))})-1;
       edges.push([hi,li]);
@@ -45,10 +45,10 @@
   const SENS=.0045, TILT0=-.32;  // drag sensitivity (rad per px) and resting tilt
   let ay=0, ax=TILT0, tay=0, tax=TILT0, vy=W0, vx=0, drag=null, hover=-1, mx=-1e4, my=-1e4;
   function size(){ const r=wrap.getBoundingClientRect(); if(!r.width) return; dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height;
-    cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); small=W<600; fs=small?.78:1; R=Math.min(W*(small?.43:.36),H*.42); }
+    cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); small=W<600; fs=small?.78:1; R=Math.min(W*(small?.42:.42),H*.39); }
   const P=[]; // projected points
   function project(){
-    const cy=Math.cos(ay), sy=Math.sin(ay), cx=Math.cos(ax), sx=Math.sin(ax), F=3.2;
+    const cy=Math.cos(ay), sy=Math.sin(ay), cx=Math.cos(ax), sx=Math.sin(ax), F=4.2;
     nodes.forEach((nd,i)=>{ let [x,y,z]=nd.p; let x1=x*cy+z*sy, z1=-x*sy+z*cy; let y1=y*cx-z1*sx, z2=y*sx+z1*cx;
       const s=F/(F-z2); P[i]={x:W/2+x1*R*s, y:H/2+y1*R*s, z:z2, s}; });
   }
@@ -72,7 +72,7 @@
       if(nd.hub){ ctx.strokeStyle=`rgba(${ink},${al*.35})`; ctx.beginPath(); ctx.arc(p.x,p.y,r+5,0,7); ctx.stroke(); }
       const la=dim?.1:(nd.hub?.35+.65*d:(small&&d<.55?0:.12+.7*d*d));
       if(la>.06){ ctx.fillStyle=`rgba(${ink},${la})`; ctx.font=nd.hub?`600 ${Math.round(15*p.s*fs)}px "TikTok Sans",system-ui,sans-serif`:`${Math.round(12*p.s*fs)}px "TikTok Sans",system-ui,sans-serif`;
-        ctx.textAlign="center"; ctx.textBaseline="top"; ctx.fillText(nd.n,p.x,p.y+r+(nd.hub?8:5)); }
+        ctx.textAlign="center"; ctx.textBaseline="top"; const tw=ctx.measureText(nd.n).width/2+4; ctx.fillText(nd.n,clamp(p.x,tw,W-tw),p.y+r+(nd.hub?8:5)); }
     }
   }
   function pick(){ let best=-1,bd=18; P.forEach((p,i)=>{ const d=Math.hypot(p.x-mx,p.y-my); if(d<bd&&p.z>-.2){ bd=d; best=i; } }); return best; }
