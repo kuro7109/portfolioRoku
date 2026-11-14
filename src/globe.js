@@ -40,7 +40,7 @@
   const stars=Array.from({length:110},()=>({x:rnd(),y:rnd(),r:rnd()*1.1+.3,z:rnd()}));
 
   let W=0,H=0,dpr=1,R=200,raf=0,last=0,vis=false,fs=1,small=false;
-  const W0=.22;                 // steady angular velocity (rad/s)
+  const W0=.055;                // steady angular velocity (rad/s), a quarter of the original .22
   let ay=0, ax=-.32, vy=W0, vx=0, drag=null, hover=-1, mx=-1e4, my=-1e4;
   function size(){ const r=wrap.getBoundingClientRect(); if(!r.width) return; dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height;
     cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); small=W<600; fs=small?.78:1; R=Math.min(W*(small?.43:.36),H*.42); }
