@@ -361,18 +361,21 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 @media (max-width:700px){.works.v-deck .card{grid-template-columns:minmax(0,1fr)}.works.v-grid{grid-template-columns:minmax(0,1fr)}.card dl{grid-template-columns:repeat(2,minmax(0,1fr))}.works.v-deck .card{top:90px}}
 
 /* Experiments */
-.egrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.exp{position:relative;display:grid;grid-template-rows:auto 1fr;border-radius:22px;background:var(--card);border:1px solid var(--border);overflow:hidden;transition:transform .5s var(--spring),border-color .3s}
-.exp:hover{border-color:var(--border-strong)}
-.exp.big{grid-column:span 2}
-.exp .stage{position:relative;aspect-ratio:4/3;display:grid;place-items:center;background:var(--secondary);overflow:hidden}
-.exp.big .stage{aspect-ratio:auto;min-height:280px}
-.exp.full{grid-column:1/-1}
-.exp.full .stage{aspect-ratio:auto;min-height:200px}
-.exp .bd{padding:16px 18px 18px;display:grid;gap:8px;align-content:start}
-.exp h3{margin:0;font-size:18px;letter-spacing:-.025em;font-weight:580;display:flex;justify-content:space-between;gap:8px;align-items:center}
-.exp p{margin:0;color:var(--muted-fg);font-size:14px}
-.exp .bd .btn{width:max-content;height:38px;font-size:14px;margin-top:4px}
+.egrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.exp{position:relative;display:flex;flex-direction:column;border-radius:22px;background:var(--card);border:1px solid var(--border);overflow:hidden;transition:transform .5s var(--spring),border-color .3s,box-shadow .3s}
+.exp:hover{border-color:var(--border-strong);transform:translateY(-3px);box-shadow:0 18px 40px -26px rgba(0,0,0,.45)}
+.exp .stage{position:relative;aspect-ratio:4/3;display:grid;place-items:center;background:var(--secondary);overflow:hidden;border-bottom:1px solid var(--border)}
+.exp .bd{flex:1;padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px}
+.exp .eh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.exp h3{margin:0;font-size:19px;letter-spacing:-.025em;font-weight:580}
+.exp p{margin:0;color:var(--muted-fg);font-size:14px;line-height:1.5}
+.exp .ea{margin-top:auto;padding-top:10px}
+.exp .ea .btn{height:40px;font-size:14px}
+.hint{display:grid;gap:8px;justify-items:start}
+.hint .hint-n{color:var(--fg)}
+.hint .hint-t{padding:10px 12px;border-radius:12px;background:var(--secondary);border:1px dashed var(--border-strong);color:var(--fg);font-size:14px;animation:feed .35s var(--ease-out) both}
+.hint .btn.nudge{animation:nudge 1.6s var(--ease-out) 2;border-color:var(--fg)}
+@keyframes nudge{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--brand) 0%,transparent)}40%{box-shadow:0 0 0 6px color-mix(in srgb,var(--brand) 45%,transparent)}}
 .snake{background:#0c0c0c!important}
 .snake canvas{position:absolute;inset:0;width:100%;height:100%}
 .snake .keys{position:absolute;right:12px;bottom:12px;display:flex;gap:4px}
@@ -412,8 +415,8 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .glow input:focus{outline:none}
 @property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
 @keyframes spin-ang{to{--ang:360deg}}
-@media (max-width:900px){.egrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:600px){.egrid{grid-template-columns:minmax(0,1fr)}.exp.big,.exp.full{grid-column:auto}}
+@media (max-width:900px){.egrid{grid-template-columns:repeat(2,minmax(0,1fr))}.egrid .exp:last-child:nth-child(odd){grid-column:1/-1}}
+@media (max-width:600px){.egrid{grid-template-columns:minmax(0,1fr)}.egrid .exp:last-child:nth-child(odd){grid-column:auto}}
 
 /* Skills network */
 .net-hint{margin:0;color:var(--muted-fg)}

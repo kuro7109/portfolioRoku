@@ -4,7 +4,11 @@ const EXPS={
  snake:{t:"Snake",tag:"Game",big:true,d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
    stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
    cta:`<a class="btn pri" href="https://dotsgame-owcu.vercel.app" target="_blank" rel="noopener">Play Snake ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
- otp:{t:"OTP Vault",tag:"Interaction",d:"A four-digit code field guarding a vault that unlocks on the right code.",
+ cricket:{t:"Nokia Cricket",tag:"Game",d:"The Nokia classic, reimagined with a minimal dark look. Chase a target or play free, with your pick of overs, wickets and bowler speed.",
+   stage:`<div class="stage snake cricket"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
+   cta:`<a class="btn pri" href="https://cricketbyroku.vercel.app" target="_blank" rel="noopener">Play Cricket ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
+ otp:{t:"OTP Vault",tag:"Puzzle",d:"A four-digit code guards the vault. Crack it to unlock.",
+   cta:`<div class="hint"><p class="hint-n" hidden>Two tries down. Want a hint?</p><button type="button" class="btn hint-b" aria-expanded="false">Need a hint?</button><p class="hint-t" hidden>Four digits, counting up from one.</p></div>`,
    stage:`<div class="stage"><div>${'<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path class="sh" d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'}<div class="otp">${[1,2,3,4].map(n=>`<input inputmode="numeric" maxlength="1" aria-label="Digit ${n}">`).join("")}</div></div></div>`},
  receipt:{t:"Receipt Printer",tag:"Motion",d:"Prints a small receipt line by line, with a buzz for every line on phones.",
    stage:`<div class="stage rcpt-wrap"><div class="slot-l"></div><div class="rcpt"><div class="row"><span>ORDER xyz</span><span>#0001</span></div></div></div>`,cta:`<button type="button" class="btn" data-print>Print</button>`},
@@ -15,10 +19,10 @@ const EXPS={
  glow:{t:"Glowing Chat Input",tag:"AI UI",full:true,d:"An animated border glow for an AI chat field. Press the button to watch it type.",
    stage:`<div class="stage"><div class="glow"><input type="text" placeholder="Ask Rohit's portfolio anything…" aria-label="Glowing chat input demo"></div></div>`,cta:`<button type="button" class="btn" data-type>Type a question</button>`}
 };
-function expCard(id){ const e=EXPS[id]; return `<article class="exp rv ${e.big?"big":""} ${e.full?"full":""}" data-id="${id}" data-x="${id}" data-rail="${esc(e.t)}">${e.stage}<div class="bd"><h3>${esc(e.t)}<span class="chip">${esc(e.tag)}</span></h3><p>${esc(e.d)}</p>${e.cta||""}</div></article>`; }
-$("#homeExp").innerHTML=["snake","otp"].map(expCard).join("");
+function expCard(id){ const e=EXPS[id]; return `<article class="exp rv" data-id="${id}" data-x="${id}" data-rail="${esc(e.t)}">${e.stage}<div class="bd"><div class="eh"><h3>${esc(e.t)}</h3><span class="chip">${esc(e.tag)}</span></div><p>${esc(e.d)}</p>${e.cta?`<div class="ea">${e.cta}</div>`:""}</div></article>`; }
+$("#homeExp").innerHTML=["snake","cricket","otp"].map(expCard).join("");
 $("#homeExp").querySelectorAll("[data-rail]").forEach(el=>el.removeAttribute("data-rail"));
-$("#allExp").innerHTML=["snake","otp"].map(expCard).join("");
+$("#allExp").innerHTML=["snake","cricket","otp"].map(expCard).join("");
 $$(".exp").forEach(card=>{
   const x=card.dataset.x;
   if(x==="snake"){ const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,cs=14,cols=0,rows=0,snake=[],dir=[1,0],food=[0,0],timer=0;
@@ -37,10 +41,43 @@ $$(".exp").forEach(card=>{
     addEventListener("resize",size); size();
     if(!reduce) new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!W) size(); if(v&&!timer) timer=setInterval(()=>{ step(); draw(); },110); if(!v&&timer){ clearInterval(timer); timer=0; } }).observe(cv);
   }
-  if(x==="otp"){ const box=card.querySelector(".otp"), ins=$$("input",box);
+  if(x==="cricket"){ const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,timer=0,t=0,runs=34,wk=2,balls=22,shot=null,flash="";
+    const size=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); draw(); };
+    // one delivery every ~2.2s: run-up, bounce, swing, then the ball flies off (or hits the stumps)
+    const OUT=["4","6","1","2","0","4","W","1","6","0"]; let k=0;
+    const draw=()=>{ if(!W) return; ctx.clearRect(0,0,W,H);
+      const cx=W/2, top=H*.14, bot=H*.82, pw=Math.min(84,W*.22);
+      ctx.strokeStyle="#1f1f1f"; ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(cx,H*.5,W*.44,H*.44,0,0,7); ctx.stroke(); ctx.beginPath(); ctx.ellipse(cx,H*.5,W*.26,H*.3,0,0,7); ctx.stroke();
+      ctx.fillStyle="#161616"; ctx.fillRect(cx-pw/2,top,pw,bot-top);
+      ctx.strokeStyle="#2a2a2a"; ctx.lineWidth=1; [top+14,bot-14].forEach(y=>{ ctx.beginPath(); ctx.moveTo(cx-pw/2-8,y); ctx.lineTo(cx+pw/2+8,y); ctx.stroke(); });
+      const stump=(y,down)=>{ ctx.fillStyle=down?"#adfa1d":"#e8e8e8"; for(let i=-1;i<=1;i++) ctx.fillRect(cx+i*6-1.2,y-(down&&i===0?6:12),2.4,down&&i!==0?10:12); };
+      stump(top+14,false); stump(bot-10,shot==="W"&&t>.55);
+      const p=Math.min(1,t/.55); // ball travel phase
+      if(t<.55){ const y=top+20+(bot-34-top)*p, hop=Math.sin(Math.min(1,p*1.6)*Math.PI)*10*(p<.62?1:0);
+        ctx.fillStyle="rgba(0,0,0,.4)"; ctx.beginPath(); ctx.ellipse(cx,y+4,4,2,0,0,7); ctx.fill();
+        ctx.fillStyle="#fff"; ctx.beginPath(); ctx.arc(cx,y-hop,3.6,0,7); ctx.fill(); }
+      else if(shot&&shot!=="W"&&shot!=="0"){ const q=(t-.55)/.45, dir=shot==="6"?-.5:shot==="4"?.9:-1.2, far=shot==="6"?1.3:shot==="4"?1.1:.4;
+        const x=cx+Math.sin(dir)*q*W*.45*far, y=bot-34-Math.cos(dir)*q*H*.6*far-(shot==="6"?Math.sin(q*Math.PI)*30:0);
+        ctx.fillStyle="#fff"; ctx.beginPath(); ctx.arc(x,y,3.6*(shot==="6"?1+Math.sin(q*Math.PI)*.5:1),0,7); ctx.fill(); }
+      // batter: a bat that swings as the ball arrives
+      const sw=t>.45&&t<.75?Math.sin((t-.45)/.3*Math.PI):0;
+      ctx.save(); ctx.translate(cx+10,bot-26); ctx.rotate(-.9+sw*1.6); ctx.fillStyle="#d9c8a0"; ctx.fillRect(-2.5,0,5,28); ctx.restore();
+      ctx.fillStyle="#cfcfcf"; ctx.font='500 11px "IBM Plex Mono",monospace'; ctx.textAlign="right"; ctx.textBaseline="top";
+      ctx.fillText(`${runs}/${wk}  ${Math.floor(balls/6)}.${balls%6} ov`,W-12,12);
+      if(flash&&t>.6){ ctx.textAlign="center"; ctx.fillStyle=flash==="OUT"?"#ff6b6b":"#adfa1d"; ctx.font='600 22px "TikTok Sans",system-ui,sans-serif'; ctx.fillText(flash,cx,H*.4); }
+    };
+    const tick=()=>{ t+=.05; if(t>=1){ t=0; shot=OUT[k++%OUT.length]; flash=""; }
+      if(t>.55&&!flash&&shot){ balls++; if(shot==="W"){ wk=wk>=9?0:wk+1; flash="OUT"; } else { runs+=+shot; if(shot==="4"||shot==="6") flash=shot==="6"?"SIX":"FOUR"; else flash=" "; } if(runs>220){ runs=0; wk=0; balls=0; } }
+      draw(); };
+    shot=OUT[k++]; addEventListener("resize",size); size();
+    if(!reduce) new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!W) size(); if(v&&!timer) timer=setInterval(tick,110); if(!v&&timer){ clearInterval(timer); timer=0; } }).observe(cv);
+  }
+  if(x==="otp"){ const box=card.querySelector(".otp"), ins=$$("input",box), hb=card.querySelector(".hint-b"), ht=card.querySelector(".hint-t"), hn=card.querySelector(".hint-n"); let misses=0;
+    hb.addEventListener("click",()=>{ ht.hidden=false; hn.hidden=true; hb.hidden=true; hb.setAttribute("aria-expanded","true"); haptic("light"); });
     const check=()=>{ const v=ins.map(i=>i.value).join(""); if(v.length<4) return;
       if(v==="1234"){ box.classList.add("ok"); card.classList.add("unlocked"); haptic("success"); say("Vault unlocked"); setTimeout(()=>{ box.classList.remove("ok"); card.classList.remove("unlocked"); ins.forEach(i=>i.value=""); },2200); }
-      else { box.classList.remove("bad"); void box.offsetWidth; box.classList.add("bad"); haptic("error"); setTimeout(()=>{ ins.forEach(i=>i.value=""); ins[0].focus(); },420); } };
+      else { box.classList.remove("bad"); void box.offsetWidth; box.classList.add("bad"); haptic("error"); setTimeout(()=>{ ins.forEach(i=>i.value=""); ins[0].focus(); },420);
+        if(++misses>=2&&ht.hidden){ hn.hidden=false; hb.classList.add("nudge"); } } };
     ins.forEach((inp,i)=>{ inp.addEventListener("input",()=>{ inp.value=inp.value.replace(/\D/g,"").slice(-1); if(inp.value&&i<3) ins[i+1].focus(); haptic("light"); check(); });
       inp.addEventListener("keydown",e=>{ if(e.key==="Backspace"&&!inp.value&&i>0) ins[i-1].focus(); });
       inp.addEventListener("paste",e=>{ const d=(e.clipboardData.getData("text")||"").replace(/\D/g,"").slice(0,4); if(d){ e.preventDefault(); d.split("").forEach((c,k)=>ins[k].value=c); check(); } }); });
@@ -253,7 +290,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest("[data-copy]"); 
 function toMarkdown(){
   return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.yr}`),"",
    "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.y})`),"",
-   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- OTP Vault","","## Off the clock","Old retro games, plus FIFA, Subway Surfers and Mahjong. FIFA ID: 484556561329106944, send a friend request for a head-to-head match.","",
+   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- Nokia Cricket: https://cricketbyroku.vercel.app","- OTP Vault","","## Off the clock","Old retro games, plus FIFA, Subway Surfers and Mahjong. FIFA ID: 484556561329106944, send a friend request for a head-to-head match.","",
    "## Tools",TOOLS.join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`].join("\n");
 }
 $("#agentBtn").addEventListener("click",()=>{ $("#md").textContent=toMarkdown(); $("#agent").hidden=false; $("#agentClose").focus(); });
