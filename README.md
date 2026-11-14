@@ -16,6 +16,7 @@ The page is assembled from the parts in `src/`:
 | `src/body.html` | Page markup |
 | `src/core.js` | Content (projects, experience, tools, highlights), icons, haptics, loader |
 | `src/app.js` | Theme, header, router, section rail, hero, weather, rays, work page |
+| `src/globe.js` | Revolving skills network at the end of Home |
 | `src/app2.js` | Experiments, about, chat, blogs, book a call, footer |
 
 Edit a part, then run `./build.sh` to regenerate `index.html`.
