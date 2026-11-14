@@ -371,23 +371,22 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .exp p{margin:0;color:var(--muted-fg);font-size:14px;line-height:1.5}
 .exp .ea{margin-top:auto;padding-top:10px}
 .exp .ea .btn{height:40px;font-size:14px}
-/* Bento: Snake is the big tile; Cricket and OTP Vault stack beside it as wide tiles */
-.egrid.bento{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(250px,auto)}
-.bento .exp{grid-column:span 2}
-.bento .exp[data-x="snake"]{grid-row:span 2}
-.bento .exp[data-x="snake"] .stage{aspect-ratio:auto;flex:1;min-height:320px}
-.bento .exp:not([data-x="snake"]){flex-direction:row}
-.bento .exp:not([data-x="snake"]) .stage{aspect-ratio:auto;width:46%;flex:none;border-bottom:0;border-right:1px solid var(--border)}
-.bento .exp:not([data-x="snake"]) .bd{justify-content:flex-start}
-@media (max-width:900px){
-  .egrid.bento{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto}
-  .bento .exp{grid-column:span 1}
-  .bento .exp[data-x="snake"]{grid-column:1/-1;grid-row:auto}
-  .bento .exp[data-x="snake"] .stage{flex:none;aspect-ratio:16/9;min-height:0}
-  .bento .exp:not([data-x="snake"]){flex-direction:column}
-  .bento .exp:not([data-x="snake"]) .stage{width:auto;aspect-ratio:4/3;border-right:0;border-bottom:1px solid var(--border)}
+/* Experiments as editorial rows: big live preview on one side, numbered copy on the other, alternating */
+.egrid.elist{grid-template-columns:minmax(0,1fr);gap:18px;counter-reset:ex}
+.elist .exp{flex-direction:row;min-height:340px}
+.elist .exp:nth-child(even){flex-direction:row-reverse}
+.elist .exp .stage{aspect-ratio:auto;width:58%;flex:none;border-bottom:0;border-right:1px solid var(--border)}
+.elist .exp:nth-child(even) .stage{border-right:0;border-left:1px solid var(--border)}
+.elist .exp .bd{padding:clamp(22px,3vw,40px);justify-content:center;gap:12px}
+.elist .exp .bd::before{counter-increment:ex;content:counter(ex,decimal-leading-zero);font:500 12px var(--mono);color:var(--muted-fg);letter-spacing:.04em}
+.elist .exp h3{font-size:clamp(22px,2.4vw,30px);letter-spacing:-.035em}
+.elist .exp p{font-size:15px;max-width:40ch}
+.elist .exp .ea{margin-top:10px}
+.elist .exp:hover{transform:translateY(-2px)}
+@media (max-width:760px){
+  .elist .exp,.elist .exp:nth-child(even){flex-direction:column;min-height:0}
+  .elist .exp .stage,.elist .exp:nth-child(even) .stage{width:auto;aspect-ratio:4/3;border:0;border-bottom:1px solid var(--border)}
 }
-@media (max-width:600px){.egrid.bento{grid-template-columns:minmax(0,1fr)}.bento .exp[data-x="snake"] .stage{aspect-ratio:4/3}}
 .hint{display:grid;gap:8px;justify-items:start}
 .hint .hint-n{color:var(--fg)}
 .hint .hint-t{padding:10px 12px;border-radius:12px;background:var(--secondary);border:1px dashed var(--border-strong);color:var(--fg);font-size:14px;animation:feed .35s var(--ease-out) both}
