@@ -220,7 +220,7 @@ function renderBlogs(){
 let readerEl=null, readerFrom=null;
 function openReader({cov,meta,title,paras,back,from,label,wide}){
   readerFrom=from; readerEl=document.createElement("div"); readerEl.className="reader"; readerEl.setAttribute("role","dialog"); readerEl.setAttribute("aria-modal","true"); readerEl.setAttribute("aria-label",label||title);
-  readerEl.innerHTML=`<article class="${wide?"wide":""}" style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd">${meta?`<span class="mono" style="color:var(--muted-fg)">${meta}</span>`:""}${title?`<h2>${esc(title)}</h2>`:""}${paras}</div></article>`;
+  readerEl.innerHTML=`<article class="${wide?"wide slides":""}" style="position:relative">${cov}<button type="button" class="btn close" id="readerClose">${esc(back)}</button><div class="bd">${meta?`<span class="mono" style="color:var(--muted-fg)">${meta}</span>`:""}${title?`<h2>${esc(title)}</h2>`:""}${paras}</div></article>`;
   readerEl.addEventListener("click",e=>{ if(e.target===readerEl) closePost(); });
   document.body.appendChild(readerEl); root.style.overflow="hidden"; $("#readerClose").addEventListener("click",closePost); $("#readerClose").focus(); haptic("light");
 }

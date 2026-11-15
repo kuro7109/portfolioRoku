@@ -472,6 +472,21 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .reader .cov{clip-path:none}
 .reader .cov .tg{display:none}
 .reader article.wide{max-width:980px}
+/* Popups with case-study slides: the header, summary and facts stay put; only the slides scroll */
+.reader article.slides{display:flex;flex-direction:column;height:calc(100svh - 48px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));max-height:1040px}
+.reader article.slides>.cov{flex:none}
+.reader article.slides>.bd{flex:1;min-height:0;display:flex;flex-direction:column;padding-bottom:0}
+.reader article.slides>.bd>*{flex:none}
+.reader article.slides .csimg{flex:1 1 auto;min-height:120px;overflow-y:auto;overscroll-behavior:contain;margin-bottom:0;border-radius:0 0 24px 24px;scrollbar-width:thin}
+.reader article.slides>.cov{height:150px}
+.reader article.slides>.bd{padding-top:22px;gap:0}
+.reader article.slides>.bd>p:first-child{font-size:16px;margin-bottom:12px;max-width:none}
+.reader article.slides .pdl{grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 14px}
+.reader article.slides .pdl .wide{grid-column:auto}
+.reader article.slides .rh{margin:16px 0 10px}
+.reader article.slides .btn.live{align-self:flex-start}
+@media (max-width:640px){.reader article.slides .pdl{grid-template-columns:repeat(2,minmax(0,1fr))}.reader article.slides .pdl .wide{grid-column:1/-1}}
+@media (max-width:640px){.reader article.slides>.cov{height:110px}.reader article.slides .bd p{font-size:15px;margin-bottom:10px}}
 .reader .csimg{margin:8px calc(-1 * clamp(18px,4vw,40px)) -36px;border-top:1px solid var(--border)}
 .reader .csimg img{display:block;width:100%;height:auto;background:#3a2e1e}
 .card .go{cursor:pointer}
