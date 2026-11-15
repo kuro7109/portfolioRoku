@@ -192,8 +192,8 @@
       <div>
         <p class="kick"><b>Book a call</b> 15 or 30 min</p>
         <h2 class="h2" id="bk-h">Let's talk about <em>your product</em></h2>
-        <p class="lead">A short call about a product idea, a design problem or a role. Pick a day and a time, and the request lands in Rohit's inbox.</p>
-        <ul class="facts"><li><b>15 or 30 min</b><span>You choose the length</span></li><li><b>Video call</b><span>Link sent after confirming (xyz)</span></li><li><b>IST</b><span>India Standard Time</span></li></ul>
+        <p class="lead" id="bkLead">A short call about a product idea, a design problem or a role. Pick a day and a time, and the request lands in Rohit's inbox.</p>
+        <ul class="facts"><li><b>15 or 30 min</b><span>You choose the length</span></li><li><b>Video call</b><span id="bkVideo">Link sent after confirming</span></li><li><b id="bkTzB">IST</b><span id="bkTz">India Standard Time</span></li></ul>
         <div class="social" data-social></div>
         <p class="alt">Prefer email? <a data-gmail href="#" target="_blank" rel="noopener">rohitkumawat7109@gmail.com</a></p>
       </div>
@@ -213,6 +213,10 @@
         <p class="bsum" id="bkSum" aria-live="polite">Choose a day and a time.</p>
         <a class="btn pri bsend" id="bkSend" href="#book" aria-disabled="true">Request this slot <i data-ic="arrow"></i></a>
       </form>
+      <div class="bcard calcard" id="calCard" hidden>
+        <div class="brow"><span class="blabel">Length</span><div class="seg" role="group" aria-label="Call length"><button type="button" class="segb" data-cal="15" aria-pressed="false">15 min</button><button type="button" class="segb" data-cal="30" aria-pressed="true">30 min</button></div></div>
+        <div class="cal-embed" id="calEmbed" aria-live="polite"><div class="cal-skel" aria-hidden="true"><i></i><i></i><i></i></div></div>
+      </div>
     </section>
   </div>
 </div>

@@ -568,6 +568,13 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .facts span{color:var(--muted-fg);font-size:14px;text-align:right}
 .alt{color:var(--muted-fg);font-size:14px;margin-top:20px}
 .alt a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
+.calcard{align-content:start}
+.cal-embed{position:relative;min-height:540px;margin:0 -8px -8px}
+.cal-embed iframe{border-radius:16px}
+.cal-skel{position:absolute;inset:0;display:grid;grid-template-rows:40px 1fr 44px;gap:12px;padding:8px;transition:opacity .4s}
+.cal-skel i{border-radius:14px;background:linear-gradient(90deg,var(--secondary),color-mix(in srgb,var(--secondary) 60%,var(--bg)),var(--secondary));background-size:200% 100%;animation:skel 1.4s linear infinite}
+.cal-embed.ready .cal-skel{opacity:0;pointer-events:none}
+@keyframes skel{to{background-position:-200% 0}}
 .bcard{border-radius:26px;padding:clamp(18px,3vw,28px);display:grid;gap:18px;background:var(--card);border:1px solid var(--border)}
 .brow{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .blabel{font:500 12px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.04em}

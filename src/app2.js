@@ -244,7 +244,44 @@ function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; ro
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
 renderBlogs();
 
-/* ---------- Book a call ---------- */
+/* ---------- Book a call: live cal.com calendar (real slots, invites, reminders) ---------- */
+(function(){
+  if(!CAL_USER) return; // no account yet → keep the Gmail request form below
+  const card=$("#calCard"), box=$("#calEmbed"), form=$("#bookForm"); let dur=30, ready=false, loaded=false;
+  card.hidden=false; form.hidden=true;
+  $("#bkLead").textContent="A short call about a product idea, a design problem or a role. Pick a slot and it's booked straight away, with a calendar invite and a video link sent to you.";
+  $("#bkVideo").textContent="Link in your calendar invite"; $("#bkTzB").textContent="Your time zone"; $("#bkTz").textContent="Slots show in your local time";
+  const theme=()=>isDark()?"dark":"light";
+  const ui=()=>Cal.ns.rk("ui",{theme:theme(),hideEventTypeDetails:true,layout:"month_view",
+    cssVarsPerTheme:{light:{"cal-brand":"#171717","cal-brand-text":"#fafafa"},dark:{"cal-brand":"#adfa1d","cal-brand-text":"#0a0a0a"}}});
+  function mount(){
+    box.innerHTML='<div class="cal-skel" aria-hidden="true"><i></i><i></i><i></i></div><div id="calInline"></div>';
+    Cal.ns.rk("inline",{elementOrSelector:"#calInline",calLink:`${CAL_USER}/${CAL_EVENTS[dur]}`,config:{layout:"month_view",theme:theme()}});
+    ui();
+  }
+  function load(){
+    if(loaded) return; loaded=true;
+    // cal.com's standard loader: queues calls until embed.js arrives
+    (function(C,A,L){ let p=function(a,ar){a.q.push(ar);}; let d=C.document;
+      C.Cal=C.Cal||function(){ let cal=C.Cal; let ar=arguments;
+        if(!cal.loaded){ cal.ns={}; cal.q=cal.q||[]; d.head.appendChild(d.createElement("script")).src=A; cal.loaded=true; }
+        if(ar[0]===L){ const api=function(){p(api,arguments);}; const namespace=ar[1]; api.q=api.q||[];
+          if(typeof namespace==="string"){ cal.ns[namespace]=cal.ns[namespace]||api; p(cal.ns[namespace],ar); p(cal,["initNamespace",namespace]); } else p(cal,ar); return; }
+        p(cal,ar); }; })(window,"https://app.cal.com/embed/embed.js","init");
+    Cal("init","rk",{origin:"https://cal.com"});
+    Cal.ns.rk("on",{action:"bookerReady",callback:()=>{ ready=true; box.classList.add("ready"); }});
+    Cal.ns.rk("on",{action:"bookingSuccessfulV2",callback:()=>{ haptic("success"); say("Booked! Check your email for the invite"); confetti(box); }});
+    mount();
+    // if cal.com can't be reached, bring back the email request form so nobody is stuck
+    setTimeout(()=>{ if(!ready&&!box.querySelector("iframe")){ card.hidden=true; form.hidden=false; } },12000);
+  }
+  $$(".segb[data-cal]",card).forEach(b=>b.addEventListener("click",()=>{ dur=+b.dataset.cal; $$(".segb[data-cal]",card).forEach(x=>x.setAttribute("aria-pressed",x===b)); haptic("light"); if(loaded){ ready=false; box.classList.remove("ready"); mount(); } }));
+  const go=()=>{ if(current==="book") load(); };
+  addEventListener("hashchange",()=>setTimeout(go,300)); setTimeout(go,0);
+  themeBtn.addEventListener("click",()=>setTimeout(()=>{ if(loaded) ui(); },500));
+})();
+
+/* ---------- Book a call (fallback): Gmail request form ---------- */
 (function(){
   const SLOTS=["10:00 AM","11:30 AM","2:00 PM","4:30 PM","6:00 PM"];
   const today=new Date(); today.setHours(0,0,0,0);
