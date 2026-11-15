@@ -21,11 +21,6 @@ The page is assembled from the parts in `src/`:
 
 Edit a part, then run `./build.sh` to regenerate `index.html`.
 
-## Booking (cal.com)
-Set `CAL_USER` in `src/core.js` to Rohit's cal.com username and rebuild. The Book a call page then embeds his live calendar
-(event types `15min` and `30min`): real availability, instant confirmation, calendar invite and video link.
-While `CAL_USER` is empty, or if cal.com can't load, the page falls back to the Gmail request form.
-
 ## Placeholders still marked `xyz`
 Design Club IITD dates, how Rohit got into design (About), footer quote, video-call link.
 
