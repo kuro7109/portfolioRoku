@@ -1,4 +1,22 @@
 
+/* ---------- Confetti: a short burst from an element, drawn on a throwaway full-screen canvas ---------- */
+function confetti(from){
+  if(reduce) return;
+  const cv=document.createElement("canvas"), ctx=cv.getContext("2d"), dpr=Math.min(2,devicePixelRatio||1), W=innerWidth, H=innerHeight;
+  cv.className="confetti"; cv.width=W*dpr; cv.height=H*dpr; ctx.scale(dpr,dpr); document.body.appendChild(cv);
+  const r=from.getBoundingClientRect(), ox=r.left+r.width/2, oy=r.top+r.height/2;
+  const COLS=["#adfa1d","#22d3ee","#a78bfa","#f472b6","#fbbf24","#fafafa","#34d399"];
+  const bits=Array.from({length:160},()=>{ const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.1, v=7+Math.random()*9;
+    return {x:ox,y:oy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:5+Math.random()*6,h:3+Math.random()*5,r:Math.random()*6,vr:(Math.random()-.5)*.35,c:COLS[Math.random()*COLS.length|0],round:Math.random()<.3}; });
+  const t0=performance.now();
+  (function f(t){ const e=t-t0; ctx.clearRect(0,0,W,H);
+    for(const b of bits){ b.vy+=.32; b.vx*=.985; b.vy*=.985; b.x+=b.vx; b.y+=b.vy; b.r+=b.vr;
+      ctx.globalAlpha=Math.max(0,1-e/2600); ctx.fillStyle=b.c; ctx.save(); ctx.translate(b.x,b.y); ctx.rotate(b.r);
+      if(b.round){ ctx.beginPath(); ctx.arc(0,0,b.h/1.6,0,7); ctx.fill(); } else ctx.fillRect(-b.w/2,-b.h/2,b.w,b.h*Math.abs(Math.cos(b.r*2)));
+      ctx.restore(); }
+    if(e<2600) requestAnimationFrame(f); else cv.remove(); })(t0);
+}
+
 /* ---------- Experiments (built per card, so the same demo can live on two pages) ---------- */
 const EXPS={
  snake:{t:"Snake",tag:"Game",big:true,d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
@@ -7,7 +25,7 @@ const EXPS={
  cricket:{t:"Nokia Cricket",tag:"Game",d:"The Nokia classic, reimagined with a minimal dark look. Chase a target or play free, with your pick of overs, wickets and bowler speed.",
    stage:`<div class="stage snake cricket"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
    cta:`<a class="btn pri" href="https://cricketbyroku.vercel.app" target="_blank" rel="noopener">Play Cricket ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
- otp:{t:"OTP Vault",tag:"Puzzle",d:"A four-digit code guards the vault. Crack it to unlock.",
+ otp:{t:"Security Vault",tag:"Puzzle",d:"A four-digit code guards the vault. Crack it to unlock.",
    cta:`<div class="hint"><p class="hint-n" hidden>Two tries down. Want a hint?</p><button type="button" class="btn hint-b" aria-expanded="false">Need a hint?</button><p class="hint-t" hidden>Four digits, counting up from one.</p></div>`,
    stage:`<div class="stage"><div>${'<svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path class="sh" d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'}<div class="otp">${[1,2,3,4].map(n=>`<input inputmode="numeric" maxlength="1" aria-label="Digit ${n}">`).join("")}</div></div></div>`},
  receipt:{t:"Receipt Printer",tag:"Motion",d:"Prints a small receipt line by line, with a buzz for every line on phones.",
@@ -75,7 +93,7 @@ $$(".exp").forEach(card=>{
   if(x==="otp"){ const box=card.querySelector(".otp"), ins=$$("input",box), hb=card.querySelector(".hint-b"), ht=card.querySelector(".hint-t"), hn=card.querySelector(".hint-n"); let misses=0;
     hb.addEventListener("click",()=>{ ht.hidden=false; hn.hidden=true; hb.hidden=true; hb.setAttribute("aria-expanded","true"); haptic("light"); });
     const check=()=>{ const v=ins.map(i=>i.value).join(""); if(v.length<4) return;
-      if(v==="1234"){ box.classList.add("ok"); card.classList.add("unlocked"); haptic("success"); say("Vault unlocked"); setTimeout(()=>{ box.classList.remove("ok"); card.classList.remove("unlocked"); ins.forEach(i=>i.value=""); },2200); }
+      if(v==="1234"){ box.classList.add("ok"); card.classList.add("unlocked"); haptic("success"); say("Vault unlocked"); confetti(card.querySelector(".otp")); setTimeout(()=>{ box.classList.remove("ok"); card.classList.remove("unlocked"); ins.forEach(i=>i.value=""); },2200); }
       else { box.classList.remove("bad"); void box.offsetWidth; box.classList.add("bad"); haptic("error"); setTimeout(()=>{ ins.forEach(i=>i.value=""); ins[0].focus(); },420);
         if(++misses>=2&&ht.hidden){ hn.hidden=false; hb.classList.add("nudge"); } } };
     ins.forEach((inp,i)=>{ inp.addEventListener("input",()=>{ inp.value=inp.value.replace(/\D/g,"").slice(-1); if(inp.value&&i<3) ins[i+1].focus(); haptic("light"); check(); });
@@ -290,7 +308,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest("[data-copy]"); 
 function toMarkdown(){
   return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.yr}`),"",
    "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.y})`),"",
-   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- Nokia Cricket: https://cricketbyroku.vercel.app","- OTP Vault","","## Off the clock","Old retro games, plus FIFA, Subway Surfers and Mahjong. FIFA ID: 484556561329106944, send a friend request for a head-to-head match.","",
+   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- Nokia Cricket: https://cricketbyroku.vercel.app","- Security Vault","","## Off the clock","Old retro games, plus FIFA, Subway Surfers and Mahjong. FIFA ID: 484556561329106944, send a friend request for a head-to-head match.","",
    "## Tools",TOOLS.join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`].join("\n");
 }
 $("#agentBtn").addEventListener("click",()=>{ $("#md").textContent=toMarkdown(); $("#agent").hidden=false; $("#agentClose").focus(); });
