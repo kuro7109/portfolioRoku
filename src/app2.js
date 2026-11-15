@@ -244,41 +244,58 @@ function closePost(){ if(!readerEl) return; readerEl.remove(); readerEl=null; ro
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePost(); });
 renderBlogs();
 
-/* ---------- Book a call: live cal.com calendar (real slots, invites, reminders) ---------- */
+/* ---------- Book a call: live cal.com calendar (real slots, invites, reminders) ----------
+   1) cal.com's embed script (auto-height, booking events), 2) if that's blocked, a plain cal.com iframe,
+   3) if neither shows up, a button that opens the booking page. The Gmail form is only used with no CAL_USER. */
 (function(){
-  if(!CAL_USER) return; // no account yet → keep the Gmail request form below
-  const card=$("#calCard"), box=$("#calEmbed"), form=$("#bookForm"); let dur=30, ready=false, loaded=false;
-  card.hidden=false; form.hidden=true;
-  $("#bkLead").textContent="A short call about a product idea, a design problem or a role. Pick a slot and it's booked straight away, with a calendar invite and a video link sent to you.";
+  if(!CAL_USER) return;
+  const sec=$(".page[data-page='book'] .book"), card=$("#calCard"), box=$("#calEmbed"), form=$("#bookForm"), fb=$("#calFb");
+  let dur=30, ready=false, loaded=false, mode="script", t=0;
+  sec.classList.add("cal-on"); card.hidden=false; form.hidden=true;
+  $("#bkLead").textContent="A short call about a product idea, a design problem or a role. Pick a day and a time below; it's booked straight away, with a calendar invite and a video link.";
   $("#bkVideo").textContent="Link in your calendar invite"; $("#bkTzB").textContent="Your time zone"; $("#bkTz").textContent="Slots show in your local time";
+  try{ $("#calTz").textContent=`Times shown in ${Intl.DateTimeFormat().resolvedOptions().timeZone.replace(/_/g," ")}`; }catch(e){}
+  const link=()=>`${CAL_USER}/${CAL_EVENTS[dur]}`;
+  const ext=()=>{ $("#calExt").href=`https://cal.com/${link()}`; }; ext();
   const theme=()=>isDark()?"dark":"light";
-  const ui=()=>Cal.ns.rk("ui",{theme:theme(),hideEventTypeDetails:true,layout:"month_view",
-    cssVarsPerTheme:{light:{"cal-brand":"#171717","cal-brand-text":"#fafafa"},dark:{"cal-brand":"#adfa1d","cal-brand-text":"#0a0a0a"}}});
+  const VARS={light:{"cal-brand":"#171717","cal-brand-text":"#fafafa","cal-bg":"#ffffff","cal-bg-muted":"#f5f5f5","cal-bg-subtle":"#f5f5f5","cal-border-booker":"transparent","cal-border":"#e5e5e5","cal-border-subtle":"#efefef"},
+              dark:{"cal-brand":"#adfa1d","cal-brand-text":"#0a0a0a","cal-bg":"#171717","cal-bg-muted":"#262626","cal-bg-subtle":"#202020","cal-border-booker":"transparent","cal-border":"rgba(255,255,255,.1)","cal-border-subtle":"rgba(255,255,255,.06)"}};
+  const SK=box.querySelector(".cal-skel").outerHTML;
+  const done=()=>{ ready=true; clearTimeout(t); box.classList.add("ready"); };
+  const ui=()=>{ if(mode==="script"&&window.Cal&&Cal.ns&&Cal.ns.rk) Cal.ns.rk("ui",{theme:theme(),hideEventTypeDetails:false,layout:"month_view",cssVarsPerTheme:VARS}); };
+  function iframe(){ // plan B: no script needed
+    mode="iframe"; box.classList.remove("ready"); box.innerHTML=SK;
+    const f=document.createElement("iframe"); f.className="cal-frame"; f.title="Booking calendar"; f.loading="lazy";
+    f.src=`https://cal.com/${link()}?embed=true&layout=month_view&theme=${theme()}`; f.addEventListener("load",done); box.appendChild(f);
+    clearTimeout(t); t=setTimeout(()=>{ if(!ready){ box.hidden=true; fb.hidden=false; } },9000);
+  }
   function mount(){
-    box.innerHTML='<div class="cal-skel" aria-hidden="true"><i></i><i></i><i></i></div><div id="calInline"></div>';
-    Cal.ns.rk("inline",{elementOrSelector:"#calInline",calLink:`${CAL_USER}/${CAL_EVENTS[dur]}`,config:{layout:"month_view",theme:theme()}});
-    ui();
+    box.hidden=false; fb.hidden=true; ready=false; box.classList.remove("ready");
+    if(mode==="iframe") return iframe();
+    box.innerHTML=SK+'<div id="calInline"></div>';
+    Cal.ns.rk("inline",{elementOrSelector:"#calInline",calLink:link(),config:{layout:"month_view",theme:theme()}});
+    ui(); clearTimeout(t); t=setTimeout(()=>{ if(!ready&&!box.querySelector("iframe")) iframe(); },8000);
   }
   function load(){
     if(loaded) return; loaded=true;
+    $("#calOpen").href=`https://cal.com/${CAL_USER}`;
     // cal.com's standard loader: queues calls until embed.js arrives
     (function(C,A,L){ let p=function(a,ar){a.q.push(ar);}; let d=C.document;
       C.Cal=C.Cal||function(){ let cal=C.Cal; let ar=arguments;
-        if(!cal.loaded){ cal.ns={}; cal.q=cal.q||[]; d.head.appendChild(d.createElement("script")).src=A; cal.loaded=true; }
+        if(!cal.loaded){ cal.ns={}; cal.q=cal.q||[]; const sc=d.head.appendChild(d.createElement("script")); sc.src=A; sc.onerror=()=>{ if(mode==="script") iframe(); }; cal.loaded=true; }
         if(ar[0]===L){ const api=function(){p(api,arguments);}; const namespace=ar[1]; api.q=api.q||[];
           if(typeof namespace==="string"){ cal.ns[namespace]=cal.ns[namespace]||api; p(cal.ns[namespace],ar); p(cal,["initNamespace",namespace]); } else p(cal,ar); return; }
         p(cal,ar); }; })(window,"https://app.cal.com/embed/embed.js","init");
     Cal("init","rk",{origin:"https://cal.com"});
-    Cal.ns.rk("on",{action:"bookerReady",callback:()=>{ ready=true; box.classList.add("ready"); }});
+    Cal.ns.rk("on",{action:"bookerReady",callback:done});
+    Cal.ns.rk("on",{action:"linkReady",callback:done});
     Cal.ns.rk("on",{action:"bookingSuccessfulV2",callback:()=>{ haptic("success"); say("Booked! Check your email for the invite"); confetti(box); }});
     mount();
-    // if cal.com can't be reached, bring back the email request form so nobody is stuck
-    setTimeout(()=>{ if(!ready&&!box.querySelector("iframe")){ card.hidden=true; form.hidden=false; } },12000);
   }
-  $$(".segb[data-cal]",card).forEach(b=>b.addEventListener("click",()=>{ dur=+b.dataset.cal; $$(".segb[data-cal]",card).forEach(x=>x.setAttribute("aria-pressed",x===b)); haptic("light"); if(loaded){ ready=false; box.classList.remove("ready"); mount(); } }));
+  $$(".segb[data-cal]",card).forEach(b=>b.addEventListener("click",()=>{ if(+b.dataset.cal===dur) return; dur=+b.dataset.cal; ext(); $$(".segb[data-cal]",card).forEach(x=>x.setAttribute("aria-pressed",x===b)); haptic("light"); if(loaded) mount(); }));
   const go=()=>{ if(current==="book") load(); };
   addEventListener("hashchange",()=>setTimeout(go,300)); setTimeout(go,0);
-  themeBtn.addEventListener("click",()=>setTimeout(()=>{ if(loaded) ui(); },500));
+  themeBtn.addEventListener("click",()=>setTimeout(()=>{ if(!loaded) return; if(mode==="script") ui(); else mount(); },500));
 })();
 
 /* ---------- Book a call (fallback): Gmail request form ---------- */
