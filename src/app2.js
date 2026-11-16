@@ -17,6 +17,40 @@ function confetti(from){
     if(e<2600) requestAnimationFrame(f); else cv.remove(); })(t0);
 }
 
+/* ---------- Arts: staggered gallery + viewer ---------- */
+(function(){
+  const g=$("#artGrid"), box=$("#artBox"); if(!g||!box) return;
+  const pad=i=>String(i).padStart(2,"0"), real=ARTS.filter(a=>a.src);
+  const PH=[1.4,.75,1.42,.88,1.43,.7,1.37,1.41,1.44]; /* height / width, mirrors a mixed set of canvases */
+  $("#artCount").textContent=real.length?`${real.length} works`:"Coming soon";
+  $("#artRange").textContent=real.length?`01 — ${pad(real.length)}`:"";
+  g.innerHTML=real.length
+    ? real.map((a,i)=>`<button type="button" class="art-card" data-i="${i}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}"${a.w?` width="${a.w}" height="${a.h}"`:""} loading="lazy" decoding="async"></span><span class="art-meta"><b>${esc(a.t||"Untitled")}</b><span>${esc([a.m,a.yr].filter(Boolean).join(" · ")||pad(i+1))}</span></span></button>`).join("")
+    : PH.map((r,i)=>`<div class="art-card is-empty" aria-hidden="true"><span class="art-fig" style="--ar:${(1/r).toFixed(3)}"></span><span class="art-meta"><span>Artwork</span><span>${pad(i+1)}</span></span></div>`).join("");
+  const cards=$$(".art-card",g);
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }),{rootMargin:"0px 0px -8% 0px"});
+  cards.forEach((c,i)=>{ c.style.transitionDelay=`${(i%3)*70}ms`; io.observe(c); });
+  if(!real.length) return;
+  const img=box.querySelector("img"), cap=box.querySelector(".ab-t"), num=box.querySelector(".ab-n"); let at=0;
+  function show(i,anim){
+    at=(i+real.length)%real.length; const a=real[at];
+    const put=()=>{ img.src=a.src; img.alt=a.alt||a.t||"Artwork by Rohit Kumawat"; cap.textContent=[a.t,a.m,a.yr].filter(Boolean).join(" · ")||"Artwork"; num.textContent=`${pad(at+1)} / ${pad(real.length)}`; img.classList.remove("sw"); };
+    if(anim&&!reduce){ img.classList.add("sw"); setTimeout(put,160); } else put();
+    [real[(at+1)%real.length],real[(at-1+real.length)%real.length]].forEach(n=>{ const p=new Image(); p.src=n.src; });
+  }
+  const step=d=>{ show(at+d,true); haptic("soft"); };
+  const close=()=>{ box.close(); };
+  g.addEventListener("click",e=>{ const c=e.target.closest(".art-card[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.style.overflow="hidden"; haptic("light"); });
+  box.addEventListener("close",()=>{ document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
+  box.querySelector(".ab-x").addEventListener("click",close);
+  box.querySelector(".ab-p").addEventListener("click",()=>step(-1));
+  box.querySelector(".ab-n2").addEventListener("click",()=>step(1));
+  box.addEventListener("click",e=>{ if(e.target===box||e.target.tagName==="FIGURE") close(); });
+  box.addEventListener("keydown",e=>{ if(e.key==="ArrowLeft") step(-1); else if(e.key==="ArrowRight") step(1); });
+  let sx=0,sy=0; box.addEventListener("pointerdown",e=>{ sx=e.clientX; sy=e.clientY; });
+  box.addEventListener("pointerup",e=>{ const dx=e.clientX-sx; if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(e.clientY-sy)*1.5) step(dx<0?1:-1); });
+})();
+
 /* ---------- Experiments (built per card, so the same demo can live on two pages) ---------- */
 const EXPS={
  snake:{t:"Snake",tag:"Game",big:true,d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
@@ -292,7 +326,7 @@ renderBlogs();
 
 /* ---------- Footer: scramble links, handwritten quote ---------- */
 const slink=(t,h,ext)=>`<li><a class="slink" href="${h}"${ext?' target="_blank" rel="noopener"':""}><span class="txt">${esc(t)}</span>${svg(ext?"ne":"arrow")}${ext?'<span class="sr"> (opens in a new tab)</span>':""}</a></li>`;
-$("#fMenu").innerHTML=[["Home","#home"],["Work","#work"],["Experiments","#experiments"],["Blogs","#blogs"],["About","#about"],["Book a call","#book"]].map(([t,h])=>slink(t,h,false)).join("");
+$("#fMenu").innerHTML=[["Home","#home"],["Work","#work"],["Experiments","#experiments"],["Arts","#arts"],["Blogs","#blogs"],["About","#about"],["Book a call","#book"]].map(([t,h])=>slink(t,h,false)).join("");
 $("#fContact").innerHTML=[["Email",GMAIL],["LinkedIn",LINKEDIN],["GitHub",GITHUB]].map(([t,h])=>slink(t,h,true)).join("");
 $$(".slink").forEach(a=>{ const t=a.querySelector(".txt"), txt=t.textContent; const go=()=>scramble(t,txt); a.addEventListener("pointerenter",go); a.addEventListener("focus",go); });
 new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ $("#quote").classList.add("in"); o.disconnect(); } },{threshold:.6}).observe($("#quote"));

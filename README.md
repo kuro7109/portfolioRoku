@@ -5,7 +5,7 @@ Personal portfolio of Rohit Kumawat, product designer and product manager in Del
 A single static page: no framework and no build step needed to run it. Open `index.html` or serve the folder with any static host (GitHub Pages, Vercel, Netlify).
 
 ## Pages
-Hash-routed: `#home`, `#work`, `#experiments`, `#blogs`, `#about`, `#book`. Deep links like `#work/tickai` scroll to a project.
+Hash-routed: `#home`, `#work`, `#experiments`, `#arts`, `#blogs`, `#about`, `#book`. Deep links like `#work/tickai` scroll to a project.
 
 ## Editing
 The page is assembled from the parts in `src/`:
@@ -26,3 +26,9 @@ Design Club IITD dates, how Rohit got into design (About), footer quote, video-c
 
 ## Fonts
 TikTok Sans, IBM Plex Mono and Reenie Beanie, all under the SIL Open Font License, in `fonts/`.
+
+## Arts page
+
+Put artwork images in `arts/` and list them in `ARTS` in `src/core.js`
+(`{src, w, h, t, m, yr}`), then run `sh build.sh`. Until the list has entries the
+page shows placeholder tiles.

@@ -18,6 +18,7 @@
       <a class="ni" href="#home" data-p="home"><i data-ic="home"></i><span class="lbl">Home</span></a>
       <a class="ni" href="#work" data-p="work"><i data-ic="work"></i><span class="lbl">Work</span></a>
       <a class="ni" href="#experiments" data-p="experiments"><i data-ic="lab"></i><span class="lbl">Experiments</span></a>
+      <a class="ni" href="#arts" data-p="arts"><i data-ic="brush"></i><span class="lbl">Arts</span></a>
       <a class="ni" href="#blogs" data-p="blogs"><i data-ic="pen"></i><span class="lbl">Blogs</span></a>
       <a class="ni" href="#about" data-p="about"><i data-ic="user"></i><span class="lbl">About</span></a>
     </nav>
@@ -111,6 +112,30 @@
       <div class="egrid elist" id="allExp"></div>
     </section>
   </div>
+</div>
+
+<!-- ARTS -->
+<div class="page" data-page="arts" hidden>
+  <div class="frame">
+    <section class="sec ptop art-intro" data-rail="Artworks" aria-labelledby="a-h">
+      <p class="kick"><span class="adot" aria-hidden="true"></span><b>Arts</b> Personal archive</p>
+      <div class="art-main">
+        <h1 class="art-t" id="a-h">Artworks<span>.</span></h1>
+        <p class="art-aside">A space to make without a brief. Paintings, sketches and digital pieces, made for the joy of making.</p>
+      </div>
+      <div class="art-bar"><span>Selected pieces</span><span id="artCount"></span></div>
+    </section>
+    <section class="sec art-wrap" data-rail="Gallery" aria-labelledby="ag-h">
+      <div class="art-head"><h2 class="h2" id="ag-h">Selected works</h2><span id="artRange"></span></div>
+      <div class="art-grid" id="artGrid"></div>
+    </section>
+  </div>
+  <dialog class="artbox" id="artBox" aria-label="Artwork viewer">
+    <button type="button" class="ab-x" aria-label="Close viewer"><i data-ic="x"></i></button>
+    <button type="button" class="ab-nav ab-p" aria-label="Previous artwork"><i data-ic="arrow"></i></button>
+    <figure><img alt=""><figcaption><span class="ab-t"></span><span class="ab-n"></span></figcaption></figure>
+    <button type="button" class="ab-nav ab-n2" aria-label="Next artwork"><i data-ic="arrow"></i></button>
+  </dialog>
 </div>
 
 <!-- BLOGS -->
