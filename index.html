@@ -711,32 +711,47 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
   .ink,.quote .tx{clip-path:none}
 }
 
-/* ---------- Arts ---------- */
-.art-intro{min-height:min(78vh,640px);display:flex;flex-direction:column;justify-content:space-between}
+/* ---------- Arts: a pinned 3D stage; scrolling flies the pieces past the viewer ---------- */
+.art3d{position:relative;height:calc(100vh + var(--n,9) * 62vh)}
+.art-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;perspective:900px;perspective-origin:50% 50%;contain:layout paint}
+.art-world{position:absolute;inset:0;transform-style:preserve-3d}
+.art-world>*{position:absolute;left:50%;top:50%;will-change:transform,opacity;backface-visibility:hidden}
+.art-title,.art-end{pointer-events:none}
+.art-title{width:min(92vw,1000px);text-align:center;display:flex;flex-direction:column;align-items:center}
+.art-title .kick{justify-content:center}
 .adot{width:7px;height:7px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 3px color-mix(in oklab,var(--brand) 25%,transparent)}
-.art-main{display:grid;grid-template-columns:1.25fr .75fr;align-items:end;gap:5vw}
-.art-t{font-size:clamp(72px,14vw,200px);line-height:.8;letter-spacing:-.075em;font-weight:600;margin:56px 0 30px}
+.art-t{font-size:clamp(64px,13vw,190px);line-height:.85;letter-spacing:-.075em;font-weight:600;margin:22px 0 22px}
 .art-t span{color:color-mix(in oklab,var(--brand) 72%,var(--fg))}
-.art-aside{max-width:32ch;margin:0 0 34px;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:var(--muted-fg);text-wrap:pretty}
-.art-bar,.art-head>span,.art-meta{font:500 11px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em}
-.art-bar{display:flex;justify-content:space-between;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0}
-.art-intro{padding-bottom:0}
-.art-wrap{padding-top:clamp(40px,5vw,64px)}
-.art-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:28px}
-.art-head .h2{margin:0}
-.art-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 18px;align-items:start}
-.art-card{display:block;width:100%;padding:0;border:0;background:none;color:inherit;text-align:left;font:inherit;cursor:zoom-in;opacity:0;transform:translateY(18px);transition:opacity .6s,transform .7s var(--ease-out,cubic-bezier(.2,.7,.2,1))}
-.art-card.in{opacity:1;transform:none}
-.art-card:nth-child(3n+2){margin-top:76px}
-.art-fig{display:block;border-radius:16px;overflow:hidden;background:var(--secondary);border:1px solid var(--border)}
-.art-fig img{display:block;width:100%;height:auto;transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .5s}
-.art-card:hover .art-fig img{transform:scale(1.03);filter:saturate(1.08)}
-.art-card:focus-visible{outline:none}.art-card:focus-visible .art-fig{outline:2px solid var(--fg);outline-offset:3px}
-.art-meta{display:flex;justify-content:space-between;gap:12px;padding:11px 2px 0}
-.art-meta b{font-weight:500;color:var(--fg);text-transform:none;letter-spacing:0;font-family:var(--sans);font-size:14px}
-.art-card.is-empty{cursor:default}
-.art-card.is-empty .art-fig{aspect-ratio:var(--ar);background:linear-gradient(110deg,var(--secondary) 30%,color-mix(in oklab,var(--secondary) 60%,var(--bg)) 50%,var(--secondary) 70%) 0 0/250% 100%;animation:artShim 2.4s linear infinite}
-@keyframes artShim{to{background-position:-250% 0}}
+.art-aside{max-width:40ch;margin:0;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:var(--muted-fg);text-wrap:balance}
+.art-c{display:block;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;width:min(calc(46vh * var(--ar)),72vw);aspect-ratio:var(--ar)}
+.art-c .art-fig{display:block;width:100%;height:100%;border-radius:14px;overflow:hidden;background:var(--secondary);box-shadow:0 30px 60px -30px rgba(0,0,0,.45),0 0 0 1px var(--border)}
+.art-c img{display:block;width:100%;height:100%;object-fit:cover}
+.art-c .art-meta{position:absolute;left:2px;right:2px;top:calc(100% + 10px);display:flex;justify-content:space-between;gap:10px;font:500 11px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.art-c .art-meta b{font-weight:500;color:var(--fg)}
+.art-c.is-empty{cursor:default}
+.art-c.is-empty .art-fig{background:linear-gradient(150deg,color-mix(in oklab,var(--secondary) 70%,var(--brand) 6%),var(--secondary) 60%,color-mix(in oklab,var(--secondary) 80%,var(--fg) 6%));display:grid;place-items:center}
+.art-c.is-empty .art-fig::after{content:attr(data-n);font:500 clamp(28px,4vw,56px) var(--mono);color:color-mix(in oklab,var(--muted-fg) 55%,transparent);letter-spacing:-.04em}
+.art-c:focus-visible{outline:none}.art-c:focus-visible .art-fig{outline:2px solid var(--fg);outline-offset:4px}
+.art-end{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.art-end b{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:var(--primary);color:var(--primary-fg);font:500 22px var(--mono);box-shadow:0 0 0 10px color-mix(in oklab,var(--brand) 22%,transparent)}
+.art-end p{margin:0;font-size:clamp(20px,2.4vw,32px);letter-spacing:-.03em;font-weight:500}
+.art-hud{position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:14px;font:500 11px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em;font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
+.art-prog{width:min(160px,30vw);height:2px;border-radius:2px;background:var(--border);overflow:hidden}
+.art-prog i{display:block;height:100%;background:var(--fg);transform-origin:left;transform:scaleX(0)}
+.art-cur{position:absolute;left:0;top:0;pointer-events:none;opacity:0;transition:opacity .25s;mix-blend-mode:difference;z-index:5}
+.art-cur::before{content:"";position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#fff}
+.art-cur i{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:1.5px solid #fff;transition:transform .35s var(--spring),background .25s}
+.art-cur.on{opacity:1}.art-cur.hot i{transform:scale(1.8);background:rgba(255,255,255,.12)}
+@media (hover:hover) and (pointer:fine){.art-stage.cur-on,.art-stage.cur-on .art-c{cursor:none}}
+@media(max-width:640px){.art-c{width:min(calc(36vh * var(--ar)),64vw)}.art-t{margin:18px 0}}
+/* reduced motion: no flight, the same pieces sit in a plain grid */
+.art3d.flat{height:auto}
+.art3d.flat .art-stage{position:static;height:auto;overflow:visible;perspective:none;contain:none;padding:clamp(120px,16vw,170px) clamp(16px,4vw,48px) 64px;max-width:1200px;margin:0 auto}
+.art3d.flat .art-world{position:static;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:56px 18px;align-items:start}
+.art3d.flat .art-world>*{position:relative;left:auto;top:auto;transform:none!important;opacity:1!important}
+.art3d.flat .art-title,.art3d.flat .art-end{grid-column:1/-1;width:auto}
+.art3d.flat .art-c{width:100%}
+.art3d.flat .art-hud,.art3d.flat .art-cur{display:none}
 .artbox{border:0;padding:0;margin:0;width:100vw;height:100dvh;max-width:none;max-height:none;background:rgba(8,8,8,.94);color:#fafafa;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .28s,display .28s allow-discrete,overlay .28s allow-discrete}
 .artbox[open]{opacity:1;display:grid;place-items:center}
 @starting-style{.artbox[open]{opacity:0}}
@@ -750,9 +765,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .artbox button svg{width:18px;height:18px}
 .ab-x{top:22px;right:22px}
 .ab-nav{top:50%;margin-top:-22px}.ab-p{left:22px}.ab-p svg{transform:rotate(180deg)}.ab-n2{right:22px}
-@media(max-width:800px){.art-main{grid-template-columns:1fr;gap:0}.art-t{margin:44px 0 22px}.art-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 12px}.art-card:nth-child(3n+2){margin-top:0}.art-card:nth-child(even){margin-top:44px}.artbox figure{padding:64px 16px}.artbox img{max-width:calc(100vw - 32px);max-height:72dvh}.ab-nav{top:auto;bottom:22px;margin:0}}
-@media(max-width:480px){.art-intro{min-height:0}.art-grid{grid-template-columns:1fr;gap:30px}.art-card:nth-child(even){margin-top:0}}
-@media(prefers-reduced-motion:reduce){.art-card{opacity:1;transform:none;transition:none}.art-card.is-empty .art-fig{animation:none}}
+@media(max-width:800px){.artbox figure{padding:64px 16px}.artbox img{max-width:calc(100vw - 32px);max-height:72dvh}.ab-nav{top:auto;bottom:22px;margin:0}}
 </style>
 </head>
 <body>
@@ -873,20 +886,20 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 
 <!-- ARTS -->
 <div class="page" data-page="arts" hidden>
-  <div class="frame">
-    <section class="sec ptop art-intro" data-rail="Artworks" aria-labelledby="a-h">
-      <p class="kick"><span class="adot" aria-hidden="true"></span><b>Arts</b> Personal archive</p>
-      <div class="art-main">
-        <h1 class="art-t" id="a-h">Artworks<span>.</span></h1>
-        <p class="art-aside">A space to make without a brief. Paintings, sketches and digital pieces, made for the joy of making.</p>
+  <section class="art3d" id="artTrack" data-rail="Artworks" aria-labelledby="a-h">
+    <div class="art-stage" id="artStage">
+      <div class="art-world" id="artWorld">
+        <div class="art-title" id="artTitle">
+          <p class="kick"><span class="adot" aria-hidden="true"></span><b>Arts</b> Personal archive</p>
+          <h1 class="art-t" id="a-h">Artworks<span>.</span></h1>
+          <p class="art-aside">A space to make without a brief. Paintings, sketches and digital pieces, made for the joy of making.</p>
+        </div>
+        <div class="art-end" id="artEnd"><b>RK</b><p id="artEndT"></p></div>
       </div>
-      <div class="art-bar"><span>Selected pieces</span><span id="artCount"></span></div>
-    </section>
-    <section class="sec art-wrap" data-rail="Gallery" aria-labelledby="ag-h">
-      <div class="art-head"><h2 class="h2" id="ag-h">Selected works</h2><span id="artRange"></span></div>
-      <div class="art-grid" id="artGrid"></div>
-    </section>
-  </div>
+      <div class="art-hud" aria-hidden="true"><span id="artCount"></span><span class="art-prog"><i id="artBar"></i></span><span id="artNow"></span></div>
+      <div class="art-cur" id="artCur" aria-hidden="true"><i></i></div>
+    </div>
+  </section>
   <dialog class="artbox" id="artBox" aria-label="Artwork viewer">
     <button type="button" class="ab-x" aria-label="Close viewer"><i data-ic="x"></i></button>
     <button type="button" class="ab-nav ab-p" aria-label="Previous artwork"><i data-ic="arrow"></i></button>
@@ -1716,19 +1729,67 @@ function confetti(from){
     if(e<2600) requestAnimationFrame(f); else cv.remove(); })(t0);
 }
 
-/* ---------- Arts: staggered gallery + viewer ---------- */
+/* ---------- Arts: a pinned stage in perspective. Scroll progress drives every piece
+   along the z axis, so the title flies past first and the works rush toward you one by one. ---------- */
 (function(){
-  const g=$("#artGrid"), box=$("#artBox"); if(!g||!box) return;
+  const track=$("#artTrack"), world=$("#artWorld"), stage=$("#artStage"), box=$("#artBox"); if(!track) return;
   const pad=i=>String(i).padStart(2,"0"), real=ARTS.filter(a=>a.src);
-  const PH=[1.4,.75,1.42,.88,1.43,.7,1.37,1.41,1.44]; /* height / width, mirrors a mixed set of canvases */
-  $("#artCount").textContent=real.length?`${real.length} works`:"Coming soon";
-  $("#artRange").textContent=real.length?`01 — ${pad(real.length)}`:"";
-  g.innerHTML=real.length
-    ? real.map((a,i)=>`<button type="button" class="art-card" data-i="${i}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}"${a.w?` width="${a.w}" height="${a.h}"`:""} loading="lazy" decoding="async"></span><span class="art-meta"><b>${esc(a.t||"Untitled")}</b><span>${esc([a.m,a.yr].filter(Boolean).join(" · ")||pad(i+1))}</span></span></button>`).join("")
-    : PH.map((r,i)=>`<div class="art-card is-empty" aria-hidden="true"><span class="art-fig" style="--ar:${(1/r).toFixed(3)}"></span><span class="art-meta"><span>Artwork</span><span>${pad(i+1)}</span></span></div>`).join("");
-  const cards=$$(".art-card",g);
-  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }),{rootMargin:"0px 0px -8% 0px"});
-  cards.forEach((c,i)=>{ c.style.transitionDelay=`${(i%3)*70}ms`; io.observe(c); });
+  const PH=[.72,1.33,.7,1.14,.7,1.42,.73,.7,.69]; /* width / height of the placeholder canvases */
+  const items=real.length?real.map(a=>({...a,ar:a.w&&a.h?a.w/a.h:.75})):PH.map(ar=>({ar})), N=items.length;
+  track.style.setProperty("--n",N);
+  $("#artCount").textContent=real.length?`${N} works`:"Coming soon";
+  $("#artEndT").textContent=real.length?"That's the archive, for now.":"Pieces are on their way.";
+  /* where each piece sits across the frame, as a share of the viewport; alternates sides */
+  const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
+  const title=$("#artTitle"), end=$("#artEnd");
+  end.insertAdjacentHTML("beforebegin",items.map((a,i)=>a.src
+    ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span><span class="art-meta"><b>${esc(a.t||"Untitled")}</b><span>${esc([a.m,a.yr].filter(Boolean).join(" · "))}</span></span></button>`
+    : `<div class="art-c is-empty" aria-hidden="true" style="--ar:${a.ar}"><span class="art-fig" data-n="${pad(i+1)}"></span></div>`).join(""));
+  const cards=$$(".art-c",world), bar=$("#artBar"), now=$("#artNow"), curEl=$("#artCur");
+
+  if(reduce){ track.classList.add("flat"); }
+  else {
+    const P=900, G=1000, LEAD=.55, SLOTS=N+LEAD+.9;
+    let tgt=0, cur=0, raf=0, mx=0, my=0, tx=0, ty=0, W=innerWidth, H=innerHeight, lastIdx=0;
+    const clamp=v=>v<0?0:v>1?1:v;
+    const prog=()=>{ const span=track.offsetHeight-innerHeight; return span>0?clamp(-track.getBoundingClientRect().top/span):0; };
+    function place(el,x,y,z,o,hit){
+      if(o<=.004){ if(el.style.visibility!=="hidden") el.style.visibility="hidden"; return; }
+      el.style.visibility=""; el.style.opacity=o.toFixed(3);
+      el.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px)`;
+      if(hit) el.style.pointerEvents=o>.55?"":"none";
+    }
+    function frame(){
+      raf=0;
+      cur+=(tgt-cur)*.14; if(Math.abs(tgt-cur)<.00004) cur=tgt;
+      tx+=(mx-tx)*.07; ty+=(my-ty)*.07;
+      const t=cur*SLOTS;
+      world.style.transform=`rotateY(${(tx*3).toFixed(3)}deg) rotateX(${(-ty*2.2).toFixed(3)}deg)`;
+      const zt=t*G*.85, to=1-clamp(zt/(.55*P)); place(title,0,0,zt,to);
+      cards.forEach((c,i)=>{ const z=(t-(i+1+LEAD))*G, s=SPOT[i%SPOT.length];
+        const o=clamp((z+4.6*G)/(2*G))*(1-clamp((z-.22*P)/(.5*P)))*(1-.8*to);
+        place(c,s[0]*W,s[1]*H,z,o,true); });
+      const ze=(t-SLOTS)*G; place(end,0,0,ze,clamp((ze+2.4*G)/(1.8*G)));
+      bar.style.transform=`scaleX(${cur.toFixed(4)})`;
+      const idx=Math.min(N,Math.max(1,Math.round(t-LEAD-.2)));
+      now.textContent=`${pad(idx)} / ${pad(N)}`;
+      if(idx!==lastIdx){ if(lastIdx&&real.length) haptic("soft"); lastIdx=idx; }
+      if(cur!==tgt||Math.abs(mx-tx)>.0005||Math.abs(my-ty)>.0005) raf=requestAnimationFrame(frame);
+    }
+    const kick=()=>{ if(!raf) raf=requestAnimationFrame(frame); };
+    const sync=jump=>{ if(!track.offsetParent) return; W=innerWidth; H=innerHeight; tgt=prog(); if(jump) cur=tgt; kick(); };
+    addEventListener("scroll",()=>sync(false),{passive:true});
+    addEventListener("resize",()=>sync(false));
+    new ResizeObserver(()=>sync(true)).observe(track); /* fires when the page is shown */
+    if(matchMedia("(hover:hover) and (pointer:fine)").matches){
+      stage.classList.add("cur-on");
+      stage.addEventListener("pointermove",e=>{ const r=stage.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
+        mx=x/r.width-.5; my=y/r.height-.5; curEl.style.transform=`translate(${x}px,${y}px)`;
+        curEl.classList.add("on"); curEl.classList.toggle("hot",!!e.target.closest(".art-c[data-i]")); kick(); });
+      stage.addEventListener("pointerleave",()=>{ curEl.classList.remove("on","hot"); mx=my=0; kick(); });
+    }
+  }
+
   if(!real.length) return;
   const img=box.querySelector("img"), cap=box.querySelector(".ab-t"), num=box.querySelector(".ab-n"); let at=0;
   function show(i,anim){
@@ -1738,13 +1799,12 @@ function confetti(from){
     [real[(at+1)%real.length],real[(at-1+real.length)%real.length]].forEach(n=>{ const p=new Image(); p.src=n.src; });
   }
   const step=d=>{ show(at+d,true); haptic("soft"); };
-  const close=()=>{ box.close(); };
-  g.addEventListener("click",e=>{ const c=e.target.closest(".art-card[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.style.overflow="hidden"; haptic("light"); });
+  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.style.overflow="hidden"; haptic("light"); });
   box.addEventListener("close",()=>{ document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
-  box.querySelector(".ab-x").addEventListener("click",close);
+  box.querySelector(".ab-x").addEventListener("click",()=>box.close());
   box.querySelector(".ab-p").addEventListener("click",()=>step(-1));
   box.querySelector(".ab-n2").addEventListener("click",()=>step(1));
-  box.addEventListener("click",e=>{ if(e.target===box||e.target.tagName==="FIGURE") close(); });
+  box.addEventListener("click",e=>{ if(e.target===box||e.target.tagName==="FIGURE") box.close(); });
   box.addEventListener("keydown",e=>{ if(e.key==="ArrowLeft") step(-1); else if(e.key==="ArrowRight") step(1); });
   let sx=0,sy=0; box.addEventListener("pointerdown",e=>{ sx=e.clientX; sy=e.clientY; });
   box.addEventListener("pointerup",e=>{ const dx=e.clientX-sx; if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(e.clientY-sy)*1.5) step(dx<0?1:-1); });

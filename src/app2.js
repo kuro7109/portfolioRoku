@@ -17,19 +17,67 @@ function confetti(from){
     if(e<2600) requestAnimationFrame(f); else cv.remove(); })(t0);
 }
 
-/* ---------- Arts: staggered gallery + viewer ---------- */
+/* ---------- Arts: a pinned stage in perspective. Scroll progress drives every piece
+   along the z axis, so the title flies past first and the works rush toward you one by one. ---------- */
 (function(){
-  const g=$("#artGrid"), box=$("#artBox"); if(!g||!box) return;
+  const track=$("#artTrack"), world=$("#artWorld"), stage=$("#artStage"), box=$("#artBox"); if(!track) return;
   const pad=i=>String(i).padStart(2,"0"), real=ARTS.filter(a=>a.src);
-  const PH=[1.4,.75,1.42,.88,1.43,.7,1.37,1.41,1.44]; /* height / width, mirrors a mixed set of canvases */
-  $("#artCount").textContent=real.length?`${real.length} works`:"Coming soon";
-  $("#artRange").textContent=real.length?`01 — ${pad(real.length)}`:"";
-  g.innerHTML=real.length
-    ? real.map((a,i)=>`<button type="button" class="art-card" data-i="${i}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}"${a.w?` width="${a.w}" height="${a.h}"`:""} loading="lazy" decoding="async"></span><span class="art-meta"><b>${esc(a.t||"Untitled")}</b><span>${esc([a.m,a.yr].filter(Boolean).join(" · ")||pad(i+1))}</span></span></button>`).join("")
-    : PH.map((r,i)=>`<div class="art-card is-empty" aria-hidden="true"><span class="art-fig" style="--ar:${(1/r).toFixed(3)}"></span><span class="art-meta"><span>Artwork</span><span>${pad(i+1)}</span></span></div>`).join("");
-  const cards=$$(".art-card",g);
-  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }),{rootMargin:"0px 0px -8% 0px"});
-  cards.forEach((c,i)=>{ c.style.transitionDelay=`${(i%3)*70}ms`; io.observe(c); });
+  const PH=[.72,1.33,.7,1.14,.7,1.42,.73,.7,.69]; /* width / height of the placeholder canvases */
+  const items=real.length?real.map(a=>({...a,ar:a.w&&a.h?a.w/a.h:.75})):PH.map(ar=>({ar})), N=items.length;
+  track.style.setProperty("--n",N);
+  $("#artCount").textContent=real.length?`${N} works`:"Coming soon";
+  $("#artEndT").textContent=real.length?"That's the archive, for now.":"Pieces are on their way.";
+  /* where each piece sits across the frame, as a share of the viewport; alternates sides */
+  const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
+  const title=$("#artTitle"), end=$("#artEnd");
+  end.insertAdjacentHTML("beforebegin",items.map((a,i)=>a.src
+    ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span><span class="art-meta"><b>${esc(a.t||"Untitled")}</b><span>${esc([a.m,a.yr].filter(Boolean).join(" · "))}</span></span></button>`
+    : `<div class="art-c is-empty" aria-hidden="true" style="--ar:${a.ar}"><span class="art-fig" data-n="${pad(i+1)}"></span></div>`).join(""));
+  const cards=$$(".art-c",world), bar=$("#artBar"), now=$("#artNow"), curEl=$("#artCur");
+
+  if(reduce){ track.classList.add("flat"); }
+  else {
+    const P=900, G=1000, LEAD=.55, SLOTS=N+LEAD+.9;
+    let tgt=0, cur=0, raf=0, mx=0, my=0, tx=0, ty=0, W=innerWidth, H=innerHeight, lastIdx=0;
+    const clamp=v=>v<0?0:v>1?1:v;
+    const prog=()=>{ const span=track.offsetHeight-innerHeight; return span>0?clamp(-track.getBoundingClientRect().top/span):0; };
+    function place(el,x,y,z,o,hit){
+      if(o<=.004){ if(el.style.visibility!=="hidden") el.style.visibility="hidden"; return; }
+      el.style.visibility=""; el.style.opacity=o.toFixed(3);
+      el.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px)`;
+      if(hit) el.style.pointerEvents=o>.55?"":"none";
+    }
+    function frame(){
+      raf=0;
+      cur+=(tgt-cur)*.14; if(Math.abs(tgt-cur)<.00004) cur=tgt;
+      tx+=(mx-tx)*.07; ty+=(my-ty)*.07;
+      const t=cur*SLOTS;
+      world.style.transform=`rotateY(${(tx*3).toFixed(3)}deg) rotateX(${(-ty*2.2).toFixed(3)}deg)`;
+      const zt=t*G*.85, to=1-clamp(zt/(.55*P)); place(title,0,0,zt,to);
+      cards.forEach((c,i)=>{ const z=(t-(i+1+LEAD))*G, s=SPOT[i%SPOT.length];
+        const o=clamp((z+4.6*G)/(2*G))*(1-clamp((z-.22*P)/(.5*P)))*(1-.8*to);
+        place(c,s[0]*W,s[1]*H,z,o,true); });
+      const ze=(t-SLOTS)*G; place(end,0,0,ze,clamp((ze+2.4*G)/(1.8*G)));
+      bar.style.transform=`scaleX(${cur.toFixed(4)})`;
+      const idx=Math.min(N,Math.max(1,Math.round(t-LEAD-.2)));
+      now.textContent=`${pad(idx)} / ${pad(N)}`;
+      if(idx!==lastIdx){ if(lastIdx&&real.length) haptic("soft"); lastIdx=idx; }
+      if(cur!==tgt||Math.abs(mx-tx)>.0005||Math.abs(my-ty)>.0005) raf=requestAnimationFrame(frame);
+    }
+    const kick=()=>{ if(!raf) raf=requestAnimationFrame(frame); };
+    const sync=jump=>{ if(!track.offsetParent) return; W=innerWidth; H=innerHeight; tgt=prog(); if(jump) cur=tgt; kick(); };
+    addEventListener("scroll",()=>sync(false),{passive:true});
+    addEventListener("resize",()=>sync(false));
+    new ResizeObserver(()=>sync(true)).observe(track); /* fires when the page is shown */
+    if(matchMedia("(hover:hover) and (pointer:fine)").matches){
+      stage.classList.add("cur-on");
+      stage.addEventListener("pointermove",e=>{ const r=stage.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
+        mx=x/r.width-.5; my=y/r.height-.5; curEl.style.transform=`translate(${x}px,${y}px)`;
+        curEl.classList.add("on"); curEl.classList.toggle("hot",!!e.target.closest(".art-c[data-i]")); kick(); });
+      stage.addEventListener("pointerleave",()=>{ curEl.classList.remove("on","hot"); mx=my=0; kick(); });
+    }
+  }
+
   if(!real.length) return;
   const img=box.querySelector("img"), cap=box.querySelector(".ab-t"), num=box.querySelector(".ab-n"); let at=0;
   function show(i,anim){
@@ -39,13 +87,12 @@ function confetti(from){
     [real[(at+1)%real.length],real[(at-1+real.length)%real.length]].forEach(n=>{ const p=new Image(); p.src=n.src; });
   }
   const step=d=>{ show(at+d,true); haptic("soft"); };
-  const close=()=>{ box.close(); };
-  g.addEventListener("click",e=>{ const c=e.target.closest(".art-card[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.style.overflow="hidden"; haptic("light"); });
+  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.style.overflow="hidden"; haptic("light"); });
   box.addEventListener("close",()=>{ document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
-  box.querySelector(".ab-x").addEventListener("click",close);
+  box.querySelector(".ab-x").addEventListener("click",()=>box.close());
   box.querySelector(".ab-p").addEventListener("click",()=>step(-1));
   box.querySelector(".ab-n2").addEventListener("click",()=>step(1));
-  box.addEventListener("click",e=>{ if(e.target===box||e.target.tagName==="FIGURE") close(); });
+  box.addEventListener("click",e=>{ if(e.target===box||e.target.tagName==="FIGURE") box.close(); });
   box.addEventListener("keydown",e=>{ if(e.key==="ArrowLeft") step(-1); else if(e.key==="ArrowRight") step(1); });
   let sx=0,sy=0; box.addEventListener("pointerdown",e=>{ sx=e.clientX; sy=e.clientY; });
   box.addEventListener("pointerup",e=>{ const dx=e.clientX-sx; if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(e.clientY-sy)*1.5) step(dx<0?1:-1); });

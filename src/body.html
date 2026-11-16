@@ -116,20 +116,20 @@
 
 <!-- ARTS -->
 <div class="page" data-page="arts" hidden>
-  <div class="frame">
-    <section class="sec ptop art-intro" data-rail="Artworks" aria-labelledby="a-h">
-      <p class="kick"><span class="adot" aria-hidden="true"></span><b>Arts</b> Personal archive</p>
-      <div class="art-main">
-        <h1 class="art-t" id="a-h">Artworks<span>.</span></h1>
-        <p class="art-aside">A space to make without a brief. Paintings, sketches and digital pieces, made for the joy of making.</p>
+  <section class="art3d" id="artTrack" data-rail="Artworks" aria-labelledby="a-h">
+    <div class="art-stage" id="artStage">
+      <div class="art-world" id="artWorld">
+        <div class="art-title" id="artTitle">
+          <p class="kick"><span class="adot" aria-hidden="true"></span><b>Arts</b> Personal archive</p>
+          <h1 class="art-t" id="a-h">Artworks<span>.</span></h1>
+          <p class="art-aside">A space to make without a brief. Paintings, sketches and digital pieces, made for the joy of making.</p>
+        </div>
+        <div class="art-end" id="artEnd"><b>RK</b><p id="artEndT"></p></div>
       </div>
-      <div class="art-bar"><span>Selected pieces</span><span id="artCount"></span></div>
-    </section>
-    <section class="sec art-wrap" data-rail="Gallery" aria-labelledby="ag-h">
-      <div class="art-head"><h2 class="h2" id="ag-h">Selected works</h2><span id="artRange"></span></div>
-      <div class="art-grid" id="artGrid"></div>
-    </section>
-  </div>
+      <div class="art-hud" aria-hidden="true"><span id="artCount"></span><span class="art-prog"><i id="artBar"></i></span><span id="artNow"></span></div>
+      <div class="art-cur" id="artCur" aria-hidden="true"><i></i></div>
+    </div>
+  </section>
   <dialog class="artbox" id="artBox" aria-label="Artwork viewer">
     <button type="button" class="ab-x" aria-label="Close viewer"><i data-ic="x"></i></button>
     <button type="button" class="ab-nav ab-p" aria-label="Previous artwork"><i data-ic="arrow"></i></button>
