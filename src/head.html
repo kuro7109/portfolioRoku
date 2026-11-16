@@ -714,7 +714,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 /* ---------- Arts: a pinned 3D stage; scrolling flies the pieces past the viewer ---------- */
 .art3d{position:relative;height:calc(100vh + var(--n,9) * 62vh)}
 .art-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;perspective:900px;perspective-origin:50% 50%;contain:layout paint}
-.art-world{position:absolute;inset:0;transform-style:preserve-3d}
+.art-world{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
 .art-world>*{position:absolute;left:50%;top:50%;will-change:transform,opacity;backface-visibility:hidden}
 .art-title,.art-end{pointer-events:none}
 .art-title{width:min(92vw,1000px);text-align:center;display:flex;flex-direction:column;align-items:center}
@@ -723,7 +723,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .art-t{font-size:clamp(64px,13vw,190px);line-height:.85;letter-spacing:-.075em;font-weight:600;margin:22px 0 22px}
 .art-t span{color:color-mix(in oklab,var(--brand) 72%,var(--fg))}
 .art-aside{max-width:40ch;margin:0;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:var(--muted-fg);text-wrap:balance}
-.art-c{display:block;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;width:min(calc(46vh * var(--ar)),72vw);aspect-ratio:var(--ar)}
+.art-c{pointer-events:auto;display:block;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;width:min(calc(46vh * var(--ar)),72vw);aspect-ratio:var(--ar)}
 .art-c .art-fig{display:block;width:100%;height:100%;border-radius:14px;overflow:hidden;background:var(--secondary);box-shadow:0 30px 60px -30px rgba(0,0,0,.45),0 0 0 1px var(--border)}
 .art-c img{display:block;width:100%;height:100%;object-fit:cover}
 .art-c .art-meta{position:absolute;left:2px;right:2px;top:calc(100% + 10px);display:flex;justify-content:space-between;gap:10px;font:500 11px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
@@ -738,12 +738,6 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .art-hud{position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:14px;font:500 11px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em;font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
 .art-prog{width:min(160px,30vw);height:2px;border-radius:2px;background:var(--border);overflow:hidden}
 .art-prog i{display:block;height:100%;background:var(--fg);transform-origin:left;transform:scaleX(0)}
-.art-cur{position:absolute;left:0;top:0;pointer-events:none;opacity:0;transition:opacity .25s;mix-blend-mode:difference;z-index:5}
-.art-cur::before{content:"";position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#fff}
-.art-cur i{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:1.5px solid #fff;transition:transform .35s var(--spring),background .25s}
-.art-cur.on{opacity:1}.art-cur.hot i{transform:scale(1.8);background:rgba(255,255,255,.12)}
-@media (hover:hover) and (pointer:fine){.art-stage.cur-on,.art-stage.cur-on .art-c{cursor:none}}
-@media(max-width:640px){.art-c{width:min(calc(36vh * var(--ar)),64vw)}.art-t{margin:18px 0}}
 /* reduced motion: no flight, the same pieces sit in a plain grid */
 .art3d.flat{height:auto}
 .art3d.flat .art-stage{position:static;height:auto;overflow:visible;perspective:none;contain:none;padding:clamp(120px,16vw,170px) clamp(16px,4vw,48px) 64px;max-width:1200px;margin:0 auto}
@@ -751,7 +745,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .art3d.flat .art-world>*{position:relative;left:auto;top:auto;transform:none!important;opacity:1!important}
 .art3d.flat .art-title,.art3d.flat .art-end{grid-column:1/-1;width:auto}
 .art3d.flat .art-c{width:100%}
-.art3d.flat .art-hud,.art3d.flat .art-cur{display:none}
+.art3d.flat .art-hud{display:none}
 .artbox{border:0;padding:0;margin:0;width:100vw;height:100dvh;max-width:none;max-height:none;background:rgba(8,8,8,.94);color:#fafafa;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .28s,display .28s allow-discrete,overlay .28s allow-discrete}
 .artbox[open]{opacity:1;display:grid;place-items:center}
 @starting-style{.artbox[open]{opacity:0}}
@@ -766,5 +760,24 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .ab-x{top:22px;right:22px}
 .ab-nav{top:50%;margin-top:-22px}.ab-p{left:22px}.ab-p svg{transform:rotate(180deg)}.ab-n2{right:22px}
 @media(max-width:800px){.artbox figure{padding:64px 16px}.artbox img{max-width:calc(100vw - 32px);max-height:72dvh}.ab-nav{top:auto;bottom:22px;margin:0}}
+
+/* ---------- Designer cursor (mouse and trackpad only): a dot that tracks exactly,
+   a ring that trails behind, and a label when it is over something you can open ---------- */
+.cursor-wrapper{position:fixed;inset:0 auto auto 0;width:0;height:0;z-index:2147483000;pointer-events:none;mix-blend-mode:difference;opacity:0;transition:opacity .25s;display:none}
+html.cur-on .cursor-wrapper{display:block}
+html.cur-on .cursor-wrapper.on{opacity:1}
+.cursor-dot,.cursor-circle,.cursor-label{position:absolute;left:0;top:0;will-change:transform}
+.cursor-dot{width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;transition:width .25s,height .25s,margin .25s}
+.cursor-circle{width:48px;height:48px;margin:-24px 0 0 -24px;border:1px solid #fff;border-radius:50%;transition:width .35s var(--spring),height .35s var(--spring),margin .35s var(--spring),background .35s,border-color .35s}
+.cursor-label{color:#fff;font:500 9px var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity .3s}
+.cursor-label>span{display:block;transform:translate(-50%,-50%)}
+.cursor-wrapper.active .cursor-circle{width:85px;height:85px;margin:-42.5px 0 0 -42.5px;background:rgba(255,255,255,.12)}
+.cursor-wrapper.active .cursor-dot{width:0;height:0;margin:0}
+.cursor-wrapper.active .cursor-label{opacity:1}
+.cursor-wrapper.down .cursor-circle{width:38px;height:38px;margin:-19px 0 0 -19px}
+.cursor-wrapper.text{opacity:0!important}
+html.cur-on,html.cur-on *{cursor:none!important}
+html.cur-on :is(input,textarea,select,[contenteditable]){cursor:text!important}
+@media (prefers-reduced-motion:reduce){.cursor-circle{transition:none}}
 </style>
 </head>

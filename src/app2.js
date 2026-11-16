@@ -33,7 +33,7 @@ function confetti(from){
   end.insertAdjacentHTML("beforebegin",items.map((a,i)=>a.src
     ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span><span class="art-meta"><b>${esc(a.t||"Untitled")}</b><span>${esc([a.m,a.yr].filter(Boolean).join(" · "))}</span></span></button>`
     : `<div class="art-c is-empty" aria-hidden="true" style="--ar:${a.ar}"><span class="art-fig" data-n="${pad(i+1)}"></span></div>`).join(""));
-  const cards=$$(".art-c",world), bar=$("#artBar"), now=$("#artNow"), curEl=$("#artCur");
+  const cards=$$(".art-c",world), bar=$("#artBar"), now=$("#artNow");
 
   if(reduce){ track.classList.add("flat"); }
   else {
@@ -69,13 +69,8 @@ function confetti(from){
     addEventListener("scroll",()=>sync(false),{passive:true});
     addEventListener("resize",()=>sync(false));
     new ResizeObserver(()=>sync(true)).observe(track); /* fires when the page is shown */
-    if(matchMedia("(hover:hover) and (pointer:fine)").matches){
-      stage.classList.add("cur-on");
-      stage.addEventListener("pointermove",e=>{ const r=stage.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top;
-        mx=x/r.width-.5; my=y/r.height-.5; curEl.style.transform=`translate(${x}px,${y}px)`;
-        curEl.classList.add("on"); curEl.classList.toggle("hot",!!e.target.closest(".art-c[data-i]")); kick(); });
-      stage.addEventListener("pointerleave",()=>{ curEl.classList.remove("on","hot"); mx=my=0; kick(); });
-    }
+    stage.addEventListener("pointermove",e=>{ if(e.pointerType!=="mouse") return; const r=stage.getBoundingClientRect(); mx=(e.clientX-r.left)/r.width-.5; my=(e.clientY-r.top)/r.height-.5; kick(); });
+    stage.addEventListener("pointerleave",()=>{ mx=my=0; kick(); });
   }
 
   if(!real.length) return;
@@ -87,8 +82,8 @@ function confetti(from){
     [real[(at+1)%real.length],real[(at-1+real.length)%real.length]].forEach(n=>{ const p=new Image(); p.src=n.src; });
   }
   const step=d=>{ show(at+d,true); haptic("soft"); };
-  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.style.overflow="hidden"; haptic("light"); });
-  box.addEventListener("close",()=>{ document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
+  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); box.append($("#cursor")); document.documentElement.style.overflow="hidden"; haptic("light"); });
+  box.addEventListener("close",()=>{ document.body.append($("#cursor")); document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
   box.querySelector(".ab-x").addEventListener("click",()=>box.close());
   box.querySelector(".ab-p").addEventListener("click",()=>step(-1));
   box.querySelector(".ab-n2").addEventListener("click",()=>step(1));
@@ -399,6 +394,47 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#agent").hidde
 
 $("#allN").textContent=`All ${PROJECTS.length} projects`;
 route(); setCondensed();
+/* ---------- Designer cursor ---------- */
+(function(){
+  const fine=matchMedia("(hover:hover) and (pointer:fine)");
+  const wrap=$("#cursor"), dot=wrap.querySelector(".cursor-dot"), circle=wrap.querySelector(".cursor-circle"), label=wrap.querySelector(".cursor-label");
+  label.innerHTML="<span></span>"; const lt=label.firstChild;
+  let mx=-100, my=-100, cx=-100, cy=-100, raf=0, on=false;
+  const VIEW=".art-c[data-i],[data-open],.post";
+  const GO="a[href],button,[role=button],label[for],summary,.press";
+  const TEXT="input:not([type=button]):not([type=submit]):not([type=checkbox]):not([type=radio]),textarea,select,[contenteditable]";
+  function loop(){
+    cx+=(mx-cx)*.12; cy+=(my-cy)*.12;
+    if(Math.abs(mx-cx)<.1&&Math.abs(my-cy)<.1){ cx=mx; cy=my; raf=0; } else raf=requestAnimationFrame(loop);
+    const t=`translate3d(${cx}px,${cy}px,0)`; circle.style.transform=t; label.style.transform=t;
+  }
+  function move(e){
+    if(e.pointerType&&e.pointerType!=="mouse") return;
+    mx=e.clientX; my=e.clientY; dot.style.transform=`translate3d(${mx}px,${my}px,0)`;
+    if(!on){ on=true; cx=mx; cy=my; wrap.classList.add("on"); }
+    if(!raf) raf=requestAnimationFrame(loop);
+  }
+  function over(e){
+    const t=e.target instanceof Element?e.target:null; if(!t) return;
+    if(t.closest(TEXT)){ wrap.classList.add("text"); wrap.classList.remove("active"); return; }
+    wrap.classList.remove("text");
+    const v=t.closest(VIEW), g=!v&&t.closest(GO);
+    const tag=v?"View":g?"Go":"";
+    wrap.classList.toggle("active",!!tag); if(tag) lt.textContent=tag;
+  }
+  function set(){
+    const yes=fine.matches; document.documentElement.classList.toggle("cur-on",yes);
+    if(!yes){ wrap.classList.remove("on","active"); on=false; }
+  }
+  set(); fine.addEventListener?.("change",set);
+  addEventListener("pointermove",move,{passive:true});
+  addEventListener("pointerover",over,{passive:true});
+  addEventListener("pointerdown",()=>wrap.classList.add("down"),{passive:true});
+  addEventListener("pointerup",()=>wrap.classList.remove("down"),{passive:true});
+  document.addEventListener("pointerleave",()=>{ wrap.classList.remove("on"); on=false; });
+  document.documentElement.addEventListener("mouseleave",()=>{ wrap.classList.remove("on"); on=false; });
+  addEventListener("blur",()=>{ wrap.classList.remove("on"); on=false; });
+})();
 </script>
 </body>
 </html>
