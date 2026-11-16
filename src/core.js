@@ -59,10 +59,8 @@ const PROJECTS=[
  {id:"specter",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
  {id:"genme",n:"Genme",type:"Corporate Branding / Web Design",f:["brand","web"],yr:"2025",client:"Genme",c:["#6366f1","#a5b4fc","#141a3d"],d:"A modern, scalable logo for Genme's digital presence, refining typography, symbol forms and a minimal structure into a mark that adapts everywhere it appears."},
  {id:"tickai",n:"TickAI",type:"Logo Design / Brand Strategy",f:["brand","web","uiux"],yr:"2025",client:"Krishna Goel",c:["#adfa1d","#22d3ee","#0d1f12"],d:"Branding and website for TickAI, an AI education platform: a scalable logo and clear layouts that keep the brand consistent and trustworthy across every touchpoint."},
- {id:"caricatures",n:"Caricatures",type:"Illustration / Caricature",f:["illus"],yr:"Series",client:"Multiple",c:["#fb7185","#fde68a","#2a1216"],d:"A caricature series that turns real facial traits into bold, playful and still recognisable portraits, drawn by hand and refined digitally."},
- {id:"digital",n:"Digital Arts",type:"Digital Arts / Illustrations",f:["illus"],yr:"Series",client:"Self-initiated",c:["#38bdf8","#f97316","#0c1a26"],d:"Stylised digital illustrations, from Shakespeare to animal studies, that reinterpret familiar subjects through exaggeration and graphic simplicity."}
 ];
-const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"],["illus","Illustration","brush"]];
+const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
  {role:"Product Management Intern",focus:"Product & GTM Planning",co:"Evvolv.ai",loc:"New Delhi",y:"2026"},
  {role:"Panel Member",co:"Design Club IITD",loc:"New Delhi",y:"2026"},
