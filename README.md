@@ -32,3 +32,10 @@ TikTok Sans, IBM Plex Mono and Reenie Beanie, all under the SIL Open Font Licens
 Put artwork images in `arts/` and list them in `ARTS` in `src/core.js`
 (`{src, w, h, t, m, yr}`), then run `sh build.sh`. Until the list has entries the
 page shows placeholder tiles.
+
+## Drafts
+
+`src/core.js` holds the switches. `DRAFT_PAGES` lists pages that stay in the code but
+are hidden from the menu, footer and router (currently Arts and Blogs). A project with
+`draft:true` is left out of Work and Home (currently Spotify Redesign and Specter).
+Remove the entry or the flag, run `sh build.sh`, and it goes live.

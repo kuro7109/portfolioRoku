@@ -45,7 +45,7 @@ addEventListener("resize",()=>placeInd());
   setInterval(()=>{ const prev=icons[i]; i=(i+1)%icons.length; prev.classList.remove("on"); prev.classList.add("was"); setTimeout(()=>prev.classList.remove("was"),500); icons[i].classList.add("on"); },2200); })();
 
 /* ---------- Router ---------- */
-const PAGES=["home","work","experiments","arts","blogs","about","book"];
+const PAGES=["home","work","experiments","arts","blogs","about","book"].filter(p=>!DRAFT_PAGES.includes(p));
 /* Page change: the old page fades up and out, the scroll resets while nothing is visible,
    then the new page rises in. The nav highlight moves the moment you click. */
 let navTo="", swapT=0;

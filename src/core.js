@@ -48,6 +48,10 @@ const svg=n=>FILLED.has(n)?`<svg viewBox="0 0 24 24" fill="currentColor" aria-hi
 function hydrateIcons(rootEl=document){ $$("i[data-ic]",rootEl).forEach(i=>{ const s=document.createElement("span"); s.innerHTML=svg(i.dataset.ic); const el=s.firstChild; i.className && el.setAttribute("class",i.className); i.getAttribute("style") && el.setAttribute("style",i.getAttribute("style")); i.replaceWith(el); }); }
 
 /* ---------- Content ---------- */
+/* ---------- Drafts ----------
+   Work in progress stays in the code but off the live site.
+   To publish a page, take it out of DRAFT_PAGES. To publish a project, delete its draft:true. */
+const DRAFT_PAGES=["arts","blogs"];
 const PROJECTS=[
  {id:"gutly",cs:{dir:"case-studies/gutly",w:1440,h:Array(16).fill(810),deck:true},live:"https://gutlybyrohitkumawat.vercel.app",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
  {id:"inlens",cs:{dir:"case-studies/inlens",w:1440,h:Array(17).fill(810),deck:true},live:"https://inlensbyrohitkumawat-tan.vercel.app/#welcome",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#3b82f6","#93c5fd","#0b1630"],d:"An AI agent that turns raw user-interview transcripts into clustered insights, a crisp summary and an inbox-ready brief. Filter the noise, amplify user truth. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
@@ -57,9 +61,11 @@ const PROJECTS=[
  {id:"workbench",live:"https://roku7109.vercel.app/#login",n:"HiLabs Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
  {id:"genme",cs:{dir:"case-studies/genme",w:1440,h:Array(14).fill(810),deck:true},n:"Genme",type:"Corporate Branding / Web Design",f:["brand","web"],yr:"2025",client:"Genme",c:["#6366f1","#a5b4fc","#141a3d"],d:"Brand identity for Genme, a Gurgaon-based B2B pharma supply-chain company: a modern, scalable logo that refines typography, symbol forms and a minimal structure into a mark that adapts everywhere it appears."},
  {id:"tickai",cs:{dir:"case-studies/tickai",w:1440,h:Array(11).fill(810),deck:true},n:"TickAI",type:"Logo Design / Brand Strategy",f:["brand","web","uiux"],yr:"2025",client:"Krishna Goel",c:["#adfa1d","#22d3ee","#0d1f12"],d:"Branding and website for TickAI, an AI platform that grades student work and writes personalised feedback for teachers: a scalable logo and clear layouts that keep the brand consistent and trustworthy across every touchpoint."},
- {id:"spotify",n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
- {id:"specter",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
+ {id:"spotify",draft:true,n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
+ {id:"specter",draft:true,n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
 ];
+for(let i=PROJECTS.length-1;i>=0;i--) if(PROJECTS[i].draft) PROJECTS.splice(i,1);
+DRAFT_PAGES.forEach(p=>document.querySelector(`#nav .ni[data-p="${p}"]`)?.remove());
 /* Arts page. Drop images into arts/ and list them here, e.g.
    {src:"arts/art-01.jpg",w:1600,h:2240,t:"Untitled",m:"Acrylic on canvas",yr:"2024"}
    While this list is empty the page shows placeholder tiles. */
