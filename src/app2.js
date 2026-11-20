@@ -312,7 +312,7 @@ function openProject(id,from){
   const facts=`<dl class="pdl"><div><dt>Client</dt><dd>${esc(p.client)}</dd></div><div><dt>Year</dt><dd>${esc(p.yr)}</dd></div><div class="wide"><dt>Role</dt><dd>${esc(p.role||p.type.replace(/ \/ /g,", "))}</dd></div></dl>`;
   const live=p.live?`<a class="btn pri live" href="${p.live}" target="_blank" rel="noopener">Explore the Production ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`:"";
   // a full case study (exported board, sliced into images so it loads progressively) sits under the facts
-  const cs=p.cs?`<h3 class="rh">Case study</h3><div class="csimg${p.cs.deck?" deck":""}">${p.cs.h.map((h,k)=>`<img src="${p.cs.dir}/part-${k+1}.jpg" width="${p.cs.w}" height="${h}" alt="${k?"":esc(p.n)+" case study: logo, colours, typography, menu, website and brand applications"}" loading="${k?"lazy":"eager"}" decoding="async">`).join("")}</div>`:"";
+  const cs=p.cs?`<h3 class="rh">Case study</h3><div class="csimg${p.cs.deck?" deck":""}">${p.cs.h.map((h,k)=>`<img src="${p.cs.dir}/part-${k+1}.jpg" width="${p.cs.w}" height="${h}" alt="${esc(p.n)} case study, slide ${k+1} of ${p.cs.h.length}" loading="${k?"lazy":"eager"}" decoding="async">`).join("")}</div>`:"";
   const paras=`<p>${esc(p.d)}</p>${facts}${live}`+(cs||(p.live?"":`<p style="color:var(--muted-fg)">The full case study (process, research and final screens) is coming soon.</p>`));
   openReader({cov:cover(p,false),meta:"",title:"",paras,back:"Back to work",from,label:p.n,wide:!!p.cs});
 }
