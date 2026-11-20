@@ -738,6 +738,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .art-hud{position:absolute;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:14px;font:500 11px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em;font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
 .art-prog{width:min(160px,30vw);height:2px;border-radius:2px;background:var(--border);overflow:hidden}
 .art-prog i{display:block;height:100%;background:var(--fg);transform-origin:left;transform:scaleX(0)}
+@media(max-width:640px){.art-c{width:min(calc(36vh * var(--ar)),64vw)}.art-t{margin:18px 0}.art-hud{left:20px;transform:none;gap:10px}.art-prog{width:22vw}}
 /* reduced motion: no flight, the same pieces sit in a plain grid */
 .art3d.flat{height:auto}
 .art3d.flat .art-stage{position:static;height:auto;overflow:visible;perspective:none;contain:none;padding:clamp(120px,16vw,170px) clamp(16px,4vw,48px) 64px;max-width:1200px;margin:0 auto}

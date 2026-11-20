@@ -51,7 +51,7 @@ function hydrateIcons(rootEl=document){ $$("i[data-ic]",rootEl).forEach(i=>{ con
 /* ---------- Drafts ----------
    Work in progress stays in the code but off the live site.
    To publish a page, take it out of DRAFT_PAGES. To publish a project, delete its draft:true. */
-const DRAFT_PAGES=["arts","blogs"];
+const DRAFT_PAGES=["blogs"];
 const PROJECTS=[
  {id:"gutly",cs:{dir:"case-studies/gutly",w:1440,h:Array(16).fill(810),deck:true},live:"https://gutlybyrohitkumawat.vercel.app",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
  {id:"inlens",cs:{dir:"case-studies/inlens",w:1440,h:Array(17).fill(810),deck:true},live:"https://inlensbyrohitkumawat-tan.vercel.app/#welcome",n:"InLens",type:"AI Product / Product Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#3b82f6","#93c5fd","#0b1630"],d:"An AI agent that turns raw user-interview transcripts into clustered insights, a crisp summary and an inbox-ready brief. Filter the noise, amplify user truth. Built with n8n, OpenAI GPT, Whisper and the Outlook API."},
@@ -69,7 +69,20 @@ DRAFT_PAGES.forEach(p=>document.querySelector(`#nav .ni[data-p="${p}"]`)?.remove
 /* Arts page. Drop images into arts/ and list them here, e.g.
    {src:"arts/art-01.jpg",w:1600,h:2240,t:"Untitled",m:"Acrylic on canvas",yr:"2024"}
    While this list is empty the page shows placeholder tiles. */
-const ARTS=[];
+const ARTS=[
+ {src:"arts/batman.jpg",w:1131,h:1600,t:"Batman"},
+ {src:"arts/hanuman.jpg",w:1086,h:1448,t:"Hanuman"},
+ {src:"arts/gods-plan.jpg",w:1055,h:1491,t:"God's Plan!"},
+ {src:"arts/chaplin.jpg",w:1055,h:1491,t:"Charlie Chaplin"},
+ {src:"arts/jab-we-met.jpg",w:1055,h:1491,t:"Jab We Met"},
+ {src:"arts/himym.jpg",w:1086,h:1448,t:"HIMYM"},
+ {src:"arts/messi.jpg",w:1086,h:1448,t:"Messi"},
+ {src:"arts/virat.jpg",w:1086,h:1448,t:"Virat"},
+ {src:"arts/tangled.jpg",w:1086,h:1448,t:"Tangled Thoughts"},
+ {src:"arts/dune.jpg",w:1086,h:1448,t:"Moonrise on the Dunes"},
+ {src:"arts/spider.jpg",w:1086,h:1448,t:"Spider-Man"},
+ {src:"arts/trishul.jpg",w:1055,h:1491,t:"Trishul"}
+];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
  {role:"Product Management Intern",focus:"Product & GTM Planning",co:"Evvolv.ai",loc:"New Delhi",y:"2026"},
