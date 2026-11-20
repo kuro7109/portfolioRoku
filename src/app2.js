@@ -209,6 +209,7 @@ const QA=[
  [/\b(hi|hello|hey|yo)\b/i,()=>"Hey! I can tell you about Rohit's projects, experience, tools, competitions or games."],
  [/(intern|experience|aspora|evvolv|job|worked|career)/i,()=>"Rohit was a <b>Product Management Intern</b> at Evvolv.ai, New Delhi (May – Jul 2026), working on product and GTM planning, and a <b>Product Design Intern</b> at Aspora, Bengaluru (May – Jun 2025), on UI and UX."],
  [/(project|work|portfolio|case|best|gutly|tickai|genme|specter|alba|spotify)/i,()=>`${PROJECTS.length} projects so far, from Socius, Gutly and InLens to brands for Genme and TickAI. <a href="#work">See all the work</a>.`],
+ [/(bar[cç]a|barcelona|messi|football|soccer)/i,()=>"He's a huge FC Barcelona fan and a Messi fan for life. His Messi portrait opens the <a href=\"#arts\">Arts</a> page."],
  [/(fifa|game|subway|mahjong|play|h2h)/i,()=>"He loves old retro games, plus FIFA, Subway Surfers and Mahjong. His FIFA ID is <b>484556561329106944</b>: send a friend request for a head-to-head match."],
  [/(tool|figma|framer|stack|software|illustrator|photoshop)/i,()=>`${TOOLS.slice(0,-1).join(", ")} and ${TOOLS[TOOLS.length-1]}.`],
  [/(honou?r|award|competition|iim|iit|ifqm|bml)/i,()=>"Case competitions: IFQM Quality Redesign and BML Munjal ProdPro (Sep '26), IIM Kashipur Udaan 9.0 and IIT Madras ConsultSchool 4.0 (Jan '26)."],
@@ -384,7 +385,7 @@ document.addEventListener("click",e=>{ const b=e.target.closest("[data-copy]"); 
 function toMarkdown(){
   return ["# Rohit Kumawat","Product designer and product manager in Delhi.","","## Work",...PROJECTS.map(p=>`- **${p.n}** · ${p.type} · ${p.client} · ${p.yr}`),"",
    "## Experience",...JOURNEY.map(j=>`- ${j.role}, ${j.co}, ${j.loc} (${j.y})`),"",
-   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- Nokia Cricket: https://cricketbyroku.vercel.app","- Security Vault","","## Off the clock","Old retro games, plus FIFA, Subway Surfers and Mahjong. FIFA ID: 484556561329106944, send a friend request for a head-to-head match.","",
+   "## Experiments","- Snake: https://dotsgame-owcu.vercel.app","- Nokia Cricket: https://cricketbyroku.vercel.app","- Security Vault","","## Off the clock","Old retro games, plus FIFA, Subway Surfers and Mahjong. FIFA ID: 484556561329106944, send a friend request for a head-to-head match.","Huge FC Barcelona fan and a Messi fan for life.","",
    "## Tools",TOOLS.join(", "),"","## Contact",`- Email: ${EMAIL}`,`- LinkedIn: ${LINKEDIN}`,`- GitHub: ${GITHUB}`].join("\n");
 }
 $("#agentBtn").addEventListener("click",()=>{ $("#md").textContent=toMarkdown(); $("#agent").hidden=false; $("#agentClose").focus(); });

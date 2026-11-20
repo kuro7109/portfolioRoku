@@ -764,15 +764,21 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 
 /* ---------- Designer cursor (mouse and trackpad only): a dot that tracks exactly,
    a ring that trails behind, and a label when it is over something you can open ---------- */
-.cursor-wrapper{position:fixed;inset:0 auto auto 0;width:0;height:0;z-index:2147483000;pointer-events:none;mix-blend-mode:difference;opacity:0;transition:opacity .25s;display:none}
+.cursor-wrapper{position:fixed;inset:0 auto auto 0;width:0;height:0;z-index:2147483000;pointer-events:none;opacity:0;transition:opacity .25s;display:none;--cur:var(--fg);--cur-halo:var(--bg)}
 html.cur-on .cursor-wrapper{display:block}
 html.cur-on .cursor-wrapper.on{opacity:1}
 .cursor-dot,.cursor-circle,.cursor-label{position:absolute;left:0;top:0;will-change:transform}
-.cursor-dot{width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;transition:width .25s,height .25s,margin .25s}
-.cursor-circle{width:48px;height:48px;margin:-24px 0 0 -24px;border:1px solid #fff;border-radius:50%;transition:width .35s var(--spring),height .35s var(--spring),margin .35s var(--spring),background .35s,border-color .35s}
-.cursor-label{color:#fff;font:500 9px var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity .3s}
+.cursor-dot{width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:var(--cur);box-shadow:0 0 0 1.5px color-mix(in oklab,var(--cur-halo) 85%,transparent);transition:width .25s,height .25s,margin .25s}
+.cursor-circle{width:48px;height:48px;margin:-24px 0 0 -24px;border:1.5px solid var(--cur);border-radius:50%;box-shadow:0 0 0 1px color-mix(in oklab,var(--cur-halo) 55%,transparent),inset 0 0 0 1px color-mix(in oklab,var(--cur-halo) 55%,transparent);transition:width .35s var(--spring),height .35s var(--spring),margin .35s var(--spring),background .35s,border-color .35s}
+.cursor-label{color:var(--cur);font:600 9px var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity .3s}
 .cursor-label>span{display:block;transform:translate(-50%,-50%)}
-.cursor-wrapper.active .cursor-circle{width:85px;height:85px;margin:-42.5px 0 0 -42.5px;background:rgba(255,255,255,.12)}
+.cursor-wrapper.active .cursor-circle{width:85px;height:85px;margin:-42.5px 0 0 -42.5px;background:color-mix(in oklab,var(--cur-halo) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.artbox .cursor-wrapper{--cur:#fafafa;--cur-halo:#141414}
+.games .barca{margin-top:12px;padding-left:12px;border-left:3px solid #A50044}
+.games .barca b{color:#A50044}
+.games .barca a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+:root[data-theme="dark"] .games .barca b{color:#E8657F}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .games .barca b{color:#E8657F}}
 .cursor-wrapper.active .cursor-dot{width:0;height:0;margin:0}
 .cursor-wrapper.active .cursor-label{opacity:1}
 .cursor-wrapper.down .cursor-circle{width:38px;height:38px;margin:-19px 0 0 -19px}
