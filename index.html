@@ -544,6 +544,15 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .ph:nth-child(even){transform:translateY(24px)}
 .ph:nth-child(even):hover{transform:translateY(24px) scale(1.02) rotate(1deg)}
 .ph img{width:100%;height:100%;object-fit:cover;align-self:stretch}
+/* lead portrait above the 2x2: a wide studio tile, the photo sits on its own white backdrop */
+.photos .ph.lead{grid-column:1/-1;aspect-ratio:16/10;background:#fefefe;border-color:var(--border)}
+.photos .ph.lead img{object-fit:contain;object-position:50% 100%}
+.photos:has(.lead) .ph:nth-child(even){transform:none}
+.photos:has(.lead) .ph:nth-child(even):hover{transform:scale(1.02) rotate(-1deg)}
+.photos:has(.lead) .ph:nth-child(odd):not(.lead){transform:translateY(24px)}
+.photos:has(.lead) .ph:nth-child(odd):not(.lead):hover{transform:translateY(24px) scale(1.02) rotate(1deg)}
+.photos .ph.lead:hover{transform:scale(1.01)}
+
 .ph span{font:12px var(--mono);color:var(--muted-fg);text-align:center;padding:12px}
 .ph em{position:absolute;left:10px;bottom:10px;font:11px var(--mono);font-style:normal;padding:3px 8px;border-radius:999px}
 .games{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;padding:22px;border-radius:22px;border:1px solid var(--border);background:var(--card)}
@@ -952,6 +961,7 @@ html.cur-on :is(input,textarea,select,[contenteditable]){cursor:text!important}
           <div class="social" data-social></div>
         </div>
         <div class="photos">
+          <div class="ph lead"><img src="photos/rohit-5.jpg" alt="Portrait of Rohit in a navy blazer and glasses" width="413" height="531" loading="lazy"></div>
           <div class="ph"><img src="photos/rohit-1.jpg" alt="Rohit in sunglasses and a printed kurta, smiling in front of a mandala projection" width="720" height="900" loading="lazy"></div>
           <div class="ph"><img src="photos/rohit-2.jpg" alt="Rohit speaking on stage in a Design Club Vice President t-shirt" width="720" height="900" loading="lazy"></div>
           <div class="ph"><img src="photos/rohit-3.jpg" alt="Selfie of Rohit on the IIT Delhi campus in a Design Club t-shirt" width="720" height="900" loading="lazy"></div>
@@ -1111,7 +1121,7 @@ const PROJECTS=[
  {id:"alba",live:"https://albaandnotte.vercel.app",cs:{dir:"case-studies/alba-notte",w:1400,h:[1512,1512,1512,1512,1512,1508]},n:"Alba & Notte",type:"Branding / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#fbbf24","#6d5bd0","#1a1530"],d:"A café by day and a bar by night on Spinola Bay, Malta, mixing Mediterranean culture with Indian influences. Custom type and time-based storytelling serve locals and travellers alike."},
  {id:"workbench",live:"https://roku7109.vercel.app/#login",n:"HiLabs Case Workbench",type:"Product Management / UX Design",f:["product","uiux"],yr:"2026",client:"HiLabs",c:["#f59e0b","#60a5fa","#0f172a"],d:"A case management workbench MVP for HiLabs: one place for care teams to triage, track and close patient cases, backed by a slide deck and a five-patient synthetic data annex."},
  {id:"genme",cs:{dir:"case-studies/genme",w:1440,h:Array(14).fill(810),deck:true},n:"Genme",type:"Corporate Branding / Web Design",f:["brand","web"],yr:"2025",client:"Genme",c:["#6366f1","#a5b4fc","#141a3d"],d:"A modern, scalable logo for Genme's digital presence, refining typography, symbol forms and a minimal structure into a mark that adapts everywhere it appears."},
- {id:"tickai",n:"TickAI",type:"Logo Design / Brand Strategy",f:["brand","web","uiux"],yr:"2025",client:"Krishna Goel",c:["#adfa1d","#22d3ee","#0d1f12"],d:"Branding and website for TickAI, an AI education platform: a scalable logo and clear layouts that keep the brand consistent and trustworthy across every touchpoint."},
+ {id:"tickai",cs:{dir:"case-studies/tickai",w:1440,h:Array(12).fill(810),deck:true},n:"TickAI",type:"Logo Design / Brand Strategy",f:["brand","web","uiux"],yr:"2025",client:"Krishna Goel",c:["#adfa1d","#22d3ee","#0d1f12"],d:"Branding and website for TickAI, an AI education platform: a scalable logo and clear layouts that keep the brand consistent and trustworthy across every touchpoint."},
  {id:"spotify",n:"Spotify Redesign",type:"Brand Strategy / UI & UX Design",f:["uiux"],yr:"2024",client:"Self-initiated",c:["#1ed760","#f59e0b","#0b1a10"],d:"A self-initiated Spotify concept with bold colour, motion and interactive pieces that make music discovery more playful, personal and immersive."},
  {id:"specter",n:"Specter",type:"Brand Strategy / UI & UX Design",f:["brand","uiux"],yr:"2025",client:"Design Club IITD",c:["#a78bfa","#f472b6","#1b1030"],d:"A concept cognitive platform that uses AI and a neural interface to help people revisit memories and explore possible futures through personal, multisensory experiences."},
 ];
