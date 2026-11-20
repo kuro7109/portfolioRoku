@@ -1129,13 +1129,13 @@ DRAFT_PAGES.forEach(p=>document.querySelector(`#nav .ni[data-p="${p}"]`)?.remove
    {src:"arts/art-01.jpg",w:1600,h:2240,t:"Untitled",m:"Acrylic on canvas",yr:"2024"}
    While this list is empty the page shows placeholder tiles. */
 const ARTS=[
+ {src:"arts/messi.jpg",w:1086,h:1448,t:"Messi"},
  {src:"arts/batman.jpg",w:1131,h:1600,t:"Batman"},
  {src:"arts/hanuman.jpg",w:1086,h:1448,t:"Hanuman"},
  {src:"arts/gods-plan.jpg",w:1055,h:1491,t:"God's Plan!"},
  {src:"arts/chaplin.jpg",w:1055,h:1491,t:"Charlie Chaplin"},
  {src:"arts/jab-we-met.jpg",w:1055,h:1491,t:"Jab We Met"},
  {src:"arts/himym.jpg",w:1086,h:1448,t:"HIMYM"},
- {src:"arts/messi.jpg",w:1086,h:1448,t:"Messi"},
  {src:"arts/virat.jpg",w:1086,h:1448,t:"Virat"},
  {src:"arts/tangled.jpg",w:1086,h:1448,t:"Tangled Thoughts"},
  {src:"arts/dune.jpg",w:1086,h:1448,t:"Moonrise on the Dunes"},
@@ -1777,7 +1777,7 @@ function confetti(from){
   const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
   const title=$("#artTitle"), end=$("#artEnd");
   end.insertAdjacentHTML("beforebegin",items.map((a,i)=>a.src
-    ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span><span class="art-meta"><b>${esc(a.t||"Untitled")}</b><span>${esc([a.m,a.yr].filter(Boolean).join(" · "))}</span></span></button>`
+    ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span></button>`
     : `<div class="art-c is-empty" aria-hidden="true" style="--ar:${a.ar}"><span class="art-fig" data-n="${pad(i+1)}"></span></div>`).join(""));
   const cards=$$(".art-c",world), bar=$("#artBar"), now=$("#artNow");
 

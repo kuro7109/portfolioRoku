@@ -70,13 +70,13 @@ DRAFT_PAGES.forEach(p=>document.querySelector(`#nav .ni[data-p="${p}"]`)?.remove
    {src:"arts/art-01.jpg",w:1600,h:2240,t:"Untitled",m:"Acrylic on canvas",yr:"2024"}
    While this list is empty the page shows placeholder tiles. */
 const ARTS=[
+ {src:"arts/messi.jpg",w:1086,h:1448,t:"Messi"},
  {src:"arts/batman.jpg",w:1131,h:1600,t:"Batman"},
  {src:"arts/hanuman.jpg",w:1086,h:1448,t:"Hanuman"},
  {src:"arts/gods-plan.jpg",w:1055,h:1491,t:"God's Plan!"},
  {src:"arts/chaplin.jpg",w:1055,h:1491,t:"Charlie Chaplin"},
  {src:"arts/jab-we-met.jpg",w:1055,h:1491,t:"Jab We Met"},
  {src:"arts/himym.jpg",w:1086,h:1448,t:"HIMYM"},
- {src:"arts/messi.jpg",w:1086,h:1448,t:"Messi"},
  {src:"arts/virat.jpg",w:1086,h:1448,t:"Virat"},
  {src:"arts/tangled.jpg",w:1086,h:1448,t:"Tangled Thoughts"},
  {src:"arts/dune.jpg",w:1086,h:1448,t:"Moonrise on the Dunes"},

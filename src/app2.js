@@ -31,7 +31,7 @@ function confetti(from){
   const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
   const title=$("#artTitle"), end=$("#artEnd");
   end.insertAdjacentHTML("beforebegin",items.map((a,i)=>a.src
-    ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span><span class="art-meta"><b>${esc(a.t||"Untitled")}</b><span>${esc([a.m,a.yr].filter(Boolean).join(" · "))}</span></span></button>`
+    ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span></button>`
     : `<div class="art-c is-empty" aria-hidden="true" style="--ar:${a.ar}"><span class="art-fig" data-n="${pad(i+1)}"></span></div>`).join(""));
   const cards=$$(".art-c",world), bar=$("#artBar"), now=$("#artNow");
 
