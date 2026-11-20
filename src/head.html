@@ -541,17 +541,10 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .ph{position:relative;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:var(--secondary);border:1px solid var(--border);display:grid;place-items:center;transition:filter .35s,opacity .35s,transform .45s var(--spring)}
 .ph:hover{transform:scale(1.02) rotate(-1deg)}
 .photos{padding-bottom:24px}
-.ph:nth-child(even){transform:translateY(24px)}
-.ph:nth-child(even):hover{transform:translateY(24px) scale(1.02) rotate(1deg)}
+/* staggered brick: the right column sits half a tile lower, so five portraits read as 3 + 2 */
+.ph:nth-child(even){transform:translateY(50%)}
+.ph:nth-child(even):hover{transform:translateY(50%) scale(1.02) rotate(1deg)}
 .ph img{width:100%;height:100%;object-fit:cover;align-self:stretch}
-/* lead portrait above the 2x2: a wide studio tile, the photo sits on its own white backdrop */
-.photos .ph.lead{grid-column:1/-1;aspect-ratio:16/10;background:#fefefe;border-color:var(--border)}
-.photos .ph.lead img{object-fit:contain;object-position:50% 100%}
-.photos:has(.lead) .ph:nth-child(even){transform:none}
-.photos:has(.lead) .ph:nth-child(even):hover{transform:scale(1.02) rotate(-1deg)}
-.photos:has(.lead) .ph:nth-child(odd):not(.lead){transform:translateY(24px)}
-.photos:has(.lead) .ph:nth-child(odd):not(.lead):hover{transform:translateY(24px) scale(1.02) rotate(1deg)}
-.photos .ph.lead:hover{transform:scale(1.01)}
 
 .ph span{font:12px var(--mono);color:var(--muted-fg);text-align:center;padding:12px}
 .ph em{position:absolute;left:10px;bottom:10px;font:11px var(--mono);font-style:normal;padding:3px 8px;border-radius:999px}
