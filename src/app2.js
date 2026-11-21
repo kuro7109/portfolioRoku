@@ -100,7 +100,7 @@ function confetti(from){
 /* ---------- Experiments (built per card, so the same demo can live on two pages) ---------- */
 const EXPS={
  mask:{t:"Face Mask Detection",tag:"AI/ML",big:true,d:"A computer-vision model that checks whether a face is wearing a mask. Try it live in the browser.",
-   stage:`<div class="stage snake mask"><img src="experiments/facemask.jpg" alt="" width="736" height="414" loading="lazy" decoding="async"><canvas aria-hidden="true"></canvas><span class="chip live">Preview</span></div>`,
+   stage:`<div class="stage mask"><img src="experiments/facemask.jpg" alt="" width="736" height="414" loading="lazy" decoding="async"></div>`,
    cta:`<a class="btn pri" href="https://facemaskdetectionbyroku.streamlit.app" target="_blank" rel="noopener">Try the model ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
  snake:{t:"Snake",tag:"Game",d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
    stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
@@ -141,24 +141,6 @@ $$(".exp").forEach(card=>{
       for(let i=snake.length-1;i>=0;i--){ const p=snake[i]; ctx.fillStyle=i?`rgba(237,237,237,${Math.max(.3,1-i*.035).toFixed(2)})`:"#fff"; ctx.beginPath(); ctx.arc(c(p[0],ox),c(p[1],oy),i?cs*.36:cs*.44,0,7); ctx.fill(); } };
     addEventListener("resize",size); size();
     if(!reduce) new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!W) size(); if(v&&!timer) timer=setInterval(()=>{ step(); draw(); },110); if(!v&&timer){ clearInterval(timer); timer=0; } }).observe(cv);
-  }
-  if(x==="mask"){ /* the photo sits under a canvas; a detection box scans the helmet, then locks on with a MASK label */
-    const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"), IW=736, IH=414, HB=[245,88,520,408]; let W=0,H=0,t0=performance.now(),raf=0,vis=false;
-    const size=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); };
-    const draw=now=>{ raf=0; if(!W) size(); if(!W) return;
-      const sc=Math.min(W/IW,H/IH), ox=(W-IW*sc)/2, oy=(H-IH*sc)/2, bx=ox+HB[0]*sc, by=oy+HB[1]*sc, bw=(HB[2]-HB[0])*sc, bh=(HB[3]-HB[1])*sc;
-      const T=((now-t0)/1000)%5.2, locked=T>1.4&&T<4.8, fade=T>=4.8?1-(T-4.8)/.4:1, grow=locked?Math.min(1,(T-1.4)/.25):0;
-      ctx.clearRect(0,0,W,H); ctx.globalAlpha=Math.max(0,fade);
-      const col=locked?"#c6f24e":"rgba(255,255,255,.7)", c=Math.min(bw,bh)*.14, pad=locked?(1-grow)*10:6;
-      ctx.strokeStyle=col; ctx.lineWidth=2.2;
-      [[bx-pad,by-pad,1,1],[bx+bw+pad,by-pad,-1,1],[bx-pad,by+bh+pad,1,-1],[bx+bw+pad,by+bh+pad,-1,-1]].forEach(([px,py,dx,dy])=>{ ctx.beginPath(); ctx.moveTo(px,py+dy*c); ctx.lineTo(px,py); ctx.lineTo(px+dx*c,py); ctx.stroke(); });
-      if(!locked&&T<1.4){ const ly=by+((T/1.4)*bh); const g=ctx.createLinearGradient(0,ly-18,0,ly); g.addColorStop(0,"rgba(198,242,78,0)"); g.addColorStop(1,"rgba(198,242,78,.35)"); ctx.fillStyle=g; ctx.fillRect(bx+3,ly-18,bw-6,18); ctx.fillStyle="rgba(198,242,78,.8)"; ctx.fillRect(bx+3,ly,bw-6,1.5); }
-      const label=locked?"MASK":"SCANNING", fs=Math.max(10,Math.min(12,bw/18)); ctx.font=`500 ${fs}px "IBM Plex Mono",monospace`;
-      const tw=ctx.measureText(label).width, ph=fs+10, lx=bx+bw+pad-tw-16, ly=by-pad-ph-6<46?by-pad+6:by-pad-ph-6; ctx.fillStyle=locked?col:"rgba(255,255,255,.16)"; ctx.fillRect(lx,ly,tw+16,ph);
-      ctx.fillStyle=locked?"#0a0a0a":"#eaeaea"; ctx.fillText(label,lx+8,ly+ph/2+fs*.36); ctx.globalAlpha=1;
-      if(vis&&!reduce) raf=requestAnimationFrame(draw); };
-    new ResizeObserver(()=>{ size(); if(!raf) raf=requestAnimationFrame(draw); }).observe(cv);
-    new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis&&!raf) raf=requestAnimationFrame(draw); }).observe(cv);
   }
   if(x==="cricket"){ const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,timer=0,t=0,runs=34,wk=2,balls=22,shot=null,flash="";
     const size=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); draw(); };
@@ -242,7 +224,7 @@ const QA=[
  [/(snake|experiment|playground)/i,()=>`Try <a href="https://dotsgame-owcu.vercel.app" target="_blank" rel="noopener">Snake</a>, or browse the <a href="#experiments">experiments</a>.`],
  [/(contact|email|mail|reach|hire|linkedin|github)/i,()=>`Email <a href="${GMAIL}" target="_blank" rel="noopener">${EMAIL}</a>, or find him on <a href="${LINKEDIN}" target="_blank" rel="noopener">LinkedIn</a> and <a href="${GITHUB}" target="_blank" rel="noopener">GitHub</a>.`],
  [/(where|based|live|location|delhi|from)/i,()=>"Delhi, India."],
- [/(who|about|what does|do you do|rohit)/i,()=>"Rohit is a product designer and product manager in Delhi. He designs apps, brands and interfaces, and plans how products launch."]
+ [/(who|about|what does|do you do|rohit)/i,()=>"Rohit is a designer who believes the best design is the one you barely notice. He likes minimal, functional work: start with people, then strip away everything that doesn't help them."]
 ];
 const answer=q=>{ for(const [re,f] of QA) if(re.test(q)) return f(); return `I don't know that one yet (xyz). Try his projects, experience, tools or games, or <a href="${GMAIL}" target="_blank" rel="noopener">email him</a>.`; };
 const SUGS=["What does he do?","Where has he interned?","Best projects?","What's his FIFA ID?","How do I reach him?"];

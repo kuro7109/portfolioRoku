@@ -104,9 +104,9 @@ const SKILLS=[["Product design","Apps, flows, interaction"],["Product management
 const MARQ=[["Evvolv.ai","Ev"],["Aspora","As"],["IIT Delhi","IITD"],["Design Club","DC"],["GenMe","GM"],["TickAI","Ti"],["Rendezvous","Rv"]];
 const ROLES=[["Product","Designer"],["Product","Manager"],["UI & UX","Designer"],["Brand","Designer"]];
 const HIGHLIGHTS=[
- {h:"Hi, I'm Rohit",p:"A product designer and product manager based in Delhi.",c:[]},
- {h:"I design products and plan how they launch",p:"Interfaces and user experience at Aspora in Bengaluru, then product and go-to-market planning at Evvolv.ai in New Delhi.",c:["Aspora '25","Evvolv.ai '26"]},
- {h:"Product design and product management",p:"Apps like Gutly, identities for Genme and TickAI, and case competitions at IIM Kashipur, IIT Madras, IFQM and BML Munjal.",c:[`${PROJECTS.length} projects`,"4 competitions"]}
+ {h:"Hi, I'm Rohit",p:"A designer who believes the best design is the one you barely notice: it just works.",c:[]},
+ {h:"Minimal, never empty",p:"Every element on a screen has to earn its place. Clean layouts, plenty of white space, clear type and a few colours used with intent.",c:[]},
+ {h:"People first, then I strip the rest away",p:"I start with what people are trying to do and where they get stuck, and keep going until it feels effortless.",c:[`${PROJECTS.length} projects`]}
 ];
 
 /* ---------- Haptics: Android vibrate, iOS switch tap ---------- */
