@@ -37,5 +37,5 @@ page shows placeholder tiles.
 
 `src/core.js` holds the switches. `DRAFT_PAGES` lists pages that stay in the code but
 are hidden from the menu, footer and router (currently Blogs). A project with
-`draft:true` is left out of Work and Home (currently Spotify Redesign and Specter).
+`draft:true` is left out of Work and Home (currently Spotify Redesign and Specter); an artwork with `draft:true` is left out of Arts (currently Jab We Met and HIMYM).
 Remove the entry or the flag, run `sh build.sh`, and it goes live.

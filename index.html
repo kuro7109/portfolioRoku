@@ -1120,7 +1120,7 @@ function hydrateIcons(rootEl=document){ $$("i[data-ic]",rootEl).forEach(i=>{ con
 /* ---------- Content ---------- */
 /* ---------- Drafts ----------
    Work in progress stays in the code but off the live site.
-   To publish a page, take it out of DRAFT_PAGES. To publish a project, delete its draft:true. */
+   To publish a page, take it out of DRAFT_PAGES. To publish a project or an artwork, delete its draft:true. */
 const DRAFT_PAGES=["blogs"];
 const PROJECTS=[
  {id:"gutly",cs:{dir:"case-studies/gutly",w:1440,h:Array(16).fill(810),deck:true},live:"https://gutlybyrohitkumawat.vercel.app",n:"Gutly",type:"Product Design / Interaction Design",f:["product","uiux"],yr:"2026",client:"Self-initiated",c:["#34d399","#a7f3d0","#0f2e22"],d:"An AI app that lets people log meals and digestive symptoms to surface gut-health patterns and personal insights. The work focused on user journeys and taking the friction out of food logging."},
@@ -1145,14 +1145,15 @@ const ARTS=[
  {src:"arts/hanuman.jpg",w:1086,h:1448,t:"Hanuman"},
  {src:"arts/gods-plan.jpg",w:1055,h:1491,t:"God's Plan!"},
  {src:"arts/chaplin.jpg",w:1055,h:1491,t:"Charlie Chaplin"},
- {src:"arts/jab-we-met.jpg",w:1055,h:1491,t:"Jab We Met"},
- {src:"arts/himym.jpg",w:1086,h:1448,t:"HIMYM"},
+ {src:"arts/jab-we-met.jpg",w:1055,h:1491,t:"Jab We Met",draft:true},
+ {src:"arts/himym.jpg",w:1086,h:1448,t:"HIMYM",draft:true},
  {src:"arts/virat.jpg",w:1086,h:1448,t:"Virat"},
  {src:"arts/tangled.jpg",w:1086,h:1448,t:"Tangled Thoughts"},
  {src:"arts/dune.jpg",w:1086,h:1448,t:"Moonrise on the Dunes"},
  {src:"arts/spider.jpg",w:1086,h:1448,t:"Spider-Man"},
  {src:"arts/trishul.jpg",w:1055,h:1491,t:"Trishul"}
 ];
+for(let i=ARTS.length-1;i>=0;i--) if(ARTS[i].draft) ARTS.splice(i,1);
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
  {role:"Product Management Intern",focus:"Product & GTM Planning",co:"Evvolv.ai",loc:"New Delhi",y:"2026"},
