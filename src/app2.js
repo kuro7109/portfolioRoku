@@ -82,8 +82,8 @@ function confetti(from){
     [real[(at+1)%real.length],real[(at-1+real.length)%real.length]].forEach(n=>{ const p=new Image(); p.src=n.src; });
   }
   const step=d=>{ show(at+d,true); haptic("soft"); };
-  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); box.append($("#cursor")); document.documentElement.style.overflow="hidden"; haptic("light"); });
-  box.addEventListener("close",()=>{ document.body.append($("#cursor")); document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
+  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.classList.add("box-open"); window.cursorTop?.(); document.documentElement.style.overflow="hidden"; haptic("light"); });
+  box.addEventListener("close",()=>{ document.documentElement.classList.remove("box-open"); document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
   box.querySelector(".ab-x").addEventListener("click",()=>box.close());
   box.querySelector(".ab-p").addEventListener("click",()=>step(-1));
   box.querySelector(".ab-n2").addEventListener("click",()=>step(1));
@@ -423,9 +423,12 @@ route(); setCondensed();
     const tag=v?"View":g?"Go":"";
     wrap.classList.toggle("active",!!tag); if(tag) lt.textContent=tag;
   }
+  /* (re)open as a popover so it sits in the top layer, above any modal opened since */
+  const top=()=>{ if(!wrap.showPopover) return; try{ if(wrap.matches(":popover-open")) wrap.hidePopover(); wrap.showPopover(); }catch(e){} };
+  window.cursorTop=()=>{ if(fine.matches) top(); };
   function set(){
     const yes=fine.matches; document.documentElement.classList.toggle("cur-on",yes);
-    if(!yes){ wrap.classList.remove("on","active"); on=false; }
+    if(yes) top(); else { wrap.classList.remove("on","active"); on=false; try{ wrap.hidePopover?.(); }catch(e){} }
   }
   set(); fine.addEventListener?.("change",set);
   addEventListener("pointermove",move,{passive:true});

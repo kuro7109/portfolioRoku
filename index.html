@@ -764,7 +764,8 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 
 /* ---------- Designer cursor (mouse and trackpad only): a dot that tracks exactly,
    a ring that trails behind, and a label when it is over something you can open ---------- */
-.cursor-wrapper{position:fixed;inset:0 auto auto 0;width:0;height:0;z-index:2147483000;pointer-events:none;opacity:0;transition:opacity .25s;display:none;--cur:var(--fg);--cur-halo:var(--bg)}
+/* full-viewport, transparent popover in the top layer: above rays, headers and dialogs, never clipped */
+.cursor-wrapper{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:inherit;overflow:visible;z-index:2147483000;pointer-events:none;opacity:0;transition:opacity .25s;display:none;--cur:var(--fg);--cur-halo:var(--bg)}
 html.cur-on .cursor-wrapper{display:block}
 html.cur-on .cursor-wrapper.on{opacity:1}
 .cursor-dot,.cursor-circle,.cursor-label{position:absolute;left:0;top:0;will-change:transform}
@@ -772,8 +773,8 @@ html.cur-on .cursor-wrapper.on{opacity:1}
 .cursor-circle{width:48px;height:48px;margin:-24px 0 0 -24px;border:1.5px solid var(--cur);border-radius:50%;box-shadow:0 0 0 1px color-mix(in oklab,var(--cur-halo) 55%,transparent),inset 0 0 0 1px color-mix(in oklab,var(--cur-halo) 55%,transparent);transition:width .35s var(--spring),height .35s var(--spring),margin .35s var(--spring),background .35s,border-color .35s}
 .cursor-label{color:var(--cur);font:600 9px var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity .3s}
 .cursor-label>span{display:block;transform:translate(-50%,-50%)}
-.cursor-wrapper.active .cursor-circle{width:85px;height:85px;margin:-42.5px 0 0 -42.5px;background:color-mix(in oklab,var(--cur-halo) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.artbox .cursor-wrapper{--cur:#fafafa;--cur-halo:#141414}
+.cursor-wrapper.active .cursor-circle{width:85px;height:85px;margin:-42.5px 0 0 -42.5px;background:color-mix(in oklab,var(--cur-halo) 88%,transparent)}
+html.box-open .cursor-wrapper{--cur:#fafafa;--cur-halo:#141414}
 .games .barca{margin-top:12px;padding-left:12px;border-left:3px solid #A50044}
 .games .barca b{color:#A50044}
 .games .barca a{color:inherit;text-decoration:underline;text-underline-offset:3px}
@@ -1063,7 +1064,7 @@ html.cur-on :is(input,textarea,select,[contenteditable]){cursor:text!important}
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="cursor-wrapper" id="cursor" aria-hidden="true"><div class="cursor-dot"></div><div class="cursor-circle"></div><span class="cursor-label">View</span></div>
+<div class="cursor-wrapper" id="cursor" popover="manual" aria-hidden="true"><div class="cursor-dot"></div><div class="cursor-circle"></div><span class="cursor-label">View</span></div>
 <script>
 "use strict";
 const EMAIL="rohitkumawat7109@gmail.com";
@@ -1835,8 +1836,8 @@ function confetti(from){
     [real[(at+1)%real.length],real[(at-1+real.length)%real.length]].forEach(n=>{ const p=new Image(); p.src=n.src; });
   }
   const step=d=>{ show(at+d,true); haptic("soft"); };
-  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); box.append($("#cursor")); document.documentElement.style.overflow="hidden"; haptic("light"); });
-  box.addEventListener("close",()=>{ document.body.append($("#cursor")); document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
+  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.classList.add("box-open"); window.cursorTop?.(); document.documentElement.style.overflow="hidden"; haptic("light"); });
+  box.addEventListener("close",()=>{ document.documentElement.classList.remove("box-open"); document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
   box.querySelector(".ab-x").addEventListener("click",()=>box.close());
   box.querySelector(".ab-p").addEventListener("click",()=>step(-1));
   box.querySelector(".ab-n2").addEventListener("click",()=>step(1));
@@ -2176,9 +2177,12 @@ route(); setCondensed();
     const tag=v?"View":g?"Go":"";
     wrap.classList.toggle("active",!!tag); if(tag) lt.textContent=tag;
   }
+  /* (re)open as a popover so it sits in the top layer, above any modal opened since */
+  const top=()=>{ if(!wrap.showPopover) return; try{ if(wrap.matches(":popover-open")) wrap.hidePopover(); wrap.showPopover(); }catch(e){} };
+  window.cursorTop=()=>{ if(fine.matches) top(); };
   function set(){
     const yes=fine.matches; document.documentElement.classList.toggle("cur-on",yes);
-    if(!yes){ wrap.classList.remove("on","active"); on=false; }
+    if(yes) top(); else { wrap.classList.remove("on","active"); on=false; try{ wrap.hidePopover?.(); }catch(e){} }
   }
   set(); fine.addEventListener?.("change",set);
   addEventListener("pointermove",move,{passive:true});
