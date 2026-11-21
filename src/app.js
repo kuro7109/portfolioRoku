@@ -74,31 +74,47 @@ function route(){
 }
 addEventListener("hashchange",route);
 
-/* ---------- Section rail: the tick for where you are is longest, neighbours taper ---------- */
-const rail=$("#rail"); let railSecs=[], railBtns=[], rPos=0, rTarget=0, rRaf=0, rLast=-1;
-const SC=[1,.68,.44,.25];
-function railScale(d){ if(d>=3) return SC[3]; const i=Math.floor(d), f=d-i; return SC[i]+(SC[i+1]-SC[i])*f; }
-function railCompute(){
-  if(!railSecs.length) return 0;
-  const anchor=innerHeight*.38; let k=0;
-  railSecs.forEach((s,i)=>{ if(s.getBoundingClientRect().top<=anchor) k=i; });
-  const r=railSecs[k].getBoundingClientRect(), f=clamp((anchor-r.top)/Math.max(1,r.height),0,1);
-  let pos=k+clamp((f-.72)/.28,0,1);
-  if(scrollY+innerHeight>=document.documentElement.scrollHeight-4) pos=railSecs.length-1;
-  return Math.min(pos,railSecs.length-1);
+/* ---------- Section rail: a ruler of ticks. Each stop is a scroll position; the rail follows scroll
+   continuously between stops, the nearest tick is longest and its neighbours fall off on a soft bell.
+   Pages with few sections get fine in-between ticks; Arts gets one tick per artwork. ---------- */
+const rail=$("#rail"); let railStops=[], railBtns=[], rPos=0, rTarget=0, rRaf=0, rLast=-1;
+const docTop=el=>el.getBoundingClientRect().top+scrollY;
+function railStopsFor(page){
+  const anchor=innerHeight*.38, maxY=Math.max(0,document.documentElement.scrollHeight-innerHeight);
+  let majors=(page==="arts"&&window.artStops?.())||null;
+  const ct=$("#contact"); if(majors&&ct) majors.push({label:ct.dataset.rail,y:()=>0,el:ct});
+  if(!majors) majors=[...$$("[data-rail]",$(`.page[data-page="${page}"]`)),$("#contact")].filter(Boolean)
+    .map(el=>({label:el.dataset.rail,y:()=>Math.max(0,docTop(el)-anchor),el}));
+  const last=majors[majors.length-1]; if(last) last.y=()=>maxY;
+  const n=majors.length, m=n>1?Math.max(0,Math.min(5,Math.round((17-n)/(n-1)))):0, out=[];
+  majors.forEach((a,k)=>{ out.push({...a,major:true}); const b=majors[k+1];
+    if(b) for(let q=1;q<=m;q++){ const f=q/(m+1); out.push({major:false,y:()=>a.y()+(b.y()-a.y())*f}); } });
+  return out;
 }
-function railPaint(){ railBtns.forEach((b,i)=>{ const d=Math.abs(i-rPos), s=railScale(d); b.firstChild.style.setProperty("--s",s.toFixed(3)); b.firstChild.style.setProperty("--o",(.25+s*.75).toFixed(3)); }); }
+function railCompute(){
+  const n=railStops.length; if(!n) return 0;
+  const sy=scrollY, Y=railStops.map(s=>s.y());
+  if(sy<=Y[0]) return 0; if(sy>=Y[n-1]-2) return n-1;
+  for(let i=0;i<n-1;i++){ if(sy<Y[i+1]) return i+clamp((sy-Y[i])/Math.max(1,Y[i+1]-Y[i]),0,1); }
+  return n-1;
+}
+function railPaint(){ railBtns.forEach((b,i)=>{ const d=i-rPos, g=Math.exp(-(d*d)/4.2), maj=railStops[i].major;
+  const s=(maj?.2:.12)+(maj?.8:.5)*g; b.firstChild.style.setProperty("--s",s.toFixed(3)); b.firstChild.style.setProperty("--o",(.18+.82*g*(maj?1:.75)).toFixed(3)); }); }
+function nearestMajor(pos){ let k=-1,best=1e9; railStops.forEach((s,i)=>{ if(s.major&&Math.abs(i-pos)<best){ best=Math.abs(i-pos); k=i; } }); return k; }
 function railTick(){
-  rRaf=0; rTarget=railCompute(); rPos+=(rTarget-rPos)*(reduce?1:.2); if(Math.abs(rTarget-rPos)<.002) rPos=rTarget;
-  railPaint(); const k=Math.round(rPos); if(k!==rLast){ if(rLast!==-1) haptic("light"); rLast=k; railBtns.forEach((b,i)=>b.toggleAttribute("aria-current",i===k)); }
+  rRaf=0; rTarget=railCompute(); rPos+=(rTarget-rPos)*(reduce?1:.16); if(Math.abs(rTarget-rPos)<.002) rPos=rTarget;
+  railPaint(); const k=nearestMajor(rPos); if(k!==rLast){ if(rLast!==-1) haptic("soft"); rLast=k; railBtns.forEach((b,i)=>b.toggleAttribute("aria-current",i===k)); }
   if(rPos!==rTarget) rRaf=requestAnimationFrame(railTick);
 }
 function buildRail(){
-  const page=$(`.page[data-page="${current}"]`); railSecs=[...$$("[data-rail]",page),$("#contact")];
-  rail.innerHTML=railSecs.map(s=>`<button type="button"><i></i><span class="pl glass">${esc(s.dataset.rail)}</span><span class="sr">Go to ${esc(s.dataset.rail)}</span></button>`).join("");
+  railStops=railStopsFor(current);
+  rail.classList.toggle("dense",railStops.length>18);
+  rail.innerHTML=railStops.map(s=>s.major
+    ? `<button type="button"><i></i><span class="pl glass">${esc(s.label||"")}</span><span class="sr">Go to ${esc(s.label||"")}</span></button>`
+    : `<button type="button" class="minor" tabindex="-1" aria-hidden="true"><i></i></button>`).join("");
   railBtns=$$("button",rail);
-  railBtns.forEach((b,i)=>b.addEventListener("click",()=>railSecs[i].scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"})));
-  rPos=rTarget=railCompute(); rLast=Math.round(rPos); railPaint(); railBtns.forEach((b,i)=>b.toggleAttribute("aria-current",i===rLast));
+  railBtns.forEach((b,i)=>b.addEventListener("click",()=>scrollTo({top:railStops[i].y()+(railStops[i].major&&railStops[i].el?2:0),behavior:reduce?"auto":"smooth"})));
+  rPos=rTarget=railCompute(); rLast=nearestMajor(rPos); railPaint(); railBtns.forEach((b,i)=>b.toggleAttribute("aria-current",i===rLast));
 }
 const railKick=()=>{ if(!rRaf) rRaf=requestAnimationFrame(railTick); };
 addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",railKick);

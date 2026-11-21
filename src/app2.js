@@ -38,6 +38,10 @@ function confetti(from){
   if(reduce){ track.classList.add("flat"); }
   else {
     const P=900, G=1000, LEAD=.55, SLOTS=N+LEAD+.9;
+    /* rail stops for the left ruler: the title, each piece at its closest approach, then the end */
+    window.artStops=()=>{ if(!track.offsetParent||track.classList.contains("flat")) return null;
+      const top=track.getBoundingClientRect().top+scrollY, span=Math.max(1,track.offsetHeight-innerHeight), at=c=>()=>top+span*Math.min(1,Math.max(0,c));
+      return [{label:"Artworks",y:at(0)},...items.map((a,i)=>({label:a.t||("Artwork "+pad(i+1)),y:at((i+1+LEAD-.3)/SLOTS)}))]; };
     let tgt=0, cur=0, raf=0, mx=0, my=0, tx=0, ty=0, W=innerWidth, H=innerHeight, lastIdx=0;
     const clamp=v=>v<0?0:v>1?1:v;
     const prog=()=>{ const span=track.offsetHeight-innerHeight; return span>0?clamp(-track.getBoundingClientRect().top/span):0; };

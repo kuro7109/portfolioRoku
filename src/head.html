@@ -177,6 +177,9 @@ body{isolation:isolate}
 @media (min-width:900px){.rail{display:flex}}
 .rail button{position:relative;height:24px;width:56px;display:flex;align-items:center}
 .rail i{display:block;width:48px;height:2px;border-radius:2px;background:var(--fg);transform-origin:left center;transform:scaleX(var(--s,.25));opacity:var(--o,.3);will-change:transform}
+.rail button.minor{height:12px;cursor:default}
+.rail button.minor i{height:1.5px}
+.rail.dense button:not(.minor){height:20px}
 .rail .pl{position:absolute;left:58px;top:50%;transform:translate(-6px,-50%) scale(.94);transform-origin:left center;padding:5px 10px;border-radius:999px;font:500 12px var(--mono);white-space:nowrap;opacity:0;pointer-events:none;transition:transform .35s var(--spring),opacity .2s}
 .rail button:hover .pl,.rail button:focus-visible .pl{opacity:1;transform:translate(0,-50%) scale(1)}
 
