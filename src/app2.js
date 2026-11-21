@@ -99,7 +99,10 @@ function confetti(from){
 
 /* ---------- Experiments (built per card, so the same demo can live on two pages) ---------- */
 const EXPS={
- snake:{t:"Snake",tag:"Game",big:true,d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
+ mask:{t:"Face Mask Detection",tag:"AI/ML",big:true,d:"A computer-vision model that checks whether a face is wearing a mask. Try it live in the browser.",
+   stage:`<div class="stage snake mask"><canvas aria-hidden="true"></canvas><span class="chip live">Preview</span></div>`,
+   cta:`<a class="btn pri" href="https://facemaskdetectionbyroku.streamlit.app" target="_blank" rel="noopener">Try the model ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
+ snake:{t:"Snake",tag:"Game",d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
    stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
    cta:`<a class="btn pri" href="https://dotsgame-owcu.vercel.app" target="_blank" rel="noopener">Play Snake ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
  cricket:{t:"Nokia Cricket",tag:"Game",d:"The Nokia classic, reimagined with a minimal dark look. Chase a target or play free, with your pick of overs, wickets and bowler speed.",
@@ -118,9 +121,9 @@ const EXPS={
    stage:`<div class="stage"><div class="glow"><input type="text" placeholder="Ask Rohit's portfolio anything…" aria-label="Glowing chat input demo"></div></div>`,cta:`<button type="button" class="btn" data-type>Type a question</button>`}
 };
 function expCard(id){ const e=EXPS[id]; return `<article class="exp rv" data-id="${id}" data-x="${id}" data-rail="${esc(e.t)}">${e.stage}<div class="bd"><div class="eh"><h3>${esc(e.t)}</h3><span class="chip">${esc(e.tag)}</span></div><p>${esc(e.d)}</p>${e.cta?`<div class="ea">${e.cta}</div>`:""}</div></article>`; }
-$("#homeExp").innerHTML=["snake","cricket","otp"].map(expCard).join("");
+$("#homeExp").innerHTML=["mask","snake","cricket","otp"].map(expCard).join("");
 $("#homeExp").querySelectorAll("[data-rail]").forEach(el=>el.removeAttribute("data-rail"));
-$("#allExp").innerHTML=["snake","cricket","otp"].map(expCard).join("");
+$("#allExp").innerHTML=["mask","snake","cricket","otp"].map(expCard).join("");
 $$(".exp").forEach(card=>{
   const x=card.dataset.x;
   if(x==="snake"){ const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,cs=14,cols=0,rows=0,snake=[],dir=[1,0],food=[0,0],timer=0;
@@ -138,6 +141,34 @@ $$(".exp").forEach(card=>{
       for(let i=snake.length-1;i>=0;i--){ const p=snake[i]; ctx.fillStyle=i?`rgba(237,237,237,${Math.max(.3,1-i*.035).toFixed(2)})`:"#fff"; ctx.beginPath(); ctx.arc(c(p[0],ox),c(p[1],oy),i?cs*.36:cs*.44,0,7); ctx.fill(); } };
     addEventListener("resize",size); size();
     if(!reduce) new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!W) size(); if(v&&!timer) timer=setInterval(()=>{ step(); draw(); },110); if(!v&&timer){ clearInterval(timer); timer=0; } }).observe(cv);
+  }
+  if(x==="mask"){ /* illustrative preview: a face is scanned, the mask slides on and off, the box relabels */
+    const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,t0=performance.now(),raf=0,vis=false;
+    const size=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); };
+    const ease=v=>v<.5?4*v*v*v:1-Math.pow(-2*v+2,3)/2;
+    const draw=now=>{ raf=0; if(!W) size(); if(!W) return;
+      const T=((now-t0)/1000)%6, on=T<3, k=on?Math.min(1,T/.6):Math.max(0,1-(T-3)/.6), m=ease(k);
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle="rgba(255,255,255,.06)"; for(let gx=10;gx<W;gx+=18) for(let gy=10;gy<H;gy+=18){ ctx.fillRect(gx,gy,1.2,1.2); }
+      const s=Math.min(W,H)/320, cx=W/2, cy=H/2+8*s;
+      ctx.fillStyle="#2a2a2a"; ctx.beginPath(); ctx.ellipse(cx,cy+150*s,120*s,70*s,0,Math.PI,0); ctx.fill();
+      ctx.fillStyle="#3a3a3a"; ctx.beginPath(); ctx.ellipse(cx,cy-10*s,62*s,78*s,0,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle="#d8d8d8"; [-1,1].forEach(d=>{ ctx.beginPath(); ctx.arc(cx+d*22*s,cy-22*s,4.5*s,0,Math.PI*2); ctx.fill(); });
+      ctx.strokeStyle="#9a9a9a"; ctx.lineWidth=3*s; ctx.lineCap="round"; ctx.beginPath(); ctx.arc(cx,cy+18*s,16*s,.2*Math.PI,.8*Math.PI); ctx.stroke();
+      if(m>0){ const my=cy+38*s+(1-m)*70*s; ctx.save(); ctx.globalAlpha=Math.min(1,m*1.4);
+        ctx.fillStyle="#c6f24e"; ctx.beginPath(); ctx.moveTo(cx-56*s,my-26*s); ctx.quadraticCurveTo(cx,my-40*s,cx+56*s,my-26*s); ctx.lineTo(cx+48*s,my+14*s); ctx.quadraticCurveTo(cx,my+34*s,cx-48*s,my+14*s); ctx.closePath(); ctx.fill();
+        ctx.strokeStyle="rgba(0,0,0,.28)"; ctx.lineWidth=2*s; [-8,4].forEach(o=>{ ctx.beginPath(); ctx.moveTo(cx-46*s,my+o*s); ctx.quadraticCurveTo(cx,my+(o+8)*s,cx+46*s,my+o*s); ctx.stroke(); });
+        ctx.strokeStyle="#c6f24e"; ctx.lineWidth=2*s; [-1,1].forEach(d=>{ ctx.beginPath(); ctx.moveTo(cx+d*54*s,my-20*s); ctx.lineTo(cx+d*64*s,my-30*s); ctx.stroke(); }); ctx.restore(); }
+      const settled=on?T>.9:T>3.9, col=settled?(on?"#c6f24e":"#ff8a4c"):"rgba(255,255,255,.55)";
+      const bx=cx-84*s,by=cy-104*s,bw=168*s,bh=196*s,c=22*s; ctx.strokeStyle=col; ctx.lineWidth=2.2;
+      [[bx,by,1,1],[bx+bw,by,-1,1],[bx,by+bh,1,-1],[bx+bw,by+bh,-1,-1]].forEach(([px,py,dx,dy])=>{ ctx.beginPath(); ctx.moveTo(px,py+dy*c); ctx.lineTo(px,py); ctx.lineTo(px+dx*c,py); ctx.stroke(); });
+      if(!settled){ const ly=by+((now/7)%bh); ctx.fillStyle="rgba(255,255,255,.18)"; ctx.fillRect(bx+4,ly,bw-8,1.5); }
+      const label=settled?(on?"MASK":"NO MASK"):"SCANNING"; ctx.font=`500 ${Math.max(10,11*s)}px "IBM Plex Mono",monospace`; const tw=ctx.measureText(label).width;
+      ctx.fillStyle=settled?col:"rgba(255,255,255,.14)"; const ph=20*Math.max(1,s*.9); ctx.fillRect(bx,by-ph-6,tw+16,ph);
+      ctx.fillStyle=settled?"#0a0a0a":"#e8e8e8"; ctx.fillText(label,bx+8,by-6-ph/2+4);
+      if(vis&&!reduce) raf=requestAnimationFrame(draw); };
+    new ResizeObserver(()=>{ size(); if(!raf) raf=requestAnimationFrame(draw); }).observe(cv);
+    new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis&&!raf) raf=requestAnimationFrame(draw); }).observe(cv);
   }
   if(x==="cricket"){ const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,timer=0,t=0,runs=34,wk=2,balls=22,shot=null,flash="";
     const size=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); draw(); };

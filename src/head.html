@@ -6,7 +6,7 @@
 <title>Rohit Kumawat</title>
 <meta name="description" content="Rohit Kumawat: product designer and product manager in Delhi.">
 <meta name="claude:viewport-fit-sides" content="cover">
-<script>try{const t=localStorage.getItem("rk-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<script>/* dark by default; a visitor who switches to light keeps it */document.documentElement.setAttribute("data-theme","dark");try{const t=localStorage.getItem("rk-theme");if(t==="light")document.documentElement.setAttribute("data-theme","light");}catch(e){}</script>
 <style>
 @font-face{font-family:"TikTok Sans";src:url("fonts/tiktok-sans.woff2") format("woff2");font-weight:300 900;font-style:normal;font-display:swap}
 @font-face{font-family:"IBM Plex Mono";src:url("fonts/plex-mono-400.woff2") format("woff2");font-weight:400;font-display:swap}
@@ -393,6 +393,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .elist .exp h3{font-size:clamp(22px,2.4vw,30px);letter-spacing:-.035em}
 .elist .exp p{font-size:15px;max-width:40ch}
 .elist .exp .ea{margin-top:10px}
+.exp .eh .chip{white-space:nowrap;flex:none}
 .elist .exp:hover{transform:translateY(-2px)}
 @media (max-width:760px){
   .elist .exp,.elist .exp:nth-child(even){flex-direction:column;min-height:0}
