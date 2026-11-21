@@ -395,7 +395,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .elist .exp .ea{margin-top:10px}
 .exp .eh .chip{white-space:nowrap;flex:none}
 .stage.mask{position:relative;background:#000}
-.stage.mask img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.stage.mask video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .elist .exp:hover{transform:translateY(-2px)}
 @media (max-width:760px){
   .elist .exp,.elist .exp:nth-child(even){flex-direction:column;min-height:0}
@@ -1878,7 +1878,7 @@ function confetti(from){
 /* ---------- Experiments (built per card, so the same demo can live on two pages) ---------- */
 const EXPS={
  mask:{t:"Face Mask Detection",tag:"AI/ML",big:true,d:"A computer-vision model that checks whether a face is wearing a mask. Try it live in the browser.",
-   stage:`<div class="stage mask"><img src="experiments/facemask.jpg" alt="" width="736" height="414" loading="lazy" decoding="async"></div>`,
+   stage:`<div class="stage mask"><video src="experiments/facemask.mp4" poster="experiments/facemask-poster.jpg" muted loop playsinline preload="metadata" aria-hidden="true" width="540" height="380"></video></div>`,
    cta:`<a class="btn pri" href="https://facemaskdetectionbyroku.streamlit.app" target="_blank" rel="noopener">Try the model ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
  snake:{t:"Snake",tag:"Game",d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
    stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
@@ -1919,6 +1919,9 @@ $$(".exp").forEach(card=>{
       for(let i=snake.length-1;i>=0;i--){ const p=snake[i]; ctx.fillStyle=i?`rgba(237,237,237,${Math.max(.3,1-i*.035).toFixed(2)})`:"#fff"; ctx.beginPath(); ctx.arc(c(p[0],ox),c(p[1],oy),i?cs*.36:cs*.44,0,7); ctx.fill(); } };
     addEventListener("resize",size); size();
     if(!reduce) new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!W) size(); if(v&&!timer) timer=setInterval(()=>{ step(); draw(); },110); if(!v&&timer){ clearInterval(timer); timer=0; } }).observe(cv);
+  }
+  if(x==="mask"){ /* loop the clip only while it is on screen; stay on the poster for reduced motion */
+    const v=card.querySelector("video"); if(v&&!reduce) new IntersectionObserver(es=>{ es[0].isIntersecting?v.play().catch(()=>{}):v.pause(); }).observe(v);
   }
   if(x==="cricket"){ const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,timer=0,t=0,runs=34,wk=2,balls=22,shot=null,flash="";
     const size=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); draw(); };
