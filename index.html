@@ -394,6 +394,9 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .elist .exp p{font-size:15px;max-width:40ch}
 .elist .exp .ea{margin-top:10px}
 .exp .eh .chip{white-space:nowrap;flex:none}
+.stage.mask{background:#000}
+.stage.mask img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.stage.mask canvas{position:absolute;inset:0;width:100%;height:100%}
 .elist .exp:hover{transform:translateY(-2px)}
 @media (max-width:760px){
   .elist .exp,.elist .exp:nth-child(even){flex-direction:column;min-height:0}
@@ -1875,7 +1878,7 @@ function confetti(from){
 /* ---------- Experiments (built per card, so the same demo can live on two pages) ---------- */
 const EXPS={
  mask:{t:"Face Mask Detection",tag:"AI/ML",big:true,d:"A computer-vision model that checks whether a face is wearing a mask. Try it live in the browser.",
-   stage:`<div class="stage snake mask"><canvas aria-hidden="true"></canvas><span class="chip live">Preview</span></div>`,
+   stage:`<div class="stage snake mask"><img src="experiments/facemask.jpg" alt="" width="736" height="414" loading="lazy" decoding="async"><canvas aria-hidden="true"></canvas><span class="chip live">Preview</span></div>`,
    cta:`<a class="btn pri" href="https://facemaskdetectionbyroku.streamlit.app" target="_blank" rel="noopener">Try the model ${svg("ne")}<span class="sr"> (opens in a new tab)</span></a>`},
  snake:{t:"Snake",tag:"Game",d:"The classic, rebuilt for the browser, with speeds from Slow to Extreme.",
    stage:`<div class="stage snake"><canvas aria-hidden="true"></canvas><span class="chip live">Live preview</span></div>`,
@@ -1917,30 +1920,20 @@ $$(".exp").forEach(card=>{
     addEventListener("resize",size); size();
     if(!reduce) new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!W) size(); if(v&&!timer) timer=setInterval(()=>{ step(); draw(); },110); if(!v&&timer){ clearInterval(timer); timer=0; } }).observe(cv);
   }
-  if(x==="mask"){ /* illustrative preview: a face is scanned, the mask slides on and off, the box relabels */
-    const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"); let W=0,H=0,t0=performance.now(),raf=0,vis=false;
+  if(x==="mask"){ /* the photo sits under a canvas; a detection box scans the helmet, then locks on with a MASK label */
+    const cv=card.querySelector("canvas"), ctx=cv.getContext("2d"), IW=736, IH=414, HB=[245,88,520,408]; let W=0,H=0,t0=performance.now(),raf=0,vis=false;
     const size=()=>{ const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); };
-    const ease=v=>v<.5?4*v*v*v:1-Math.pow(-2*v+2,3)/2;
     const draw=now=>{ raf=0; if(!W) size(); if(!W) return;
-      const T=((now-t0)/1000)%6, on=T<3, k=on?Math.min(1,T/.6):Math.max(0,1-(T-3)/.6), m=ease(k);
-      ctx.clearRect(0,0,W,H);
-      ctx.fillStyle="rgba(255,255,255,.06)"; for(let gx=10;gx<W;gx+=18) for(let gy=10;gy<H;gy+=18){ ctx.fillRect(gx,gy,1.2,1.2); }
-      const s=Math.min(W,H)/320, cx=W/2, cy=H/2+8*s;
-      ctx.fillStyle="#2a2a2a"; ctx.beginPath(); ctx.ellipse(cx,cy+150*s,120*s,70*s,0,Math.PI,0); ctx.fill();
-      ctx.fillStyle="#3a3a3a"; ctx.beginPath(); ctx.ellipse(cx,cy-10*s,62*s,78*s,0,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle="#d8d8d8"; [-1,1].forEach(d=>{ ctx.beginPath(); ctx.arc(cx+d*22*s,cy-22*s,4.5*s,0,Math.PI*2); ctx.fill(); });
-      ctx.strokeStyle="#9a9a9a"; ctx.lineWidth=3*s; ctx.lineCap="round"; ctx.beginPath(); ctx.arc(cx,cy+18*s,16*s,.2*Math.PI,.8*Math.PI); ctx.stroke();
-      if(m>0){ const my=cy+38*s+(1-m)*70*s; ctx.save(); ctx.globalAlpha=Math.min(1,m*1.4);
-        ctx.fillStyle="#c6f24e"; ctx.beginPath(); ctx.moveTo(cx-56*s,my-26*s); ctx.quadraticCurveTo(cx,my-40*s,cx+56*s,my-26*s); ctx.lineTo(cx+48*s,my+14*s); ctx.quadraticCurveTo(cx,my+34*s,cx-48*s,my+14*s); ctx.closePath(); ctx.fill();
-        ctx.strokeStyle="rgba(0,0,0,.28)"; ctx.lineWidth=2*s; [-8,4].forEach(o=>{ ctx.beginPath(); ctx.moveTo(cx-46*s,my+o*s); ctx.quadraticCurveTo(cx,my+(o+8)*s,cx+46*s,my+o*s); ctx.stroke(); });
-        ctx.strokeStyle="#c6f24e"; ctx.lineWidth=2*s; [-1,1].forEach(d=>{ ctx.beginPath(); ctx.moveTo(cx+d*54*s,my-20*s); ctx.lineTo(cx+d*64*s,my-30*s); ctx.stroke(); }); ctx.restore(); }
-      const settled=on?T>.9:T>3.9, col=settled?(on?"#c6f24e":"#ff8a4c"):"rgba(255,255,255,.55)";
-      const bx=cx-84*s,by=cy-104*s,bw=168*s,bh=196*s,c=22*s; ctx.strokeStyle=col; ctx.lineWidth=2.2;
-      [[bx,by,1,1],[bx+bw,by,-1,1],[bx,by+bh,1,-1],[bx+bw,by+bh,-1,-1]].forEach(([px,py,dx,dy])=>{ ctx.beginPath(); ctx.moveTo(px,py+dy*c); ctx.lineTo(px,py); ctx.lineTo(px+dx*c,py); ctx.stroke(); });
-      if(!settled){ const ly=by+((now/7)%bh); ctx.fillStyle="rgba(255,255,255,.18)"; ctx.fillRect(bx+4,ly,bw-8,1.5); }
-      const label=settled?(on?"MASK":"NO MASK"):"SCANNING"; ctx.font=`500 ${Math.max(10,11*s)}px "IBM Plex Mono",monospace`; const tw=ctx.measureText(label).width;
-      ctx.fillStyle=settled?col:"rgba(255,255,255,.14)"; const ph=20*Math.max(1,s*.9); ctx.fillRect(bx,by-ph-6,tw+16,ph);
-      ctx.fillStyle=settled?"#0a0a0a":"#e8e8e8"; ctx.fillText(label,bx+8,by-6-ph/2+4);
+      const sc=Math.min(W/IW,H/IH), ox=(W-IW*sc)/2, oy=(H-IH*sc)/2, bx=ox+HB[0]*sc, by=oy+HB[1]*sc, bw=(HB[2]-HB[0])*sc, bh=(HB[3]-HB[1])*sc;
+      const T=((now-t0)/1000)%5.2, locked=T>1.4&&T<4.8, fade=T>=4.8?1-(T-4.8)/.4:1, grow=locked?Math.min(1,(T-1.4)/.25):0;
+      ctx.clearRect(0,0,W,H); ctx.globalAlpha=Math.max(0,fade);
+      const col=locked?"#c6f24e":"rgba(255,255,255,.7)", c=Math.min(bw,bh)*.14, pad=locked?(1-grow)*10:6;
+      ctx.strokeStyle=col; ctx.lineWidth=2.2;
+      [[bx-pad,by-pad,1,1],[bx+bw+pad,by-pad,-1,1],[bx-pad,by+bh+pad,1,-1],[bx+bw+pad,by+bh+pad,-1,-1]].forEach(([px,py,dx,dy])=>{ ctx.beginPath(); ctx.moveTo(px,py+dy*c); ctx.lineTo(px,py); ctx.lineTo(px+dx*c,py); ctx.stroke(); });
+      if(!locked&&T<1.4){ const ly=by+((T/1.4)*bh); const g=ctx.createLinearGradient(0,ly-18,0,ly); g.addColorStop(0,"rgba(198,242,78,0)"); g.addColorStop(1,"rgba(198,242,78,.35)"); ctx.fillStyle=g; ctx.fillRect(bx+3,ly-18,bw-6,18); ctx.fillStyle="rgba(198,242,78,.8)"; ctx.fillRect(bx+3,ly,bw-6,1.5); }
+      const label=locked?"MASK":"SCANNING", fs=Math.max(10,Math.min(12,bw/18)); ctx.font=`500 ${fs}px "IBM Plex Mono",monospace`;
+      const tw=ctx.measureText(label).width, ph=fs+10, lx=bx+bw+pad-tw-16, ly=by-pad-ph-6<46?by-pad+6:by-pad-ph-6; ctx.fillStyle=locked?col:"rgba(255,255,255,.16)"; ctx.fillRect(lx,ly,tw+16,ph);
+      ctx.fillStyle=locked?"#0a0a0a":"#eaeaea"; ctx.fillText(label,lx+8,ly+ph/2+fs*.36); ctx.globalAlpha=1;
       if(vis&&!reduce) raf=requestAnimationFrame(draw); };
     new ResizeObserver(()=>{ size(); if(!raf) raf=requestAnimationFrame(draw); }).observe(cv);
     new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis&&!raf) raf=requestAnimationFrame(draw); }).observe(cv);
