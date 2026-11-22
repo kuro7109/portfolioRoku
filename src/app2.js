@@ -412,7 +412,6 @@ route(); setCondensed();
   label.innerHTML="<span></span>"; const lt=label.firstChild;
   let mx=-100, my=-100, cx=-100, cy=-100, raf=0, on=false;
   const VIEW=".art-c[data-i],[data-open],.post";
-  const GO="a[href],button,[role=button],label[for],summary,.press";
   const TEXT="input:not([type=button]):not([type=submit]):not([type=checkbox]):not([type=radio]),textarea,select,[contenteditable]";
   function loop(){
     cx+=(mx-cx)*.12; cy+=(my-cy)*.12;
@@ -429,8 +428,7 @@ route(); setCondensed();
     const t=e.target instanceof Element?e.target:null; if(!t) return;
     if(t.closest(TEXT)){ wrap.classList.add("text"); wrap.classList.remove("active"); return; }
     wrap.classList.remove("text");
-    const v=t.closest(VIEW), g=!v&&t.closest(GO);
-    const tag=v?"View":g?"Go":"";
+    const tag=t.closest(VIEW)?"View":"";
     wrap.classList.toggle("active",!!tag); if(tag) lt.textContent=tag;
   }
   /* (re)open as a popover so it sits in the top layer, above any modal opened since */
