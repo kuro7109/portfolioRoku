@@ -98,7 +98,8 @@ const CARICATURES=[
  {src:"caricatures/caricature-03.jpg",w:1086,h:1448,t:"Harshal Gupta"},
  {src:"caricatures/caricature-04.jpg",w:1084,h:1451,t:"Saksham Bhardwaj"},
  {src:"caricatures/caricature-05.jpg",w:1448,h:1086,t:"Vishwas Singh"},
- {src:"caricatures/caricature-06.jpg",w:1448,h:1086,t:"Saanidhya Singh"}
+ {src:"caricatures/caricature-06.jpg",w:1448,h:1086,t:"Saanidhya Singh"},
+ {src:"caricatures/caricature-07.jpg",w:1089,h:1444,t:"Rohit Sharma"}
 ];
 const LENS=[
  {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
