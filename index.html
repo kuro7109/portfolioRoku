@@ -771,6 +771,8 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .ah-peek span:nth-child(2){transform:translateX(-22%) rotate(-3deg) scale(.93)}
 .ah-peek span:nth-child(3){transform:rotate(4deg)}
 .ah-z.wide .ah-peek{height:60%;aspect-ratio:1.6}
+.ah-z.wide .ah-peek span:nth-child(1){transform:translateX(-132%) rotate(-7deg) scale(.88)}
+.ah-z.wide .ah-peek span:nth-child(2){transform:translateX(-68%) rotate(-2deg) scale(.95)}
 .ah-hint{position:absolute;left:50%;top:calc(clamp(104px,13vh,132px) + (100% - clamp(104px,13vh,132px) - clamp(20px,3vh,32px)) / 2);transform:translate(-50%,-50%);z-index:2;margin:0;display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font:500 13px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;pointer-events:none}
 .ah-hint svg{width:14px;height:14px;transform:rotate(90deg);animation:ahNudge 1.8s ease-in-out infinite}
 @keyframes ahNudge{50%{transform:rotate(90deg) translateX(4px)}}
@@ -1211,6 +1213,8 @@ const ARTS=[
 for(let i=ARTS.length-1;i>=0;i--) if(ARTS[i].draft) ARTS.splice(i,1);
 /* Arts collections. Add pieces to a collection's items in the same {src,w,h,t} shape. */
 const LENS=[
+ {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
+ {src:"lens/climb.jpg",w:1600,h:1101,t:"First Climb",pos:"92% 60%"},
  {src:"lens/clay.jpg",w:900,h:1600,t:"The Idol Maker"},
  {src:"lens/chai-steam.jpg",w:1196,h:1600,t:"Steam"},
  {src:"lens/chai-stall.jpg",w:1600,h:953,t:"Night Shift"},
@@ -1225,9 +1229,7 @@ const LENS=[
  {src:"lens/rain.jpg",w:898,h:1600,t:"Red Lights, Wet Roads"},
  {src:"lens/golden.jpg",w:1280,h:1600,t:"Golden Hour"},
  {src:"lens/horns.jpg",w:1080,h:1350,t:"The Horn Seller"},
- {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
  {src:"lens/wave.jpg",w:1600,h:901,t:"The Wave"},
- {src:"lens/climb.jpg",w:1600,h:1101,t:"First Climb"},
  {src:"lens/cat.jpg",w:1280,h:1600,t:"Green Eyes"},
  {src:"lens/creatine-1.jpg",w:1149,h:1450,t:"Still Life I"},
  {src:"lens/creatine-2.jpg",w:1154,h:1450,t:"Still Life II"},
@@ -1237,7 +1239,7 @@ const LENS=[
 const ART_SETS=[
  {k:"sketchbook",t:"Sketchbook",items:ARTS,peek:["Messi","Hanuman","Batman"]},
  {k:"digital",t:"Digital Canvas",items:[]},
- {k:"lens",t:"Through the Lens",items:LENS}
+ {k:"lens",t:"Through the Lens",items:LENS,peek:["Prayer","First Climb","The Idol Maker"]}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
@@ -1885,7 +1887,7 @@ function confetti(from){
   const PH=[.72,1.33,.7,1.14,.7,1.42,.73,.7,.69]; /* width / height of the placeholder canvases */
   const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
   const zone=(set,n,wide)=>{ const it=(set.peek?set.peek.map(t=>set.items.find(a=>a.t===t)).filter(Boolean):set.items.filter(a=>a.src).slice(0,3)).reverse();
-    const peek=it.length?it.map(a=>`<span><img src="${esc(a.src)}" alt="" loading="lazy" decoding="async"></span>`).join(""):'<span class="ph"></span><span class="ph"></span><span class="ph"></span>';
+    const peek=it.length?it.map(a=>`<span><img src="${esc(a.src)}"${a.pos?` style="object-position:${esc(a.pos)}"`:""} alt="" loading="lazy" decoding="async"></span>`).join(""):'<span class="ph"></span><span class="ph"></span><span class="ph"></span>';
     return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?set.items.length+" works":"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2></button>`; };
   grid.innerHTML=ART_SETS.map((s,i)=>zone(s,i+1,i===2)).join("");
   const title=$("#artTitle"), end=$("#artEnd"), bar=$("#artBar"), now=$("#artNow");

@@ -86,6 +86,8 @@ const ARTS=[
 for(let i=ARTS.length-1;i>=0;i--) if(ARTS[i].draft) ARTS.splice(i,1);
 /* Arts collections. Add pieces to a collection's items in the same {src,w,h,t} shape. */
 const LENS=[
+ {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
+ {src:"lens/climb.jpg",w:1600,h:1101,t:"First Climb",pos:"92% 60%"},
  {src:"lens/clay.jpg",w:900,h:1600,t:"The Idol Maker"},
  {src:"lens/chai-steam.jpg",w:1196,h:1600,t:"Steam"},
  {src:"lens/chai-stall.jpg",w:1600,h:953,t:"Night Shift"},
@@ -100,9 +102,7 @@ const LENS=[
  {src:"lens/rain.jpg",w:898,h:1600,t:"Red Lights, Wet Roads"},
  {src:"lens/golden.jpg",w:1280,h:1600,t:"Golden Hour"},
  {src:"lens/horns.jpg",w:1080,h:1350,t:"The Horn Seller"},
- {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
  {src:"lens/wave.jpg",w:1600,h:901,t:"The Wave"},
- {src:"lens/climb.jpg",w:1600,h:1101,t:"First Climb"},
  {src:"lens/cat.jpg",w:1280,h:1600,t:"Green Eyes"},
  {src:"lens/creatine-1.jpg",w:1149,h:1450,t:"Still Life I"},
  {src:"lens/creatine-2.jpg",w:1154,h:1450,t:"Still Life II"},
@@ -112,7 +112,7 @@ const LENS=[
 const ART_SETS=[
  {k:"sketchbook",t:"Sketchbook",items:ARTS,peek:["Messi","Hanuman","Batman"]},
  {k:"digital",t:"Digital Canvas",items:[]},
- {k:"lens",t:"Through the Lens",items:LENS}
+ {k:"lens",t:"Through the Lens",items:LENS,peek:["Prayer","First Climb","The Idol Maker"]}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
