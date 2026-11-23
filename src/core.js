@@ -155,7 +155,7 @@ const MARQ=[["Evvolv.ai","Ev"],["Aspora","As"],["IIT Delhi","IITD"],["Design Clu
 const ROLES=[["Product","Designer"],["Product","Manager"],["UI & UX","Designer"],["Brand","Designer"]];
 const HIGHLIGHTS=[
  {h:"Hi, I'm Rohit",p:"Product designer by craft, product manager by habit. I make the kind of design you barely notice, because it just works.",c:[]},
- {h:"I design and ship products",p:"AI tools, apps and brand identities, taken from a messy problem to something people use without thinking twice.",c:[`${PROJECTS.length} projects`]},
+ {h:"I design and ship products",p:"AI tools, apps and brand identities, taken from a messy problem to something people use without thinking twice.",c:[]},
  {h:"Product design and product management",p:"Research, interaction and visual design, then roadmaps and launch plans to ship it. Minimal, never empty: every element earns its place.",c:[]}
 ];
 

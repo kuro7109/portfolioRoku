@@ -377,11 +377,11 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
 (function(){
   const bar=$("#fbar"), ind=$("#fInd"), peek=$("#peek"), works=$("#works"), vt=$("#vt"); let f="all", view="grid";
   const list=k=>k==="all"?PROJECTS:PROJECTS.filter(p=>p.f.includes(k));
-  bar.insertAdjacentHTML("beforeend",FILTERS.map(([k,l,ic])=>`<button type="button" class="fb" data-f="${k}" aria-pressed="${k===f}">${svg(ic)}${esc(l)}<span class="n">${list(k).length}</span></button>`).join(""));
+  bar.insertAdjacentHTML("beforeend",FILTERS.map(([k,l,ic])=>`<button type="button" class="fb" data-f="${k}" aria-pressed="${k===f}">${svg(ic)}${esc(l)}</button>`).join(""));
   const btns=$$(".fb",bar);
   const placeF=()=>{ const b=btns.find(x=>x.dataset.f===f); if(!b||!b.offsetWidth) return; ind.style.width=b.offsetWidth+"px"; ind.style.transform=`translateX(${b.offsetLeft-4}px)`; };
   function render(){
-    const L=list(f); $("#showing").textContent=`Showing ${L.length} of ${PROJECTS.length} projects`;
+    const L=list(f);
     works.className="works v-"+view;
     works.innerHTML=L.map((p,i)=>`<article class="card" data-id="${p.id}" data-rail="${esc(p.n)}" style="animation:page-in .6s var(--ease-out) ${i*50}ms both">
       <button type="button" class="cov-b" data-open="${p.id}" aria-label="Open the ${esc(p.n)} case study">${cover(p)}</button>

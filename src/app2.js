@@ -27,7 +27,7 @@ function confetti(from){
   const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
   const zone=(set,n,wide)=>{ const it=(set.peek?set.peek.map(t=>set.items.find(a=>a.t===t)).filter(Boolean):set.items.filter(a=>a.src).slice(0,3)).reverse();
     const peek=it.length?it.map(a=>`<span><img src="${esc(a.src)}"${a.pos?` style="object-position:${esc(a.pos)}"`:""} alt="" loading="lazy" decoding="async"></span>`).join(""):'<span class="ph"></span><span class="ph"></span><span class="ph"></span>';
-    return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?set.items.length+(set.items.length>1?" works":" work"):"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2></button>`; };
+    return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?"":"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2></button>`; };
   grid.innerHTML=ART_SETS.map((s,i)=>zone(s,i+1,false)).join("");
   const title=$("#artTitle"), end=$("#artEnd"), bar=$("#artBar"), now=$("#artNow");
   let items=[], real=[], N=0, cards=[], SLOTS=1, active=null;
@@ -68,7 +68,7 @@ function confetti(from){
     track.style.setProperty("--n",N);
     $("#a-h").innerHTML=`${esc(set.t)}<span>.</span>`; title.querySelector(".art-aside").hidden=true;
     title.querySelector(".kick").innerHTML=`<span class="adot" aria-hidden="true"></span><b>Arts</b> ${esc(set.t)}`;
-    $("#artCount").textContent=real.length?`${N} ${N>1?"works":"work"}`:"Coming soon";
+    $("#artCount").textContent=real.length?"":"Coming soon";
     $("#artEndT").textContent=real.length?"That's this collection, for now.":"Pieces are on their way.";
     $$(".art-c",world).forEach(c=>c.remove());
     end.insertAdjacentHTML("beforebegin",items.map((a,i)=>a.src
@@ -264,7 +264,7 @@ $$("[data-gmail]").forEach(a=>a.href=GMAIL);
 const QA=[
  [/\b(hi|hello|hey|yo)\b/i,()=>"Hey! I can tell you about Rohit's projects, experience, tools, competitions or games."],
  [/(intern|experience|aspora|evvolv|job|worked|career)/i,()=>"Rohit was a <b>Product Management Intern</b> at Evvolv.ai, New Delhi (May – Jul 2026), working on product and GTM planning, and a <b>Product Design Intern</b> at Aspora, Bengaluru (May – Jun 2025), on UI and UX."],
- [/(project|work|portfolio|case|best|gutly|tickai|genme|specter|alba|spotify)/i,()=>`${PROJECTS.length} projects so far, from Socius, Gutly and InLens to brands for Genme and TickAI. <a href="#work">See all the work</a>.`],
+ [/(project|work|portfolio|case|best|gutly|tickai|genme|specter|alba|spotify)/i,()=>`From Socius, Gutly and InLens to brands for Genme and TickAI. <a href="#work">See all the work</a>.`],
  [/(bar[cç]a|barcelona|messi|football|soccer)/i,()=>"He's a huge FC Barcelona fan and a Messi fan for life. His Messi portrait opens the <a href=\"#arts\">Arts</a> page."],
  [/(fifa|game|subway|mahjong|play|h2h)/i,()=>"He loves old retro games, plus FIFA, Subway Surfers and Mahjong. His FIFA ID is <b>484556561329106944</b>: send a friend request for a head-to-head match."],
  [/(tool|figma|framer|stack|software|illustrator|photoshop)/i,()=>`${TOOLS.slice(0,-1).join(", ")} and ${TOOLS[TOOLS.length-1]}.`],
@@ -344,7 +344,7 @@ const postCov=p=>`<div class="cov"><div class="g" style="background:${coverBg(p.
 let bfilter="All";
 function renderBlogs(){
   const tags=["All",...new Set(POSTS.map(p=>p.tag))];
-  $("#btabs").innerHTML=tags.map(t=>`<button type="button" class="tab" data-t="${esc(t)}" aria-pressed="${t===bfilter}">${esc(t)}<span class="n">${t==="All"?POSTS.length:POSTS.filter(p=>p.tag===t).length}</span></button>`).join("");
+  $("#btabs").innerHTML=tags.map(t=>`<button type="button" class="tab" data-t="${esc(t)}" aria-pressed="${t===bfilter}">${esc(t)}</button>`).join("");
   $$("#btabs .tab").forEach(b=>b.addEventListener("click",()=>{ bfilter=b.dataset.t; renderBlogs(); if(current==="blogs") buildRail(); }));
   const list=bfilter==="All"?POSTS:POSTS.filter(p=>p.tag===bfilter);
   $("#bgrid").innerHTML=list.map((p,i)=>`<button type="button" class="post ${i===0&&bfilter==="All"?"feat":""}" data-i="${POSTS.indexOf(p)}" data-rail="${esc(p.t)}">${postCov(p)}<div class="bd"><span class="meta">${p.soon?"Coming soon":`${esc(p.date)} · ${p.min} min read`}</span><h3>${esc(p.t)}</h3><p>${esc(p.ex)}</p></div></button>`).join("");
@@ -498,7 +498,7 @@ $("#agentClose").addEventListener("click",()=>{ $("#agent").hidden=true; $("#age
 $("#mdCopy").addEventListener("click",()=>{ try{ navigator.clipboard.writeText($("#md").textContent).then(()=>say("Markdown copied"),()=>say("Select the text to copy it")); }catch(e){ say("Select the text to copy it"); } });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#agent").hidden) $("#agentClose").click(); });
 
-$("#allN").textContent=`All ${PROJECTS.length} projects`;
+
 route(); setCondensed();
 /* ---------- Designer cursor ---------- */
 (function(){
