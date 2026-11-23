@@ -383,6 +383,65 @@ $("#fMenu").innerHTML=[["Home","#home"],["Work","#work"],["Experiments","#experi
 $("#fContact").innerHTML=[["Email",GMAIL],["LinkedIn",LINKEDIN],["GitHub",GITHUB]].map(([t,h])=>slink(t,h,true)).join("");
 $$(".slink").forEach(a=>{ const t=a.querySelector(".txt"), txt=t.textContent; const go=()=>scramble(t,txt); a.addEventListener("pointerenter",go); a.addEventListener("focus",go); });
 new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ $("#quote").classList.add("in"); o.disconnect(); } },{threshold:.6}).observe($("#quote"));
+/* ---------- Footer hands: two reaching hands drawn in characters. Shapes are painted to a small
+   offscreen mask, shaded with a top-left light, then each grid cell picks a glyph by brightness.
+   Near the pointer, cells scramble to random glyphs and brighten, then settle back. ---------- */
+(function(){
+  const cv=$("#hands"); if(!cv) return; const opts={still:reduce};
+  const ctx=cv.getContext("2d"), RAMP=" `.-':_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@";
+  const VW=1000, VH=320;
+  /* God's hand from the left, finger reaching right; Adam's from the right, finger drooping left */
+  const SHAPES=[
+    "M-40 250 C 80 238 170 222 250 200 C 290 189 318 176 342 160 C 362 147 386 140 410 141 C 440 142 470 146 505 150 C 516 151 521 159 516 166 C 511 172 497 171 486 170 L 446 168 C 452 178 450 188 438 191 C 450 198 448 210 434 212 C 442 220 436 232 420 231 C 400 230 380 226 362 220 C 330 230 290 246 240 262 C 160 286 60 300 -40 310 Z",
+    "M1040 70 C 930 80 840 96 760 118 C 720 129 690 142 668 158 C 650 170 632 182 612 190 C 592 198 566 204 540 208 C 530 210 526 218 532 224 C 538 230 552 228 566 226 L 600 222 C 596 232 600 240 612 240 C 606 248 612 258 626 256 C 622 266 632 274 646 268 C 664 260 684 248 702 236 C 744 210 800 186 862 172 C 932 160 990 154 1040 152 Z"
+  ];
+  const paths=SHAPES.map(d=>new Path2D(d));
+  /* creases between fingers and at the knuckles, painted darker */
+  const CREASES=new Path2D("M446 168 C 430 172 418 176 404 178 M438 191 C 424 194 410 196 396 196 M434 212 C 420 213 404 212 390 209 M600 222 C 616 220 632 216 646 212 M612 240 C 626 236 640 230 654 224 M626 256 C 640 250 654 242 666 234 M370 150 C 380 160 386 172 388 186 M690 170 C 680 182 674 196 672 210");
+  let W=0,H=0,cw=0,ch=0,cols=0,rows=0,base=null,heat=null,glyph=null,raf=0,vis=false,mx=-1e4,my=-1e4,last=0;
+  const fs=opts.fs||8;
+  function build(){
+    const r=cv.getBoundingClientRect(); if(!r.width) return;
+    const dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    cw=fs*1.02; ch=fs*1.02; cols=Math.ceil(W/cw); rows=Math.ceil(H/ch);
+    const m=document.createElement("canvas"); m.width=cols; m.height=rows; const g=m.getContext("2d");
+    const S=Math.min(W/VW,H/VH), sx=S/cw, sy=S/ch, ox=(cols-VW*sx)/2, oy=(rows-VH*sy)/2;
+    const paint=(dx,dy,blur)=>{ g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,cols,rows); g.filter=blur?`blur(${blur}px)`:"none"; g.setTransform(sx,0,0,sy,ox+dx,oy+dy); g.fillStyle="#fff"; paths.forEach(p=>g.fill(p)); g.filter="none"; return g.getImageData(0,0,cols,rows).data; };
+    const A=paint(0,0,0), B=paint(0,0,2.4), L=paint(2.2,1.8,1.6);
+    g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,cols,rows); g.setTransform(sx,0,0,sy,ox,oy); g.strokeStyle="#fff"; g.lineWidth=7; g.lineCap="round"; g.stroke(CREASES); g.setTransform(1,0,0,1,0,0); const C=g.getImageData(0,0,cols,rows).data;
+    base=new Float32Array(cols*rows); heat=new Float32Array(cols*rows); glyph=new Uint8Array(cols*rows);
+    for(let i=0;i<cols*rows;i++){ const a=A[i*4]/255; if(a<.08){ base[i]=0; continue; }
+      const inner=B[i*4]/255, lit=(B[i*4]-L[i*4])/255;
+      let v=.06+.6*Math.pow(inner,1.6)+2.6*Math.max(0,lit)-.9*(C[i*4]/255)+(Math.random()-.5)*.24; v=Math.max(.06,Math.min(1,v))*Math.min(1,a*1.3);
+      base[i]=v; glyph[i]=Math.round(v*(RAMP.length-1)); }
+    draw(performance.now());
+  }
+  function draw(now){
+    raf=0; if(!base) return; const dt=Math.min(64,now-(last||now)); last=now;
+    const css=getComputedStyle(cv), col=css.color;
+    ctx.clearRect(0,0,W,H); ctx.font=`${fs}px "IBM Plex Mono",monospace`; ctx.textBaseline="top"; ctx.fillStyle=col;
+    const R=opts.radius||70, R2=R*R; let hot=false;
+    for(let y=0;y<rows;y++) for(let x=0;x<cols;x++){ const i=y*cols+x, b=base[i]; if(!b) continue;
+      const px=x*cw, py=y*ch, dx=px-mx, dy=py-my, d2=dx*dx+dy*dy;
+      if(d2<R2){ const k=1-Math.sqrt(d2)/R; if(heat[i]<k) heat[i]=k; }
+      let h=heat[i]; if(h>0){ hot=true; heat[i]=Math.max(0,h-dt/900); }
+      let ci=glyph[i], a=.28+.72*b;
+      if(h>.02){ if(Math.random()<h*.9) ci=1+((Math.random()*(RAMP.length-1))|0); a=Math.min(1,a+h*.6); }
+      ctx.globalAlpha=a; ctx.fillText(RAMP[ci],px,py); }
+    ctx.globalAlpha=1;
+    if(vis&&hot) raf=requestAnimationFrame(draw);
+  }
+  const kick=()=>{ if(!raf) raf=requestAnimationFrame(draw); };
+  let bt=0; new ResizeObserver(()=>{ clearTimeout(bt); bt=setTimeout(build,80); }).observe(cv);
+  document.fonts?.ready.then(build);
+  new MutationObserver(()=>{ if(base) draw(performance.now()); }).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+  new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis) kick(); }).observe(cv);
+  if(!opts.still){
+    addEventListener("pointermove",e=>{ const r=cv.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top; if(vis) kick(); },{passive:true});
+    document.addEventListener("pointerleave",()=>{ mx=my=-1e4; });
+  }
+})();
+
 
 /* ---------- Reveals ---------- */
 const rvIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); rvIO.unobserve(e.target); } }),{threshold:.12,rootMargin:"0px 0px -6% 0px"});

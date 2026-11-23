@@ -643,13 +643,16 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 
 /* Footer */
 .foot{padding:clamp(56px,8vw,96px) clamp(16px,4vw,48px) 40px}
-.quote{font-family:var(--hand);font-size:32px;line-height:1.05;margin:0;max-width:22ch;position:relative;width:max-content;max-width:100%}
-.quote .tx{display:inline-block;clip-path:inset(-.3em 100% -.3em 0)}
-.quote.in .tx{animation:hw-wipe 1.6s cubic-bezier(.5,0,.3,1) .1s both}
-.quote .hwr{display:block;width:70%;height:12px;margin-top:2px}
-.quote .hwr path{stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420}
-.quote.in .hwr path{transition:stroke-dashoffset 1.1s var(--ease-out) 1.4s;stroke-dashoffset:0}
-.quote cite{display:block;font-size:24px;font-style:normal;color:var(--muted-fg);margin-top:8px}
+.quote{font-family:var(--hand);font-size:clamp(30px,3.4vw,46px);line-height:1.1;margin:0 auto;text-align:center;max-width:100%}
+.quote .tx{display:inline-block;clip-path:inset(-.4em 100% -.4em -.6em)}
+.quote.in .tx{animation:hw-wipe-q 1.6s cubic-bezier(.5,0,.3,1) .1s both}
+@keyframes hw-wipe-q{to{clip-path:inset(-.4em -4% -.4em -.6em)}}
+.quote cite{display:block;font-style:normal;font-size:.92em;margin-top:.55em;color:var(--fg);opacity:0;transition:opacity .8s var(--ease-out) 1.5s}
+.quote.in cite{opacity:1}
+/* footer hands, full bleed under the quote */
+.hands{width:100vw;margin:clamp(8px,2vw,24px) 0 0 calc(50% - 50vw);height:clamp(150px,30vw,400px);pointer-events:none}
+@media(max-width:560px){.quote .tx br:first-child{display:none}}
+.hands canvas{display:block;width:100%;height:100%;color:var(--fg)}
 .fgr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:clamp(24px,5vw,72px);margin-top:56px;align-items:start}
 .fgr h4{margin:0 0 12px;font:500 14px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.04em}
 .fgr ul{list-style:none;margin:0;padding:0;display:grid}
@@ -717,6 +720,7 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
   *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
   .rv{opacity:1;transform:none;filter:none}
   .ink,.quote .tx{clip-path:none}
+  .quote cite{opacity:1;transition:none}
 }
 
 /* ---------- Arts: a pinned 3D stage; scrolling flies the pieces past the viewer ---------- */
