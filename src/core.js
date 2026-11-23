@@ -85,10 +85,26 @@ const ARTS=[
 ];
 for(let i=ARTS.length-1;i>=0;i--) if(ARTS[i].draft) ARTS.splice(i,1);
 /* Arts collections. Add pieces to a collection's items in the same {src,w,h,t} shape. */
+const LENS=[
+ {src:"lens/clay.jpg",w:900,h:1600,t:"The Idol Maker"},
+ {src:"lens/chai-steam.jpg",w:1196,h:1600,t:"Steam"},
+ {src:"lens/chai-stall.jpg",w:1600,h:953,t:"Night Shift"},
+ {src:"lens/platform.jpg",w:1600,h:903,t:"Platform 9"},
+ {src:"lens/cart.jpg",w:900,h:1600,t:"On the Line"},
+ {src:"lens/mural.jpg",w:1600,h:900,t:"Walking with Sanchi"},
+ {src:"lens/tiranga.jpg",w:1280,h:1600,t:"Tiranga"},
+ {src:"lens/bookstall.jpg",w:1196,h:1600,t:"Bookstall"},
+ {src:"lens/sip.jpg",w:1080,h:1350,t:"First Sip"},
+ {src:"lens/dhaba.jpg",w:971,h:1294,t:"The Counter"},
+ {src:"lens/station-meal.jpg",w:1600,h:1066,t:"Dinner at the Station"},
+ {src:"lens/rain.jpg",w:898,h:1600,t:"Red Lights, Wet Roads"},
+ {src:"lens/golden.jpg",w:1280,h:1600,t:"Golden Hour"},
+ {src:"lens/horns.jpg",w:1080,h:1350,t:"The Horn Seller"}
+];
 const ART_SETS=[
  {k:"sketchbook",t:"Sketchbook",d:"Pencil, ink and marker on paper.",items:ARTS},
  {k:"digital",t:"Digital Canvas",d:"Drawn and painted on screen.",items:[]},
- {k:"lens",t:"Through the Lens",d:"Photographs, framed the way I see.",items:[]}
+ {k:"lens",t:"Through the Lens",d:"Photographs, framed the way I see.",items:LENS}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
