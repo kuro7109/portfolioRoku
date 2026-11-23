@@ -28,7 +28,7 @@ function confetti(from){
   const zone=(set,n,wide)=>{ const it=(set.peek?set.peek.map(t=>set.items.find(a=>a.t===t)).filter(Boolean):set.items.filter(a=>a.src).slice(0,3)).reverse();
     const peek=it.length?it.map(a=>`<span><img src="${esc(a.src)}"${a.pos?` style="object-position:${esc(a.pos)}"`:""} alt="" loading="lazy" decoding="async"></span>`).join(""):'<span class="ph"></span><span class="ph"></span><span class="ph"></span>';
     return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?set.items.length+" works":"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2></button>`; };
-  grid.innerHTML=ART_SETS.map((s,i)=>zone(s,i+1,i===2)).join("");
+  grid.innerHTML=ART_SETS.map((s,i)=>zone(s,i+1,false)).join("");
   const title=$("#artTitle"), end=$("#artEnd"), bar=$("#artBar"), now=$("#artNow");
   let items=[], real=[], N=0, cards=[], SLOTS=1, active=null;
   const P=900, G=1000, LEAD=.55;
@@ -83,7 +83,7 @@ function confetti(from){
   const onHash=()=>{ const [pg,sub]=location.hash.slice(1).split("/"); if(pg!=="arts") return;
     const k=sub&&byKey(sub)?sub:null; if(k===active&&(k||!hub.hidden)) return;
     show(k); scrollTo({top:0,behavior:"instant"}); requestAnimationFrame(()=>window.buildRail?.()); };
-  addEventListener("hashchange",onHash); onHash();
+  addEventListener("hashchange",onHash); queueMicrotask(onHash); /* after the fly-through state below exists */
 
   /* ---- the 3D fly-through ---- */
   let tgt=0, cur=0, raf=0, mx=0, my=0, tx=0, ty=0, W=innerWidth, H=innerHeight, lastIdx=0;

@@ -85,6 +85,13 @@ const ARTS=[
 ];
 for(let i=ARTS.length-1;i>=0;i--) if(ARTS[i].draft) ARTS.splice(i,1);
 /* Arts collections. Add pieces to a collection's items in the same {src,w,h,t} shape. */
+const DIGITAL=[
+ {src:"digital/collection.jpg",w:1600,h:900,t:"The Collection"},
+ {src:"digital/flamenco-deck.jpg",w:1600,h:900,t:"Flamenco Deck"},
+ {src:"digital/iit-delhi.jpg",w:1600,h:900,t:"IIT Delhi 25",pos:"44% 50%"},
+ {src:"digital/dune.jpg",w:1600,h:900,t:"Dune at Night",pos:"44% 45%"},
+ {src:"digital/flamenco.jpg",w:1600,h:900,t:"Flamenco",pos:"64% 50%"}
+];
 const LENS=[
  {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
  {src:"lens/climb.jpg",w:1600,h:1101,t:"First Climb",pos:"92% 60%"},
@@ -111,8 +118,9 @@ const LENS=[
 ];
 const ART_SETS=[
  {k:"sketchbook",t:"Sketchbook",items:ARTS,peek:["Messi","Hanuman","Batman"]},
- {k:"digital",t:"Digital Canvas",items:[]},
- {k:"lens",t:"Through the Lens",items:LENS,peek:["Prayer","First Climb","The Idol Maker"]}
+ {k:"digital",t:"Digital Canvas",items:DIGITAL,peek:["Flamenco","IIT Delhi 25","Dune at Night"]},
+ {k:"lens",t:"Through the Lens",items:LENS,peek:["Prayer","First Climb","The Idol Maker"]},
+ {k:"caricatures",t:"Caricatures",items:[]}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
