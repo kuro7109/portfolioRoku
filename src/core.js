@@ -94,8 +94,8 @@ const DIGITAL=[
 ];
 const CARICATURES=[
  {src:"caricatures/caricature-01.jpg",w:1600,h:777,t:"The Wedding Frame",pos:"50% 40%"},
- {src:"caricatures/caricature-02.jpg",w:1086,h:1448,t:"King"},
- {src:"caricatures/caricature-03.jpg",w:1086,h:1448,t:"Purple Kurta"}
+ {src:"caricatures/caricature-02.jpg",w:1086,h:1448,t:"Aadit Malik"},
+ {src:"caricatures/caricature-03.jpg",w:1086,h:1448,t:"Harshal Gupta"}
 ];
 const LENS=[
  {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
