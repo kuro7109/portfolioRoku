@@ -92,6 +92,9 @@ const DIGITAL=[
  {src:"digital/dune.jpg",w:1600,h:900,t:"Dune at Night",pos:"44% 45%"},
  {src:"digital/flamenco.jpg",w:1600,h:900,t:"Flamenco",pos:"64% 50%"}
 ];
+const CARICATURES=[
+ {src:"caricatures/caricature-01.jpg",w:1600,h:777,t:"The Wedding Frame",pos:"50% 40%"}
+];
 const LENS=[
  {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
  {src:"lens/climb.jpg",w:1600,h:1101,t:"First Climb",pos:"92% 60%"},
@@ -120,7 +123,7 @@ const ART_SETS=[
  {k:"sketchbook",t:"Sketchbook",items:ARTS,peek:["Messi","Hanuman","Batman"]},
  {k:"digital",t:"Digital Canvas",items:DIGITAL,peek:["Flamenco","IIT Delhi 25","Dune at Night"]},
  {k:"lens",t:"Through the Lens",items:LENS,peek:["Prayer","First Climb","The Idol Maker"]},
- {k:"caricatures",t:"Caricatures",items:[]}
+ {k:"caricatures",t:"Caricatures",items:CARICATURES}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
