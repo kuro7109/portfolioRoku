@@ -110,9 +110,9 @@ const LENS=[
  {src:"lens/auto.jpg",w:1280,h:1600,t:"After the Rain"}
 ];
 const ART_SETS=[
- {k:"sketchbook",t:"Sketchbook",d:"Pencil, ink and marker on paper.",items:ARTS},
- {k:"digital",t:"Digital Canvas",d:"Drawn and painted on screen.",items:[]},
- {k:"lens",t:"Through the Lens",d:"Photographs, framed the way I see.",items:LENS}
+ {k:"sketchbook",t:"Sketchbook",items:ARTS,peek:["Messi","Hanuman","Batman"]},
+ {k:"digital",t:"Digital Canvas",items:[]},
+ {k:"lens",t:"Through the Lens",items:LENS}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[

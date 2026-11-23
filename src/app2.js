@@ -25,9 +25,9 @@ function confetti(from){
   const pad=i=>String(i).padStart(2,"0"), byKey=k=>ART_SETS.find(x=>x.k===k);
   const PH=[.72,1.33,.7,1.14,.7,1.42,.73,.7,.69]; /* width / height of the placeholder canvases */
   const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
-  const zone=(set,n,wide)=>{ const it=set.items.filter(a=>a.src).slice(0,3);
+  const zone=(set,n,wide)=>{ const it=(set.peek?set.peek.map(t=>set.items.find(a=>a.t===t)).filter(Boolean):set.items.filter(a=>a.src).slice(0,3)).reverse();
     const peek=it.length?it.map(a=>`<span><img src="${esc(a.src)}" alt="" loading="lazy" decoding="async"></span>`).join(""):'<span class="ph"></span><span class="ph"></span><span class="ph"></span>';
-    return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?set.items.length+" works":"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2><p>${esc(set.d)}</p></button>`; };
+    return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?set.items.length+" works":"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2></button>`; };
   grid.innerHTML=ART_SETS.map((s,i)=>zone(s,i+1,i===2)).join("");
   const title=$("#artTitle"), end=$("#artEnd"), bar=$("#artBar"), now=$("#artNow");
   let items=[], real=[], N=0, cards=[], SLOTS=1, active=null;
@@ -44,6 +44,15 @@ function confetti(from){
     e.preventDefault(); clearTimeout(accT); acc+=e.deltaY; accT=setTimeout(()=>acc=0,220);
     if(acc>24){ acc=0; haptic("light"); go(z.dataset.set); }
   },{passive:false});
+  /* ---- leaving a collection: keep scrolling up past its top to return to the hub ---- */
+  let up=0, upT=0, topAt=0;
+  addEventListener("scroll",()=>{ if(scrollY<=0&&!topAt) topAt=performance.now(); if(scrollY>0) topAt=0; },{passive:true});
+  addEventListener("wheel",e=>{
+    if(!active||e.deltaY>=0||scrollY>0||box.open) { if(e.deltaY>0) up=0; return; }
+    if(performance.now()-topAt<250) return; /* let a fling settle at the top before it counts */
+    clearTimeout(upT); up-=e.deltaY; upT=setTimeout(()=>up=0,260);
+    if(up>120){ up=0; haptic("light"); location.hash="#arts"; }
+  },{passive:true});
 
   function show(k){
     const set=k&&byKey(k);
@@ -57,7 +66,7 @@ function confetti(from){
     real=set.items.filter(a=>a.src);
     items=real.length?real.map(a=>({...a,ar:a.w&&a.h?a.w/a.h:.75})):PH.map(ar=>({ar})); N=items.length; SLOTS=N+LEAD+.9;
     track.style.setProperty("--n",N);
-    $("#a-h").innerHTML=`${esc(set.t)}<span>.</span>`; title.querySelector(".art-aside").textContent=set.d;
+    $("#a-h").innerHTML=`${esc(set.t)}<span>.</span>`; title.querySelector(".art-aside").hidden=true;
     title.querySelector(".kick").innerHTML=`<span class="adot" aria-hidden="true"></span><b>Arts</b> ${esc(set.t)}`;
     $("#artCount").textContent=real.length?`${N} works`:"Coming soon";
     $("#artEndT").textContent=real.length?"That's this collection, for now.":"Pieces are on their way.";

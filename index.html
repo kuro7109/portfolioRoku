@@ -758,8 +758,6 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .ah-grid.two{grid-template-rows:1fr;grid-template-areas:"a b";height:min(60vh,520px)}
 .ah-z{all:unset;box-sizing:border-box;position:relative;overflow:hidden;cursor:pointer;border-radius:22px;border:1px solid var(--border);background:color-mix(in oklab,var(--secondary) 55%,transparent);padding:clamp(20px,2.6vw,36px);display:flex;flex-direction:column;justify-content:flex-end;gap:8px;transition:opacity .45s var(--ease-out),background .45s var(--ease-out),border-color .45s,transform .6s var(--spring)}
 .ah-z:nth-child(1){grid-area:a}.ah-z:nth-child(2){grid-area:b}.ah-z:nth-child(3){grid-area:c}
-.ah-grid:hover .ah-z:not(:hover){opacity:.42}
-.ah-z:hover{background:var(--secondary);border-color:color-mix(in oklab,var(--fg) 30%,var(--border))}
 .ah-z:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
 .ah-z .ah-n{position:absolute;top:clamp(18px,2.2vw,30px);left:clamp(20px,2.6vw,36px);font:500 13px var(--mono);color:var(--muted-fg);letter-spacing:.06em}
 .ah-z .ah-c{position:absolute;top:clamp(18px,2.2vw,30px);right:clamp(20px,2.6vw,36px);font:500 13px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em}
@@ -772,9 +770,6 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .ah-peek span:nth-child(1){transform:translateX(-46%) rotate(-9deg) scale(.86)}
 .ah-peek span:nth-child(2){transform:translateX(-22%) rotate(-3deg) scale(.93)}
 .ah-peek span:nth-child(3){transform:rotate(4deg)}
-.ah-z:hover .ah-peek span:nth-child(1){transform:translateX(-78%) rotate(-14deg) scale(.86)}
-.ah-z:hover .ah-peek span:nth-child(2){transform:translateX(-38%) rotate(-5deg) scale(.95)}
-.ah-z:hover .ah-peek span:nth-child(3){transform:translateY(-4%) rotate(6deg) scale(1.02)}
 .ah-z.wide .ah-peek{height:60%;aspect-ratio:1.6}
 .ah-hint{position:absolute;left:50%;top:calc(clamp(104px,13vh,132px) + (100% - clamp(104px,13vh,132px) - clamp(20px,3vh,32px)) / 2);transform:translate(-50%,-50%);z-index:2;margin:0;display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font:500 13px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;pointer-events:none}
 .ah-hint svg{width:14px;height:14px;transform:rotate(90deg);animation:ahNudge 1.8s ease-in-out infinite}
@@ -1240,9 +1235,9 @@ const LENS=[
  {src:"lens/auto.jpg",w:1280,h:1600,t:"After the Rain"}
 ];
 const ART_SETS=[
- {k:"sketchbook",t:"Sketchbook",d:"Pencil, ink and marker on paper.",items:ARTS},
- {k:"digital",t:"Digital Canvas",d:"Drawn and painted on screen.",items:[]},
- {k:"lens",t:"Through the Lens",d:"Photographs, framed the way I see.",items:LENS}
+ {k:"sketchbook",t:"Sketchbook",items:ARTS,peek:["Messi","Hanuman","Batman"]},
+ {k:"digital",t:"Digital Canvas",items:[]},
+ {k:"lens",t:"Through the Lens",items:LENS}
 ];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
@@ -1889,9 +1884,9 @@ function confetti(from){
   const pad=i=>String(i).padStart(2,"0"), byKey=k=>ART_SETS.find(x=>x.k===k);
   const PH=[.72,1.33,.7,1.14,.7,1.42,.73,.7,.69]; /* width / height of the placeholder canvases */
   const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
-  const zone=(set,n,wide)=>{ const it=set.items.filter(a=>a.src).slice(0,3);
+  const zone=(set,n,wide)=>{ const it=(set.peek?set.peek.map(t=>set.items.find(a=>a.t===t)).filter(Boolean):set.items.filter(a=>a.src).slice(0,3)).reverse();
     const peek=it.length?it.map(a=>`<span><img src="${esc(a.src)}" alt="" loading="lazy" decoding="async"></span>`).join(""):'<span class="ph"></span><span class="ph"></span><span class="ph"></span>';
-    return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?set.items.length+" works":"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2><p>${esc(set.d)}</p></button>`; };
+    return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?set.items.length+" works":"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2></button>`; };
   grid.innerHTML=ART_SETS.map((s,i)=>zone(s,i+1,i===2)).join("");
   const title=$("#artTitle"), end=$("#artEnd"), bar=$("#artBar"), now=$("#artNow");
   let items=[], real=[], N=0, cards=[], SLOTS=1, active=null;
@@ -1908,6 +1903,15 @@ function confetti(from){
     e.preventDefault(); clearTimeout(accT); acc+=e.deltaY; accT=setTimeout(()=>acc=0,220);
     if(acc>24){ acc=0; haptic("light"); go(z.dataset.set); }
   },{passive:false});
+  /* ---- leaving a collection: keep scrolling up past its top to return to the hub ---- */
+  let up=0, upT=0, topAt=0;
+  addEventListener("scroll",()=>{ if(scrollY<=0&&!topAt) topAt=performance.now(); if(scrollY>0) topAt=0; },{passive:true});
+  addEventListener("wheel",e=>{
+    if(!active||e.deltaY>=0||scrollY>0||box.open) { if(e.deltaY>0) up=0; return; }
+    if(performance.now()-topAt<250) return; /* let a fling settle at the top before it counts */
+    clearTimeout(upT); up-=e.deltaY; upT=setTimeout(()=>up=0,260);
+    if(up>120){ up=0; haptic("light"); location.hash="#arts"; }
+  },{passive:true});
 
   function show(k){
     const set=k&&byKey(k);
@@ -1921,7 +1925,7 @@ function confetti(from){
     real=set.items.filter(a=>a.src);
     items=real.length?real.map(a=>({...a,ar:a.w&&a.h?a.w/a.h:.75})):PH.map(ar=>({ar})); N=items.length; SLOTS=N+LEAD+.9;
     track.style.setProperty("--n",N);
-    $("#a-h").innerHTML=`${esc(set.t)}<span>.</span>`; title.querySelector(".art-aside").textContent=set.d;
+    $("#a-h").innerHTML=`${esc(set.t)}<span>.</span>`; title.querySelector(".art-aside").hidden=true;
     title.querySelector(".kick").innerHTML=`<span class="adot" aria-hidden="true"></span><b>Arts</b> ${esc(set.t)}`;
     $("#artCount").textContent=real.length?`${N} works`:"Coming soon";
     $("#artEndT").textContent=real.length?"That's this collection, for now.":"Pieces are on their way.";
