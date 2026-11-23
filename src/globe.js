@@ -13,7 +13,7 @@
     ["Branding & Visual",["Illustrator","Photoshop","Affinity","Canva","Logo Design","Typography","Visual Identity"]],
     ["Research & Strategy",["User Interviews","Usability Testing","Competitive Analysis","Case Competitions","Personas"]],
     ["AI & Build",["Claude","Supabase","n8n","Framer","HTML/CSS","Agentic Workflows","Prompt Design"]],
-    ["AI & ML",["Computer Vision","NLP","Supervised Learning","Unsupervised Learning","TensorFlow & PyTorch"]]
+    ["AI & ML",["Deep Learning","NLP","Supervised Learning","Unsupervised Learning","TensorFlow & PyTorch"]]
   ];
   // a few links across hubs, so the graph reads as one system
   const CROSS=[["Figma","Branding & Visual"],["Framer","Product Design"],["Notion","Research & Strategy"],["Claude","Product Management"],["Usability Testing","Product Design"],["Prototyping","AI & Build"],["Typography","Product Design"],["Metrics & KPIs","Research & Strategy"],["Agentic Workflows","Product Management"],["TensorFlow & PyTorch","AI & Build"],["Supervised Learning","Research & Strategy"],["NLP","AI & Build"]];
