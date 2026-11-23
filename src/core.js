@@ -99,7 +99,15 @@ const LENS=[
  {src:"lens/station-meal.jpg",w:1600,h:1066,t:"Dinner at the Station"},
  {src:"lens/rain.jpg",w:898,h:1600,t:"Red Lights, Wet Roads"},
  {src:"lens/golden.jpg",w:1280,h:1600,t:"Golden Hour"},
- {src:"lens/horns.jpg",w:1080,h:1350,t:"The Horn Seller"}
+ {src:"lens/horns.jpg",w:1080,h:1350,t:"The Horn Seller"},
+ {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
+ {src:"lens/wave.jpg",w:1600,h:901,t:"The Wave"},
+ {src:"lens/climb.jpg",w:1600,h:1101,t:"First Climb"},
+ {src:"lens/cat.jpg",w:1280,h:1600,t:"Green Eyes"},
+ {src:"lens/creatine-1.jpg",w:1149,h:1450,t:"Still Life I"},
+ {src:"lens/creatine-2.jpg",w:1154,h:1450,t:"Still Life II"},
+ {src:"lens/bell.jpg",w:976,h:1600,t:"The Bell"},
+ {src:"lens/auto.jpg",w:1280,h:1600,t:"After the Rain"}
 ];
 const ART_SETS=[
  {k:"sketchbook",t:"Sketchbook",d:"Pencil, ink and marker on paper.",items:ARTS},
