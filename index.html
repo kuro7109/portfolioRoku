@@ -1656,32 +1656,40 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
     ctx.beginPath(); for(let i=0;i<wh.length;i++) i?ctx.lineTo(i*WC,top+wh[i]):ctx.moveTo(0,top+wh[0]); ctx.strokeStyle=dark?"rgba(147,190,245,.55)":"rgba(96,150,215,.7)"; ctx.lineWidth=1.2; ctx.stroke();
   }
   function snow(dt,dark,a){
-    const want=a>.05?Math.round(W/9*a):0;
-    while(flakes.length<want) flakes.push({x:Math.random()*W,y:Math.random()*H*.7-30,r:1+Math.random()*2.2,v:1.3+Math.random()*1.5,p:Math.random()*6});
+    const want=a>.05?Math.round(W/20*a):0; /* a light fall */
+    while(flakes.length<want) flakes.push({x:Math.random()*W,y:Math.random()*H*.7-30,r:.9+Math.random()*1.8,v:1.1+Math.random()*1.2,p:Math.random()*6});
     if(flakes.length>want) flakes.length=want;
     const fc=dark?"241,245,249":"148,163,184", k=dt*.06;
-    ctx.fillStyle=`rgba(${fc},${.85*a})`;
+    ctx.fillStyle=`rgba(${fc},${.8*a})`;
     for(const f of flakes){ f.y+=f.v*k; f.p+=.02*k; f.x+=Math.sin(f.p)*.5*k;
       const i=clamp(Math.round(f.x/PC),0,pile.length-1);
-      if(f.y>=H-pile[i]){ pile[i]+=f.r*1.4; if(pile[i-1]!=null) pile[i-1]+=f.r*.5; if(pile[i+1]!=null) pile[i+1]+=f.r*.5; f.y=-10; f.x=Math.random()*W; continue; }
+      if(f.y>=H-pile[i]){ pile[i]+=f.r*.6; if(pile[i-1]!=null) pile[i-1]+=f.r*.25; if(pile[i+1]!=null) pile[i+1]+=f.r*.25; f.y=-10; f.x=Math.random()*W; continue; }
       ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,7); ctx.fill(); }
-    // sweep: moving the pointer through the snow pushes it along and kicks some up
-    if(ptr.in&&Math.abs(ptr.vx)>.5){ const i=Math.round(ptr.x/PC);
-      for(let c=i-6;c<=i+6;c++){ if(pile[c]==null) continue; if(ptr.y>H-pile[c]-18){ const take=pile[c]*.35, to=clamp(c+Math.sign(ptr.vx)*8,0,pile.length-1); pile[c]-=take; pile[to]+=take*.7;
-        if(take>.4&&kicked.length<160) kicked.push({x:c*PC,y:H-pile[c],vx:ptr.vx*.15+(Math.random()-.5),vy:-1.5-Math.random()*2.5,r:1+Math.random()*1.6,l:1}); } } }
-    for(let c=1;c<pile.length-1;c++){ const d=pile[c]-(pile[c-1]+pile[c+1])/2; if(d>1.5){ pile[c]-=d*.3; pile[c-1]+=d*.15; pile[c+1]+=d*.15; } }
-    const maxP=W<700?40:60;
-    if(a>.5) for(let c=0;c<pile.length;c++) pile[c]+=dt*.0045*(.7+.3*Math.sin(c*.37));
-    else for(let c=0;c<pile.length;c++) pile[c]=Math.max(0,pile[c]-dt*.0025);
+    /* sweep: the pointer brushes the drift aside with a soft falloff, a little more each frame,
+       and only now and then lifts a flake, so it reads as a smooth push rather than a jolt */
+    const sp=Math.abs(ptr.vx);
+    if(ptr.in&&sp>.3){ const i=Math.round(ptr.x/PC), dir=Math.sign(ptr.vx), R=10, f=Math.min(.12,sp*.006)*(dt/16);
+      for(let o=-R;o<=R;o++){ const c=i+o; if(pile[c]==null||ptr.y<=H-pile[c]-22) continue;
+        const w=Math.exp(-(o*o)/(2*16)), take=pile[c]*f*w; if(take<.01) continue; pile[c]-=take;
+        for(let s=3;s<=9;s+=2){ const to=c+dir*s; if(pile[to]!=null) pile[to]+=take*.21; }
+        if(take>.25&&Math.random()<.18&&kicked.length<60) kicked.push({x:c*PC,y:H-pile[c],vx:ptr.vx*.08+(Math.random()-.5)*.6,vy:-.8-Math.random()*1.4,r:.8+Math.random()*1.2,l:1}); } }
+    /* settle: neighbouring columns relax toward each other so the surface stays soft */
+    for(let c=1;c<pile.length-1;c++){ const d=pile[c]-(pile[c-1]+pile[c+1])/2; if(Math.abs(d)>.4){ pile[c]-=d*.35; pile[c-1]+=d*.175; pile[c+1]+=d*.175; } }
+    const maxP=W<700?16:26;
+    if(a>.5) for(let c=0;c<pile.length;c++) pile[c]+=dt*.0018*(.7+.3*Math.sin(c*.37));
+    else for(let c=0;c<pile.length;c++) pile[c]=Math.max(0,pile[c]*(1-dt*.0007)-dt*.0018); /* melts away over a few seconds */
     for(let c=0;c<pile.length;c++) pile[c]=Math.min(pile[c],maxP);
   }
   function pileDraw(dark){
     if(!pile.some(v=>v>.4)) { kicked.length=0; return; }
     const fc=dark?"241,245,249":"226,232,240";
-    ctx.beginPath(); ctx.moveTo(0,H); for(let c=0;c<pile.length;c++) ctx.lineTo(c*PC,H-pile[c]); ctx.lineTo(W,H); ctx.closePath();
-    ctx.fillStyle=`rgba(${fc},${dark?.85:1})`; ctx.fill(); ctx.strokeStyle=dark?"rgba(203,213,225,.6)":"rgba(148,163,184,.55)"; ctx.lineWidth=1; ctx.stroke();
+    /* a smooth outline: curve through the midpoints between columns */
+    ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(0,H-pile[0]);
+    for(let c=1;c<pile.length;c++){ const x0=(c-1)*PC, y0=H-pile[c-1], x1=c*PC, y1=H-pile[c]; ctx.quadraticCurveTo(x0,y0,(x0+x1)/2,(y0+y1)/2); }
+    ctx.lineTo(W,H-pile[pile.length-1]); ctx.lineTo(W,H); ctx.closePath();
+    ctx.fillStyle=`rgba(${fc},${dark?.85:1})`; ctx.fill(); ctx.strokeStyle=dark?"rgba(203,213,225,.5)":"rgba(148,163,184,.45)"; ctx.lineWidth=1; ctx.stroke();
     ctx.fillStyle=`rgba(${dark?"241,245,249":"148,163,184"},.9)`;
-    kicked=kicked.filter(s=>{ s.vy+=.09; s.x+=s.vx; s.y+=s.vy; s.l-=.012; if(s.l>0){ ctx.globalAlpha=s.l; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,7); ctx.fill(); } return s.l>0&&s.y<H+5; }); ctx.globalAlpha=1;
+    kicked=kicked.filter(s=>{ s.vy+=.06; s.vx*=.985; s.x+=s.vx; s.y+=s.vy; s.l-=.01; if(s.l>0){ ctx.globalAlpha=s.l; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,7); ctx.fill(); } return s.l>0&&s.y<H+5; }); ctx.globalAlpha=1;
   }
   function frame(now){
     raf=0; if(!vis||current!=="home"){ return; }
