@@ -83,7 +83,7 @@ function railStopsFor(page){
   const anchor=innerHeight*.38, maxY=Math.max(0,document.documentElement.scrollHeight-innerHeight);
   let majors=(page==="arts"&&window.artStops?.())||null;
   const ct=$("#contact"); if(majors&&ct) majors.push({label:ct.dataset.rail,y:()=>0,el:ct});
-  if(!majors) majors=[...$$("[data-rail]",$(`.page[data-page="${page}"]`)),$("#contact")].filter(Boolean)
+  if(!majors) majors=[...$$("[data-rail]",$(`.page[data-page="${page}"]`)).filter(el=>!el.hidden),$("#contact")].filter(Boolean)
     .map(el=>({label:el.dataset.rail,y:()=>Math.max(0,docTop(el)-anchor),el}));
   const last=majors[majors.length-1]; if(last) last.y=()=>maxY;
   const n=majors.length, m=n>1?Math.max(0,Math.min(5,Math.round((17-n)/(n-1)))):0, out=[];

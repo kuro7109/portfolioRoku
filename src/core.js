@@ -84,6 +84,12 @@ const ARTS=[
  {src:"arts/trishul.jpg",w:1055,h:1491,t:"Trishul"}
 ];
 for(let i=ARTS.length-1;i>=0;i--) if(ARTS[i].draft) ARTS.splice(i,1);
+/* Arts collections. Add pieces to a collection's items in the same {src,w,h,t} shape. */
+const ART_SETS=[
+ {k:"sketchbook",t:"Sketchbook",d:"Pencil, ink and marker on paper.",items:ARTS},
+ {k:"digital",t:"Digital Canvas",d:"Drawn and painted on screen.",items:[]},
+ {k:"lens",t:"Through the Lens",d:"Photographs, framed the way I see.",items:[]}
+];
 const FILTERS=[["all","All","all"],["product","Product","mobile"],["uiux","UI & UX","cursor"],["brand","Branding","spark"],["web","Web","globe"]];
 const JOURNEY=[
  {role:"Product Management Intern",focus:"Product & GTM Planning",co:"Evvolv.ai",loc:"New Delhi",y:"2026"},

@@ -3,7 +3,7 @@
 
 <div class="loader" id="loader" aria-hidden="true">
   <canvas id="kb"></canvas>
-  <div class="lp"><div class="bar"><i id="ldBar"></i></div><span class="lt">Loading <span id="ldN">000</span></span></div>
+  <div class="lp"><div class="bar"><i id="ldBar"></i></div><span class="lt">Loading <span id="ldN">000</span></span><span class="ld-note">Best viewed on a laptop or desktop</span></div>
 </div>
 
 <canvas id="beams" aria-hidden="true"></canvas>
@@ -116,7 +116,13 @@
 
 <!-- ARTS -->
 <div class="page" data-page="arts" hidden>
-  <section class="art3d" id="artTrack" data-rail="Artworks" aria-labelledby="a-h">
+  <section class="art-hub" id="artHub" data-rail="Artworks" aria-labelledby="ah-h">
+    <h1 class="sr" id="ah-h">Artworks</h1>
+    <div class="ah-grid" id="ahGrid"></div>
+    <p class="ah-hint"><i data-ic="arrow"></i>Scroll over a collection to step inside</p>
+  </section>
+  <a class="art-back" id="artBack" href="#arts" hidden><i data-ic="arrow"></i>All artworks</a>
+<section class="art3d" id="artTrack" data-rail="Artworks" hidden aria-labelledby="a-h">
     <div class="art-stage" id="artStage">
       <div class="art-world" id="artWorld">
         <div class="art-title" id="artTitle">
@@ -128,6 +134,10 @@
       </div>
       <div class="art-hud" aria-hidden="true"><span id="artCount"></span><span class="art-prog"><i id="artBar"></i></span><span id="artNow"></span></div>
     </div>
+  </section>
+  <section class="art-next" id="artNext" data-rail="More" hidden aria-label="More collections">
+    <p class="kick"><b>Keep exploring</b> Scroll over a collection to step inside</p>
+    <div class="ah-grid two" id="artNextGrid"></div>
   </section>
   <dialog class="artbox" id="artBox" aria-label="Artwork viewer">
     <button type="button" class="ab-x" aria-label="Close viewer"><i data-ic="x"></i></button>

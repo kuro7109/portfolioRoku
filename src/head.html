@@ -751,6 +751,45 @@ a:hover .cov .g,.card:hover .cov .g{transform:scale(1.08) rotate(3deg)}
 .art-prog{width:min(160px,30vw);height:2px;border-radius:2px;background:var(--border);overflow:hidden}
 .art-prog i{display:block;height:100%;background:var(--fg);transform-origin:left;transform:scaleX(0)}
 @media(max-width:640px){.art-c{width:min(calc(36vh * var(--ar)),64vw)}.art-t{margin:18px 0}.art-hud{left:20px;transform:none;gap:10px}.art-prog{width:22vw}}
+
+/* ---------- Arts hub: three collections; scroll (or click) over one to enter it ---------- */
+.art-hub{position:relative;height:100vh;height:100svh;min-height:560px;padding:clamp(104px,13vh,132px) clamp(16px,3vw,40px) clamp(20px,3vh,32px);box-sizing:border-box}
+.ah-grid{height:100%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;grid-template-areas:"a b" "c c";gap:14px}
+.ah-grid.two{grid-template-rows:1fr;grid-template-areas:"a b";height:min(60vh,520px)}
+.ah-z{all:unset;box-sizing:border-box;position:relative;overflow:hidden;cursor:pointer;border-radius:22px;border:1px solid var(--border);background:color-mix(in oklab,var(--secondary) 55%,transparent);padding:clamp(20px,2.6vw,36px);display:flex;flex-direction:column;justify-content:flex-end;gap:8px;transition:opacity .45s var(--ease-out),background .45s var(--ease-out),border-color .45s,transform .6s var(--spring)}
+.ah-z:nth-child(1){grid-area:a}.ah-z:nth-child(2){grid-area:b}.ah-z:nth-child(3){grid-area:c}
+.ah-grid:hover .ah-z:not(:hover){opacity:.42}
+.ah-z:hover{background:var(--secondary);border-color:color-mix(in oklab,var(--fg) 30%,var(--border))}
+.ah-z:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.ah-z .ah-n{position:absolute;top:clamp(18px,2.2vw,30px);left:clamp(20px,2.6vw,36px);font:500 13px var(--mono);color:var(--muted-fg);letter-spacing:.06em}
+.ah-z .ah-c{position:absolute;top:clamp(18px,2.2vw,30px);right:clamp(20px,2.6vw,36px);font:500 13px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em}
+.ah-z h2{margin:0;font-size:clamp(40px,5.6vw,92px);line-height:.9;letter-spacing:-.06em;font-weight:620;position:relative;z-index:1}
+.ah-z p{margin:0;color:var(--muted-fg);font-size:17px;position:relative;z-index:1}
+.ah-peek{position:absolute;right:clamp(28px,3.4vw,56px);top:clamp(52px,6vh,72px);height:52%;aspect-ratio:1.1;pointer-events:none}
+.ah-peek span{position:absolute;bottom:0;right:0;height:100%;aspect-ratio:.74;border-radius:10px;overflow:hidden;background:var(--bg);box-shadow:0 18px 40px -20px rgba(0,0,0,.5),0 0 0 1px var(--border);transform-origin:50% 100%;transition:transform .7s var(--spring)}
+.ah-peek span img{width:100%;height:100%;object-fit:cover;display:block}
+.ah-peek span.ph{border:1px dashed color-mix(in oklab,var(--fg) 25%,transparent);background:transparent;box-shadow:none}
+.ah-peek span:nth-child(1){transform:translateX(-46%) rotate(-9deg) scale(.86)}
+.ah-peek span:nth-child(2){transform:translateX(-22%) rotate(-3deg) scale(.93)}
+.ah-peek span:nth-child(3){transform:rotate(4deg)}
+.ah-z:hover .ah-peek span:nth-child(1){transform:translateX(-78%) rotate(-14deg) scale(.86)}
+.ah-z:hover .ah-peek span:nth-child(2){transform:translateX(-38%) rotate(-5deg) scale(.95)}
+.ah-z:hover .ah-peek span:nth-child(3){transform:translateY(-4%) rotate(6deg) scale(1.02)}
+.ah-z.wide .ah-peek{height:60%;aspect-ratio:1.6}
+.ah-hint{position:absolute;left:50%;top:calc(clamp(104px,13vh,132px) + (100% - clamp(104px,13vh,132px) - clamp(20px,3vh,32px)) / 2);transform:translate(-50%,-50%);z-index:2;margin:0;display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font:500 13px var(--mono);color:var(--muted-fg);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;pointer-events:none}
+.ah-hint svg{width:14px;height:14px;transform:rotate(90deg);animation:ahNudge 1.8s ease-in-out infinite}
+@keyframes ahNudge{50%{transform:rotate(90deg) translateX(4px)}}
+.art-back{position:fixed;left:clamp(16px,2vw,28px);top:clamp(92px,11vh,112px);z-index:40;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px 0 12px;border-radius:999px;background:color-mix(in oklab,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--fg);font-size:15px;text-decoration:none;transition:background .2s,transform .3s var(--spring)}
+.art-back[hidden]{display:none}
+.art-back:hover{background:var(--secondary);transform:translateX(-2px)}
+.art-back svg{width:16px;height:16px;transform:rotate(180deg)}
+.art-next{padding:clamp(48px,8vh,96px) clamp(16px,3vw,40px) clamp(24px,4vh,48px)}
+.art-next .kick{margin-bottom:18px}
+.art-enter{animation:artEnter .7s var(--ease-out) both}
+@keyframes artEnter{from{opacity:0;transform:scale(.97)}}
+.loader .ld-note{font:500 12px var(--mono);color:var(--muted-fg);opacity:.8;letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+@media(max-width:760px){.ah-grid{grid-template-columns:1fr;grid-template-rows:repeat(3,1fr);grid-template-areas:"a" "b" "c"}.ah-grid.two{grid-template-rows:1fr 1fr;grid-template-areas:"a" "b";height:auto;min-height:440px}.ah-hint{display:none}.ah-peek{height:56%}}
+@media(prefers-reduced-motion:reduce){.ah-hint svg{animation:none}.art-enter{animation:none}}
 /* reduced motion: no flight, the same pieces sit in a plain grid */
 .art3d.flat{height:auto}
 .art3d.flat .art-stage{position:static;height:auto;overflow:visible;perspective:none;contain:none;padding:clamp(120px,16vw,170px) clamp(16px,4vw,48px) 64px;max-width:1200px;margin:0 auto}

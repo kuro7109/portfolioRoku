@@ -17,76 +17,113 @@ function confetti(from){
     if(e<2600) requestAnimationFrame(f); else cv.remove(); })(t0);
 }
 
-/* ---------- Arts: a pinned stage in perspective. Scroll progress drives every piece
-   along the z axis, so the title flies past first and the works rush toward you one by one. ---------- */
+/* ---------- Arts: a hub of three collections. Scrolling (or clicking) over one opens it as a
+   pinned stage in perspective where scroll progress flies each piece toward you. ---------- */
 (function(){
-  const track=$("#artTrack"), world=$("#artWorld"), stage=$("#artStage"), box=$("#artBox"); if(!track) return;
-  const pad=i=>String(i).padStart(2,"0"), real=ARTS.filter(a=>a.src);
+  const hub=$("#artHub"), grid=$("#ahGrid"), back=$("#artBack"), next=$("#artNext"), nextGrid=$("#artNextGrid");
+  const track=$("#artTrack"), world=$("#artWorld"), stage=$("#artStage"), box=$("#artBox"); if(!track||!hub) return;
+  const pad=i=>String(i).padStart(2,"0"), byKey=k=>ART_SETS.find(x=>x.k===k);
   const PH=[.72,1.33,.7,1.14,.7,1.42,.73,.7,.69]; /* width / height of the placeholder canvases */
-  const items=real.length?real.map(a=>({...a,ar:a.w&&a.h?a.w/a.h:.75})):PH.map(ar=>({ar})), N=items.length;
-  track.style.setProperty("--n",N);
-  $("#artCount").textContent=real.length?`${N} works`:"Coming soon";
-  $("#artEndT").textContent=real.length?"That's the archive, for now.":"Pieces are on their way.";
-  /* where each piece sits across the frame, as a share of the viewport; alternates sides */
   const SPOT=[[-.27,-.05],[.26,.09],[-.13,.15],[.3,-.12],[-.31,.12],[.1,-.15],[-.21,-.14],[.27,.15],[.02,.05],[-.29,0],[.21,-.05],[-.08,-.17],[.32,.03],[-.18,.17],[.13,.16]];
-  const title=$("#artTitle"), end=$("#artEnd");
-  end.insertAdjacentHTML("beforebegin",items.map((a,i)=>a.src
-    ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span></button>`
-    : `<div class="art-c is-empty" aria-hidden="true" style="--ar:${a.ar}"><span class="art-fig" data-n="${pad(i+1)}"></span></div>`).join(""));
-  const cards=$$(".art-c",world), bar=$("#artBar"), now=$("#artNow");
+  const zone=(set,n,wide)=>{ const it=set.items.filter(a=>a.src).slice(0,3);
+    const peek=it.length?it.map(a=>`<span><img src="${esc(a.src)}" alt="" loading="lazy" decoding="async"></span>`).join(""):'<span class="ph"></span><span class="ph"></span><span class="ph"></span>';
+    return `<button type="button" class="ah-z${wide?" wide":""}" data-set="${set.k}" aria-label="Open ${esc(set.t)}"><span class="ah-n">${pad(n)}</span><span class="ah-c">${set.items.length?set.items.length+" works":"Coming soon"}</span><span class="ah-peek" aria-hidden="true">${peek}</span><h2>${esc(set.t)}</h2><p>${esc(set.d)}</p></button>`; };
+  grid.innerHTML=ART_SETS.map((s,i)=>zone(s,i+1,i===2)).join("");
+  const title=$("#artTitle"), end=$("#artEnd"), bar=$("#artBar"), now=$("#artNow");
+  let items=[], real=[], N=0, cards=[], SLOTS=1, active=null;
+  const P=900, G=1000, LEAD=.55;
 
-  if(reduce){ track.classList.add("flat"); }
-  else {
-    const P=900, G=1000, LEAD=.55, SLOTS=N+LEAD+.9;
-    /* rail stops for the left ruler: the title, each piece at its closest approach, then the end */
-    window.artStops=()=>{ if(!track.offsetParent||track.classList.contains("flat")) return null;
+  /* ---- entering a collection: scroll over a zone, or click it ---- */
+  const go=k=>{ if(location.hash!=="#arts/"+k) location.hash="#arts/"+k; };
+  [grid,nextGrid].forEach(g=>g.addEventListener("click",e=>{ const z=e.target.closest(".ah-z"); if(z) go(z.dataset.set); }));
+  let acc=0, accT=0;
+  addEventListener("wheel",e=>{
+    if(e.deltaY<=0) return; const z=e.target.closest?.(".ah-z"); if(!z) return;
+    const inHub=!hub.hidden&&hub.contains(z), atEnd=!next.hidden&&next.contains(z)&&innerHeight+scrollY>=document.documentElement.scrollHeight-4;
+    if(!inHub&&!atEnd) return;
+    e.preventDefault(); clearTimeout(accT); acc+=e.deltaY; accT=setTimeout(()=>acc=0,220);
+    if(acc>24){ acc=0; haptic("light"); go(z.dataset.set); }
+  },{passive:false});
+
+  function show(k){
+    const set=k&&byKey(k);
+    active=set?set.k:null; hub.hidden=!!set; back.hidden=!set; track.hidden=!set; next.hidden=!set;
+    if(!set){ window.artStops=null; hub.classList.remove("art-enter"); void hub.offsetWidth; hub.classList.add("art-enter"); return; }
+    load(set);
+    nextGrid.innerHTML=ART_SETS.filter(x=>x.k!==set.k).map(x=>zone(x,ART_SETS.indexOf(x)+1,false)).join("");
+    track.classList.remove("art-enter"); void track.offsetWidth; track.classList.add("art-enter");
+  }
+  function load(set){
+    real=set.items.filter(a=>a.src);
+    items=real.length?real.map(a=>({...a,ar:a.w&&a.h?a.w/a.h:.75})):PH.map(ar=>({ar})); N=items.length; SLOTS=N+LEAD+.9;
+    track.style.setProperty("--n",N);
+    $("#a-h").innerHTML=`${esc(set.t)}<span>.</span>`; title.querySelector(".art-aside").textContent=set.d;
+    title.querySelector(".kick").innerHTML=`<span class="adot" aria-hidden="true"></span><b>Arts</b> ${esc(set.t)}`;
+    $("#artCount").textContent=real.length?`${N} works`:"Coming soon";
+    $("#artEndT").textContent=real.length?"That's this collection, for now.":"Pieces are on their way.";
+    $$(".art-c",world).forEach(c=>c.remove());
+    end.insertAdjacentHTML("beforebegin",items.map((a,i)=>a.src
+      ? `<button type="button" class="art-c" data-i="${i}" style="--ar:${a.ar.toFixed(4)}" aria-label="View ${esc(a.t||"artwork "+pad(i+1))}"><span class="art-fig"><img src="${esc(a.src)}" alt="${esc(a.alt||a.t||"Artwork by Rohit Kumawat")}" loading="${i<4?"eager":"lazy"}" decoding="async"></span></button>`
+      : `<div class="art-c is-empty" aria-hidden="true" style="--ar:${a.ar}"><span class="art-fig" data-n="${pad(i+1)}"></span></div>`).join(""));
+    cards=$$(".art-c",world); lastIdx=0; cur=tgt=0;
+    if(!reduce) window.artStops=()=>{ if(!track.offsetParent) return null;
       const top=track.getBoundingClientRect().top+scrollY, span=Math.max(1,track.offsetHeight-innerHeight), at=c=>()=>top+span*Math.min(1,Math.max(0,c));
-      return [{label:"Artworks",y:at(0)},...items.map((a,i)=>({label:a.t||("Artwork "+pad(i+1)),y:at((i+1+LEAD-.3)/SLOTS)}))]; };
-    let tgt=0, cur=0, raf=0, mx=0, my=0, tx=0, ty=0, W=innerWidth, H=innerHeight, lastIdx=0;
-    const clamp=v=>v<0?0:v>1?1:v;
-    const prog=()=>{ const span=track.offsetHeight-innerHeight; return span>0?clamp(-track.getBoundingClientRect().top/span):0; };
-    function place(el,x,y,z,o,hit){
-      if(o<=.004){ if(el.style.visibility!=="hidden") el.style.visibility="hidden"; return; }
-      el.style.visibility=""; el.style.opacity=o.toFixed(3);
-      el.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px)`;
-      if(hit) el.style.pointerEvents=o>.55?"":"none";
-    }
-    function frame(){
-      raf=0;
-      cur+=(tgt-cur)*.14; if(Math.abs(tgt-cur)<.00004) cur=tgt;
-      tx+=(mx-tx)*.07; ty+=(my-ty)*.07;
-      const t=cur*SLOTS;
-      world.style.transform=`rotateY(${(tx*3).toFixed(3)}deg) rotateX(${(-ty*2.2).toFixed(3)}deg)`;
-      const zt=t*G*.85, to=1-clamp(zt/(.55*P)); place(title,0,0,zt,to);
-      cards.forEach((c,i)=>{ const z=(t-(i+1+LEAD))*G, s=SPOT[i%SPOT.length];
-        const o=clamp((z+4.6*G)/(2*G))*(1-clamp((z-.22*P)/(.5*P)))*(1-.8*to);
-        place(c,s[0]*W,s[1]*H,z,o,true); });
-      const ze=(t-SLOTS)*G; place(end,0,0,ze,clamp((ze+2.4*G)/(1.8*G)));
-      bar.style.transform=`scaleX(${cur.toFixed(4)})`;
-      const idx=Math.min(N,Math.max(1,Math.round(t-LEAD-.2)));
-      now.textContent=`${pad(idx)} / ${pad(N)}`;
-      if(idx!==lastIdx){ if(lastIdx&&real.length) haptic("soft"); lastIdx=idx; }
-      if(cur!==tgt||Math.abs(mx-tx)>.0005||Math.abs(my-ty)>.0005) raf=requestAnimationFrame(frame);
-    }
-    const kick=()=>{ if(!raf) raf=requestAnimationFrame(frame); };
-    const sync=jump=>{ if(!track.offsetParent) return; W=innerWidth; H=innerHeight; tgt=prog(); if(jump) cur=tgt; kick(); };
+      return [{label:set.t,y:at(0)},...items.map((a,i)=>({label:a.t||("Artwork "+pad(i+1)),y:at((i+1+LEAD-.3)/SLOTS)})),{label:"More",y:()=>0,el:next}]; };
+    requestAnimationFrame(()=>{ sync(true); });
+  }
+  const onHash=()=>{ const [pg,sub]=location.hash.slice(1).split("/"); if(pg!=="arts") return;
+    const k=sub&&byKey(sub)?sub:null; if(k===active&&(k||!hub.hidden)) return;
+    show(k); scrollTo({top:0,behavior:"instant"}); requestAnimationFrame(()=>window.buildRail?.()); };
+  addEventListener("hashchange",onHash); onHash();
+
+  /* ---- the 3D fly-through ---- */
+  let tgt=0, cur=0, raf=0, mx=0, my=0, tx=0, ty=0, W=innerWidth, H=innerHeight, lastIdx=0;
+  const clamp=v=>v<0?0:v>1?1:v;
+  const prog=()=>{ const span=track.offsetHeight-innerHeight; return span>0?clamp(-track.getBoundingClientRect().top/span):0; };
+  function place(el,x,y,z,o,hit){
+    if(o<=.004){ if(el.style.visibility!=="hidden") el.style.visibility="hidden"; return; }
+    el.style.visibility=""; el.style.opacity=o.toFixed(3);
+    el.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px)`;
+    if(hit) el.style.pointerEvents=o>.55?"":"none";
+  }
+  function frame(){
+    raf=0; if(!N) return;
+    cur+=(tgt-cur)*.14; if(Math.abs(tgt-cur)<.00004) cur=tgt;
+    tx+=(mx-tx)*.07; ty+=(my-ty)*.07;
+    const t=cur*SLOTS;
+    world.style.transform=`rotateY(${(tx*3).toFixed(3)}deg) rotateX(${(-ty*2.2).toFixed(3)}deg)`;
+    const zt=t*G*.85, to=1-clamp(zt/(.55*P)); place(title,0,0,zt,to);
+    cards.forEach((c,i)=>{ const z=(t-(i+1+LEAD))*G, s=SPOT[i%SPOT.length];
+      const o=clamp((z+4.6*G)/(2*G))*(1-clamp((z-.22*P)/(.5*P)))*(1-.8*to);
+      place(c,s[0]*W,s[1]*H,z,o,true); });
+    const ze=(t-SLOTS)*G; place(end,0,0,ze,clamp((ze+2.4*G)/(1.8*G)));
+    bar.style.transform=`scaleX(${cur.toFixed(4)})`;
+    const idx=Math.min(N,Math.max(1,Math.round(t-LEAD-.2)));
+    now.textContent=`${pad(idx)} / ${pad(N)}`;
+    if(idx!==lastIdx){ if(lastIdx&&real.length) haptic("soft"); lastIdx=idx; }
+    if(cur!==tgt||Math.abs(mx-tx)>.0005||Math.abs(my-ty)>.0005) raf=requestAnimationFrame(frame);
+  }
+  const kick=()=>{ if(!raf) raf=requestAnimationFrame(frame); };
+  function sync(jump){ if(!track.offsetParent) return; W=innerWidth; H=innerHeight; tgt=prog(); if(jump) cur=tgt; kick(); }
+  if(reduce) track.classList.add("flat");
+  else {
     addEventListener("scroll",()=>sync(false),{passive:true});
     addEventListener("resize",()=>sync(false));
-    new ResizeObserver(()=>sync(true)).observe(track); /* fires when the page is shown */
+    new ResizeObserver(()=>sync(true)).observe(track);
     stage.addEventListener("pointermove",e=>{ if(e.pointerType!=="mouse") return; const r=stage.getBoundingClientRect(); mx=(e.clientX-r.left)/r.width-.5; my=(e.clientY-r.top)/r.height-.5; kick(); });
     stage.addEventListener("pointerleave",()=>{ mx=my=0; kick(); });
   }
 
-  if(!real.length) return;
+  /* ---- full-screen viewer ---- */
   const img=box.querySelector("img"), cap=box.querySelector(".ab-t"), num=box.querySelector(".ab-n"); let at=0;
-  function show(i,anim){
-    at=(i+real.length)%real.length; const a=real[at];
+  function view(i,anim){
+    if(!real.length) return; at=(i+real.length)%real.length; const a=real[at];
     const put=()=>{ img.src=a.src; img.alt=a.alt||a.t||"Artwork by Rohit Kumawat"; cap.textContent=[a.t,a.m,a.yr].filter(Boolean).join(" · ")||"Artwork"; num.textContent=`${pad(at+1)} / ${pad(real.length)}`; img.classList.remove("sw"); };
     if(anim&&!reduce){ img.classList.add("sw"); setTimeout(put,160); } else put();
     [real[(at+1)%real.length],real[(at-1+real.length)%real.length]].forEach(n=>{ const p=new Image(); p.src=n.src; });
   }
-  const step=d=>{ show(at+d,true); haptic("soft"); };
-  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; show(+c.dataset.i); box.showModal(); document.documentElement.classList.add("box-open"); window.cursorTop?.(); document.documentElement.style.overflow="hidden"; haptic("light"); });
+  const step=d=>{ view(at+d,true); haptic("soft"); };
+  world.addEventListener("click",e=>{ const c=e.target.closest(".art-c[data-i]"); if(!c) return; view(+c.dataset.i); box.showModal(); document.documentElement.classList.add("box-open"); window.cursorTop?.(); document.documentElement.style.overflow="hidden"; haptic("light"); });
   box.addEventListener("close",()=>{ document.documentElement.classList.remove("box-open"); document.documentElement.style.overflow=""; cards[at]?.focus({preventScroll:true}); });
   box.querySelector(".ab-x").addEventListener("click",()=>box.close());
   box.querySelector(".ab-p").addEventListener("click",()=>step(-1));
