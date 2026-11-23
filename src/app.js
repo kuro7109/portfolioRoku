@@ -375,7 +375,7 @@ $("#fgrid").innerHTML=PROJECTS.slice(0,4).map(p=>{ return `<a class="fcard rv" h
 
 /* ---------- Work: filter bar with peek, layouts ---------- */
 (function(){
-  const bar=$("#fbar"), ind=$("#fInd"), peek=$("#peek"), works=$("#works"), vt=$("#vt"); let f="all", view="deck";
+  const bar=$("#fbar"), ind=$("#fInd"), peek=$("#peek"), works=$("#works"), vt=$("#vt"); let f="all", view="grid";
   const list=k=>k==="all"?PROJECTS:PROJECTS.filter(p=>p.f.includes(k));
   bar.insertAdjacentHTML("beforeend",FILTERS.map(([k,l,ic])=>`<button type="button" class="fb" data-f="${k}" aria-pressed="${k===f}">${svg(ic)}${esc(l)}<span class="n">${list(k).length}</span></button>`).join(""));
   const btns=$$(".fb",bar);
