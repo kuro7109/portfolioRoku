@@ -144,7 +144,7 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
 (function(){
   // No +/- icons: hovering a heading reveals its text; tap/click or keyboard focus does the same on touch
   const acc=$("#acc"); let open=-1;
-  acc.innerHTML=HIGHLIGHTS.map((x,k)=>`<div class="it"><button type="button" aria-expanded="false" aria-controls="hl${k}" id="hb${k}">${esc(x.h)}</button><div class="bd" id="hl${k}" role="region" aria-labelledby="hb${k}"><div><p>${esc(x.p)}</p>${x.c.length?`<div class="chips">${x.c.map(c=>`<span class="chip">${esc(c)}</span>`).join("")}</div>`:""}</div></div></div>`).join("");
+  acc.innerHTML=HIGHLIGHTS.map((x,k)=>`<div class="it"><button type="button" aria-expanded="false" aria-controls="hl${k}" id="hb${k}">${esc(x.h)}</button><div class="bd" id="hl${k}" role="region" aria-labelledby="hb${k}"><div><p>${esc(x.p)}</p>${x.c.length?`<div class="chips">${x.c.map(c=>`<span class="chip">${esc(c)}</span>`).join("")}</div>`:""}</div></div></div>`).join("")+`<p class="wx-hint" id="wxHint" aria-hidden="true">Try to flicker off the snow</p>`;
   const its=$$(".it",acc);
   let ht=0;
   const set=k=>{ clearTimeout(ht); if(k===open) return; open=k; its.forEach((x,j)=>{ x.classList.toggle("on",j===open); x.querySelector("button").setAttribute("aria-expanded",j===open); }); if(k>-1) haptic("soft"); };
@@ -216,16 +216,17 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
   strip("l0",["rgba(16,185,129,.35)","rgba(5,150,105,.6)"]); strip("l1",["rgba(14,165,233,.3)","rgba(2,132,199,.55)"]); strip("l2",["rgba(139,92,246,.28)","rgba(124,58,237,.5)"]);
   function size(){ const r=cv.getBoundingClientRect(); dpr=Math.min(1.25,devicePixelRatio||1); W=r.width; H=r.height; cv.width=Math.max(1,W*dpr); cv.height=Math.max(1,H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
     wh=new Array(Math.ceil(W/WC)+2).fill(0); wv=wh.slice(); pile=new Array(Math.ceil(W/PC)+1).fill(0); }
-  function setScene(k){ idx=k; acc=0; }
+  const hint=$("#wxHint");
+  function setScene(k){ idx=k; acc=0; hint?.classList.toggle("on",S[k]==="snow"); }
   function next(){ setScene(idx%(S.length-1)+1); } // aurora (0) is skipped: rain → snow → clouds → sun
   setScene(1);
   // pointer
   hero.addEventListener("pointermove",e=>{ const r=cv.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top; ptr.vx=x-ptr.x; ptr.vy=y-ptr.y; ptr.x=x; ptr.y=y; ptr.in=true; },{passive:true});
   hero.addEventListener("pointerleave",()=>{ ptr.in=false; ptr.x=ptr.y=-999; });
   hero.addEventListener("click",e=>{ if(e.target.closest("a,button,.acc,.note,input")) return; next(); haptic("light"); });
-  // cycle: every 3s (2s on phones) while the hero is on screen
+  // cycle: every 3s (2s on phones) while the hero is on screen; snow lingers three times as long so it can pile up
   const mob=matchMedia("(max-width: 767px)");
-  setInterval(()=>{ if(!reduce&&vis&&current==="home"&&document.visibilityState==="visible"){ acc+=250; if(acc>=(mob.matches?2000:3000)) next(); } },250);
+  setInterval(()=>{ if(!reduce&&vis&&current==="home"&&document.visibilityState==="visible"){ acc+=250; if(acc>=(mob.matches?2000:3000)*(S[idx]==="snow"?3:1)) next(); } },250);
   new IntersectionObserver(es=>{ vis=es[0].isIntersecting; if(vis&&!raf&&!reduce) raf=requestAnimationFrame(frame); }).observe(hero);
   addEventListener("resize",size);
 

@@ -260,6 +260,9 @@ body.leaving #app,body.leaving .frame:has(> #contact){opacity:0;transform:transl
 .pwrap{position:relative;align-self:end;justify-self:center;width:100%;max-width:360px;--look:0;--lookY:0;perspective:900px}
 .pwrap img{width:100%;height:auto;transform-origin:50% 90%;will-change:transform;user-select:none;-webkit-user-drag:none}
 .acc{display:grid;gap:4px;align-self:end}
+.wx-hint{margin:2px 0 0;font:500 13px var(--mono);letter-spacing:.04em;color:var(--muted-fg);opacity:0;transform:translateY(6px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);pointer-events:none}
+.wx-hint.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.wx-hint{display:none}}
 .acc button{width:100%;display:block;cursor:default;align-items:center;gap:12px;padding:14px 0;text-align:left;font-size:clamp(19px,1.8vw,23px);font-weight:540;letter-spacing:-.025em;color:var(--muted-fg);transition:color .45s var(--ease-out),transform .6s var(--ease-out)}
 .acc .on button{transform:translateX(4px)}
 .acc .on button,.acc button:hover{color:var(--fg)}
