@@ -96,7 +96,8 @@ const CARICATURES=[
  {src:"caricatures/caricature-01.jpg",w:1600,h:777,t:"The Wedding Frame",pos:"50% 40%"},
  {src:"caricatures/caricature-02.jpg",w:1086,h:1448,t:"Aadit Malik"},
  {src:"caricatures/caricature-03.jpg",w:1086,h:1448,t:"Harshal Gupta"},
- {src:"caricatures/caricature-04.jpg",w:1084,h:1451,t:"Saksham Bhardwaj"}
+ {src:"caricatures/caricature-04.jpg",w:1084,h:1451,t:"Saksham Bhardwaj"},
+ {src:"caricatures/caricature-05.jpg",w:1448,h:1086,t:"Vishwas Singh"}
 ];
 const LENS=[
  {src:"lens/prayer.jpg",w:1600,h:901,t:"Prayer"},
