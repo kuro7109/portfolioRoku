@@ -292,24 +292,41 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
     ctx.beginPath(); ctx.moveTo(0,H); for(let i=0;i<wh.length;i++) ctx.lineTo(i*WC,top+wh[i]); ctx.lineTo(W,H); ctx.closePath(); ctx.fillStyle=g; ctx.fill();
     ctx.beginPath(); for(let i=0;i<wh.length;i++) i?ctx.lineTo(i*WC,top+wh[i]):ctx.moveTo(0,top+wh[0]); ctx.strokeStyle=dark?"rgba(147,190,245,.55)":"rgba(96,150,215,.7)"; ctx.lineWidth=1.2; ctx.stroke();
   }
+  /* pointer velocity measured per frame (px per 16ms), smoothed so a flick reads as one gesture */
+  let sx=-999, sy=-999, svx=0, svy=0;
   function snow(dt,dark,a){
+    const k=dt/16;
+    if(ptr.in&&sx>-900){ const vx=(ptr.x-sx)/k, vy=(ptr.y-sy)/k; svx+=(vx-svx)*.35; svy+=(vy-svy)*.35; } else { svx*=.8; svy*=.8; }
+    sx=ptr.in?ptr.x:-999; sy=ptr.in?ptr.y:-999;
+    const speed=Math.hypot(svx,svy);
     const want=a>.05?Math.round(W/20*a):0; /* a light fall */
-    while(flakes.length<want) flakes.push({x:Math.random()*W,y:Math.random()*H*.7-30,r:.9+Math.random()*1.8,v:1.1+Math.random()*1.2,p:Math.random()*6});
+    while(flakes.length<want) flakes.push({x:Math.random()*W,y:Math.random()*H*.7-30,r:.9+Math.random()*1.8,v:1.1+Math.random()*1.2,p:Math.random()*6,vx:0,vy:0});
     if(flakes.length>want) flakes.length=want;
-    const fc=dark?"241,245,249":"148,163,184", k=dt*.06;
+    const fc=dark?"241,245,249":"148,163,184";
     ctx.fillStyle=`rgba(${fc},${.8*a})`;
-    for(const f of flakes){ f.y+=f.v*k; f.p+=.02*k; f.x+=Math.sin(f.p)*.5*k;
+    /* falling flakes: a gentle sway, and the cursor stirs the air around it, so flakes swirl
+       away from it and get carried a little in the direction it moves */
+    const R=110;
+    for(const f of flakes){
+      if(ptr.in){ const dx=f.x-ptr.x, dy=f.y-ptr.y, d=Math.hypot(dx,dy);
+        if(d<R&&d>.1){ const q=(1-d/R)**2; f.vx+=(dx/d*1.6+svx*.06)*q*k; f.vy+=(dy/d*1.2+svy*.06)*q*k; } }
+      f.vx*=Math.pow(.93,k); f.vy*=Math.pow(.93,k); f.p+=.02*k;
+      f.x+=(f.vx+Math.sin(f.p)*.5)*k; f.y+=(f.v+f.vy)*k;
+      if(f.x<-10) f.x=W+10; else if(f.x>W+10) f.x=-10;
       const i=clamp(Math.round(f.x/PC),0,pile.length-1);
-      if(f.y>=H-pile[i]){ pile[i]+=f.r*.6; if(pile[i-1]!=null) pile[i-1]+=f.r*.25; if(pile[i+1]!=null) pile[i+1]+=f.r*.25; f.y=-10; f.x=Math.random()*W; continue; }
+      if(f.y>=H-pile[i]){ pile[i]+=f.r*.6; if(pile[i-1]!=null) pile[i-1]+=f.r*.25; if(pile[i+1]!=null) pile[i+1]+=f.r*.25; f.y=-10; f.x=Math.random()*W; f.vx=f.vy=0; continue; }
       ctx.beginPath(); ctx.arc(f.x,f.y,f.r,0,7); ctx.fill(); }
-    /* sweep: the pointer brushes the drift aside with a soft falloff, a little more each frame,
-       and only now and then lifts a flake, so it reads as a smooth push rather than a jolt */
-    const sp=Math.abs(ptr.vx);
-    if(ptr.in&&sp>.3){ const i=Math.round(ptr.x/PC), dir=Math.sign(ptr.vx), R=10, f=Math.min(.12,sp*.006)*(dt/16);
-      for(let o=-R;o<=R;o++){ const c=i+o; if(pile[c]==null||ptr.y<=H-pile[c]-22) continue;
-        const w=Math.exp(-(o*o)/(2*16)), take=pile[c]*f*w; if(take<.01) continue; pile[c]-=take;
-        for(let s=3;s<=9;s+=2){ const to=c+dir*s; if(pile[to]!=null) pile[to]+=take*.21; }
-        if(take>.25&&Math.random()<.18&&kicked.length<60) kicked.push({x:c*PC,y:H-pile[c],vx:ptr.vx*.08+(Math.random()-.5)*.6,vy:-.8-Math.random()*1.4,r:.8+Math.random()*1.2,l:1}); } }
+    /* sweep: where the cursor brushes the drift it is pushed aside with a soft falloff, and a
+       spray of flakes is thrown along the stroke, more the faster you flick */
+    if(ptr.in&&speed>.6){ const i=Math.round(ptr.x/PC), dir=Math.sign(svx)||1, Rr=10, f=Math.min(.14,speed*.008)*k;
+      let lifted=0;
+      for(let o=-Rr;o<=Rr;o++){ const c=i+o; if(pile[c]==null||ptr.y<=H-pile[c]-26) continue;
+        const w=Math.exp(-(o*o)/(2*16)), take=pile[c]*f*w; if(take<.01) continue; pile[c]-=take; lifted+=take;
+        for(let s=3;s<=9;s+=2){ const to=c+dir*s; if(pile[to]!=null) pile[to]+=take*.13; } }
+      /* part of what was lifted becomes airborne flakes; the rest was pushed along above */
+      let n=Math.min(6,Math.floor(lifted*.9+Math.random()*Math.min(1,speed/8)));
+      while(n-->0&&kicked.length<140){ const sp=Math.min(1.6,speed/10), ang=-Math.PI/2+dir*(.35+Math.random()*.6);
+        kicked.push({x:ptr.x+(Math.random()-.5)*24,y:H-(pile[clamp(i,0,pile.length-1)]||0)-2,vx:Math.cos(ang)*(1.5+Math.random()*2.2)*sp+svx*.25,vy:Math.sin(ang)*(2+Math.random()*2.5)*sp,r:.8+Math.random()*1.3,p:Math.random()*6,l:1}); } }
     /* settle: neighbouring columns relax toward each other so the surface stays soft */
     for(let c=1;c<pile.length-1;c++){ const d=pile[c]-(pile[c-1]+pile[c+1])/2; if(Math.abs(d)>.4){ pile[c]-=d*.35; pile[c-1]+=d*.175; pile[c+1]+=d*.175; } }
     const maxP=W<700?16:26;
@@ -317,7 +334,7 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
     else for(let c=0;c<pile.length;c++) pile[c]=Math.max(0,pile[c]*(1-dt*.0007)-dt*.0018); /* melts away over a few seconds */
     for(let c=0;c<pile.length;c++) pile[c]=Math.min(pile[c],maxP);
   }
-  function pileDraw(dark){
+  function pileDraw(dark,kdt){
     if(!pile.some(v=>v>.4)) { kicked.length=0; return; }
     const fc=dark?"241,245,249":"226,232,240";
     /* a smooth outline: curve through the midpoints between columns */
@@ -326,7 +343,14 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
     ctx.lineTo(W,H-pile[pile.length-1]); ctx.lineTo(W,H); ctx.closePath();
     ctx.fillStyle=`rgba(${fc},${dark?.85:1})`; ctx.fill(); ctx.strokeStyle=dark?"rgba(203,213,225,.5)":"rgba(148,163,184,.45)"; ctx.lineWidth=1; ctx.stroke();
     ctx.fillStyle=`rgba(${dark?"241,245,249":"148,163,184"},.9)`;
-    kicked=kicked.filter(s=>{ s.vy+=.06; s.vx*=.985; s.x+=s.vx; s.y+=s.vy; s.l-=.01; if(s.l>0){ ctx.globalAlpha=s.l; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,7); ctx.fill(); } return s.l>0&&s.y<H+5; }); ctx.globalAlpha=1;
+    /* thrown flakes arc up, drift on the air and settle back into the drift where they land */
+    const k=kdt/16; kicked=kicked.filter(s=>{ s.vy+=.09*k; s.vx*=Math.pow(.975,k); s.vy*=Math.pow(.99,k); s.p+=.08*k;
+      s.x+=(s.vx+Math.sin(s.p)*.25)*k; s.y+=s.vy*k;
+      const c=clamp(Math.round(s.x/PC),0,pile.length-1);
+      if(s.vy>0&&s.y>=H-pile[c]){ pile[c]+=s.r*.5; return false; }
+      if(s.x<-20||s.x>W+20) return false;
+      if(pile.length&&!pile.some(v=>v>.4)) s.l-=.03*k;
+      ctx.globalAlpha=Math.max(0,s.l); ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,7); ctx.fill(); return s.l>0; }); ctx.globalAlpha=1;
   }
   function frame(now){
     raf=0; if(!vis||current!=="home"){ return; }
@@ -337,7 +361,7 @@ addEventListener("scroll",railKick,{passive:true}); addEventListener("resize",ra
     ctx.clearRect(0,0,W,H);
     sky(dark,Math.max(A[1],A[2]*.8,A[3]*.6));
     cloudsDraw(t,dark,Math.max(A[3],A[1]*.55,A[2]*.35)); sun(t,dark,A[4]);
-    rain(dt,dark,A[1]); water(dark); snow(dt,dark,A[2]); pileDraw(dark);
+    rain(dt,dark,A[1]); water(dark); snow(dt,dark,A[2]); pileDraw(dark,dt);
     ptr.vx*=.8; ptr.vy*=.8;
   }
   size();
