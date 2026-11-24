@@ -259,6 +259,14 @@ body.leaving #app,body.leaving .frame:has(> #contact){opacity:0;transform:transl
 .about-b.holding .lbl .k{opacity:1;transform:none;color:#0a0a0a}
 .pwrap{position:relative;align-self:end;justify-self:center;width:100%;max-width:360px;--look:0;--lookY:0;perspective:900px}
 .pwrap img{width:100%;height:auto;transform-origin:50% 90%;will-change:transform;user-select:none;-webkit-user-drag:none}
+.cv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.cv-acts{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cv-open{display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 22px;border-radius:999px;font-size:17px;font-weight:500;color:var(--fg);transition:transform .3s var(--ease-out)}
+.cv-open:hover{transform:translateY(-1px)}.cv-open svg{width:16px;height:16px}
+.cv-sheet{position:relative;margin:28px auto 0;max-width:860px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 30px 80px -30px rgba(0,0,0,.55),0 0 0 1px var(--border)}
+.cv-sheet img{display:block;width:100%;height:auto}
+.cv-sheet a{position:absolute;border-radius:4px;transition:background .2s}
+.cv-sheet a:hover,.cv-sheet a:focus-visible{background:rgba(37,99,235,.14);outline:none}
 .acc{display:grid;gap:4px;align-self:end}
 .wx-hint{margin:2px 0 0;font:500 13px var(--mono);letter-spacing:.04em;color:var(--muted-fg);opacity:0;transform:translateY(6px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);pointer-events:none}
 .wx-hint.on{opacity:1;transform:none}

@@ -425,7 +425,7 @@ renderBlogs();
 
 /* ---------- Footer: scramble links, handwritten quote ---------- */
 const slink=(t,h,ext)=>`<li><a class="slink" href="${h}"${ext?' target="_blank" rel="noopener"':""}><span class="txt">${esc(t)}</span>${svg(ext?"ne":"arrow")}${ext?'<span class="sr"> (opens in a new tab)</span>':""}</a></li>`;
-$("#fMenu").innerHTML=[["Home","#home"],["Work","#work"],["Experiments","#experiments"],["Arts","#arts"],["Blogs","#blogs"],["About","#about"],["Book a call","#book"]].filter(([,h])=>!DRAFT_PAGES.includes(h.slice(1))).map(([t,h])=>slink(t,h,false)).join("");
+$("#fMenu").innerHTML=[["Home","#home"],["Work","#work"],["Experiments","#experiments"],["Arts","#arts"],["Blogs","#blogs"],["About","#about"],["Resume","#resume"],["Book a call","#book"]].filter(([,h])=>!DRAFT_PAGES.includes(h.slice(1))).map(([t,h])=>slink(t,h,false)).join("");
 $("#fContact").innerHTML=[["Email",GMAIL],["LinkedIn",LINKEDIN],["GitHub",GITHUB]].map(([t,h])=>slink(t,h,true)).join("");
 $$(".slink").forEach(a=>{ const t=a.querySelector(".txt"), txt=t.textContent; const go=()=>scramble(t,txt); a.addEventListener("pointerenter",go); a.addEventListener("focus",go); });
 new IntersectionObserver((es,o)=>{ if(es[0].isIntersecting){ $("#quote").classList.add("in"); o.disconnect(); } },{threshold:.6}).observe($("#quote"));
